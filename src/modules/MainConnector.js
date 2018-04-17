@@ -7,14 +7,15 @@ import { requestPermission } from '../reducers/permissions/actions.js'
 import { addContext, addUsernames } from './Core/Context/action.js'
 import makeContextCallbacks from './Core/Context/callbacks'
 import Main from './Main.ui'
-import type { Dispatch } from './ReduxTypes'
+import type { Dispatch, State } from './ReduxTypes'
 import { setKeyboardHeight } from './UI/dimensions/action'
 import { disableScan, enableScan } from './UI/scenes/Scan/action'
 import { addCurrencyPlugin } from './UI/Settings/action'
 import { updateCurrentSceneKey } from './UI/scenes/action.js'
+import { fetchTransactions } from './UI/scenes/TransactionList/action.js'
 
 const mapStateToProps = () => ({})
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch, state: State) => ({
   requestPermission: permission => {
     return dispatch(requestPermission(permission))
   },
@@ -38,6 +39,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   updateCurrentSceneKey: (sceneKey) => {
     return dispatch(updateCurrentSceneKey(sceneKey))
+  },
+  fetchTransactions: (isNewWallet: boolean) => {
+    console.log('inside of MainConnector->fetchTransactions')
+    return dispatch(fetchTransactions(isNewWallet))
   },
   // commented out since it was blowing up flow && doesnt seem to be called.. TODO remove
   /* setLocaleInfo: (localeInfo) => {

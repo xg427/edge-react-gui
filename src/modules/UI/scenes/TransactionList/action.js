@@ -7,6 +7,7 @@ import type { Dispatch, GetState } from '../../../ReduxTypes'
 import type { TransactionListTx } from '../../../../types.js'
 import * as UI_SELECTORS from '../../../UI/selectors.js'
 import * as UTILS from '../../../utils'
+// import * as SCENE_CONSTANTS from '../../../../constants/SceneKeys'
 import { displayTransactionAlert } from '../../components/TransactionAlert/actions'
 // import type { TransactionListTx } from './TransactionList.ui.js'
 const PREFIX = 'UI/Scenes/TransactionList/'
@@ -28,12 +29,30 @@ export const END_TRANSACTIONS_LOADING = PREFIX + 'END_TRANSACTIONS_LOADING'
 
 export const CHANGED_TRANSACTIONS = PREFIX + 'CHANGED_TRANSACTIONS'
 export const SUBSEQUENT_TRANSACTION_BATCH_NUMBER = 30
+export const INITIAL_TRANSACTION_BATCH_NUMBER = 10
 
-export const fetchTransactions = (walletId: string, currencyCode: string, options: Object = {}) => (dispatch: Dispatch, getState: GetState) => {
+export const fetchTransactions = (isNewWallet: boolean) => (dispatch: Dispatch, getState: GetState) => {
+  dispatch(startTransactionsLoading())
   const state = getState()
-  const wallet = CORE_SELECTORS.getWallet(state, walletId)
+  const selectedWalletId = UI_SELECTORS.getSelectedWalletId(state)
+  const wallet = CORE_SELECTORS.getWallet(state, selectedWalletId)
+  const startIndex = 0
+  let numEntries
+  if (isNewWallet) { // if is new wallet or currency code
+    numEntries = INITIAL_TRANSACTION_BATCH_NUMBER
+  } else { // if same wallet or currency code
+    const currentEndIndex = state.ui.scenes.transactionList.currentEndIndex || INITIAL_TRANSACTION_BATCH_NUMBER
+    const txLength = state.ui.scenes.transactionList.transactions.length
+    if (!txLength) { // if there are no transactions loaded yet
+      numEntries = INITIAL_TRANSACTION_BATCH_NUMBER
+    } else {
+      numEntries = currentEndIndex + SUBSEQUENT_TRANSACTION_BATCH_NUMBER
+    }
+  }
+  // const { currentWalletId, currentCurrencyCode } = this.state
+  const selectedCurrencyCode = UI_SELECTORS.getSelectedCurrencyCode(state)
   if (wallet) {
-    WALLET_API.getTransactions(wallet, currencyCode, options).then(transactions => {
+    WALLET_API.getTransactions(wallet, selectedCurrencyCode, {numEntries, startIndex}).then(transactions => {
       let key = -1
       const transactionsWithKeys = transactions.map((tx) => {
         const txDate = new Date(tx.date * 1000)
@@ -47,7 +66,7 @@ export const fetchTransactions = (walletId: string, currencyCode: string, option
           key
         }
       })
-      dispatch(updateTransactions(transactionsWithKeys))
+      dispatch(updateTransactions(transactionsWithKeys, numEntries))
     }).catch((e) => {
       console.warn('Issue with getTransactions: ', e.message)
     })
@@ -55,20 +74,51 @@ export const fetchTransactions = (walletId: string, currencyCode: string, option
 }
 
 export const refreshTransactionsRequest = (walletId: string, transactions: Array<EdgeTransaction>) => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
+  /* const state = getState()
   const selectedWalletId = UI_SELECTORS.getSelectedWalletId(state)
   const selectedCurrencyCode = UI_SELECTORS.getSelectedCurrencyCode(state)
-  let shouldFetch = false
-  for (const transaction of transactions) {
-    if (transaction.currencyCode === selectedCurrencyCode) {
-      shouldFetch = true
-      break
-    }
-  }
+  const currentEndIndex = state.ui.scenes.transactionList.numEntries
+  // const currentTransactionListTransactions = state.ui.scenes.transactionList.transactions
+
   // Check if this is the selected wallet and we are on the transaction list scene
-  if (walletId === selectedWalletId && shouldFetch) {
-    dispatch(fetchTransactions(walletId, selectedCurrencyCode))
-  }
+  // and also make sure that the wallet is synced
+  // also only refresh if it's actually in the area that is visible,
+
+  /*
+      if (On TxScreen && Synced && selecteWallet) {
+      if (newTxid) {
+        refrerech() // zero to wherever we are
+      } else if (in the current visible) {
+        refresh() // zero to wherever we are
+      }
+    }
+
+  if (state.ui.scenes.currentScene === SCENE_CONSTANTS.TRANSACTION_LIST && // make sure on txList scene
+    (walletId === selectedWalletId) && // make sure the transaction is part of the currently selected wallet
+    (state.ui.wallets && state.ui.wallets.walletLoadingProgress && state.ui.wallets.walletLoadingProgress[walletId] === 1)) { // make sure the wallet is already synced
+    let shouldFetch = false // now make sure that at least one of the transactions has the correct currency code (eg not wrong token code, etc)
+    for (const transaction of transactions) {
+      if (transaction.currencyCode === selectedCurrencyCode) {
+        shouldFetch = true
+        break
+      }
+    }
+    if (shouldFetch) {
+      // const newNumEntries = currentEndIndex + transactions.length
+      dispatch(fetchTransactions(false))
+      // check if any of the transactions are new
+      /* let isNew = false
+      for (let incomingTransaction of transactions) {
+        const foundIndex = _.findIndex(currentTransactionListTransactions, (transaction) => tx.txid === incomingTransaction.txid)
+        if (_.findIndex === -1) { // is new
+          isNew = true
+        } else { // already exists
+
+        }
+      }
+      if (isNew)
+    }
+  } */
 }
 
 export const newTransactionsRequest = (walletId: string, edgeTransactions: Array<EdgeTransaction>) => (dispatch: Dispatch) => {
@@ -78,9 +128,9 @@ export const newTransactionsRequest = (walletId: string, edgeTransactions: Array
   dispatch(displayTransactionAlert(edgeTransaction))
 }
 
-export const updateTransactions = (transactions: Array<TransactionListTx>) => ({
+export const updateTransactions = (transactions: Array<TransactionListTx>, newIndex: number) => ({
   type: UPDATE_TRANSACTIONS,
-  data: { transactions }
+  data: { transactions, newIndex }
 })
 
 export const updateBalance = () => ({
@@ -90,6 +140,18 @@ export const updateBalance = () => ({
 export function deleteTransactionsList () {
   return {
     type: DELETE_TRANSACTIONS_LIST
+  }
+}
+
+export const startTransactionsLoading = () => {
+  return {
+    type: START_TRANSACTIONS_LOADING
+  }
+}
+
+export const endTransactionsLoading = () => {
+  return {
+    type: END_TRANSACTIONS_LOADING
   }
 }
 

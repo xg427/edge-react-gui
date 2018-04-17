@@ -152,7 +152,8 @@ type Props = {
   dispatchDisableScan: () => void,
   urlReceived: string => void,
   updateCurrentSceneKey: (string) => void,
-  contextCallbacks: EdgeContextCallbacks
+  contextCallbacks: EdgeContextCallbacks,
+  fetchTransactions: (boolean) => void
 }
 type State = {
   context: ?EdgeContext
@@ -313,6 +314,7 @@ export default class Main extends Component<Props, State> {
                           onEnter={() => {
                             this.props.requestPermission(CONTACTS)
                             this.props.updateCurrentSceneKey(Constants.TRANSACTION_LIST)
+                            this.props.fetchTransactions(false)
                           }}
                           navTransparent={true}
                           component={TransactionListConnector}

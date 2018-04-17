@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { TouchableHighlight, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-
+import * as SCENE_KEYS from '../../../../../../constants/SceneKeys'
 import * as UTILS from '../../../../../utils'
 import { intl } from '../../../../../../locales/intl'
 import T from '../../../../components/FormattedText'
@@ -13,7 +13,7 @@ export default class WalletListTokenRow extends Component {
   selectWallet = () => {
     const { parentId: walletId, currencyCode } = this.props
     this.props.selectWallet(walletId, currencyCode)
-    Actions.transactionList({ params: 'walletList' })
+    Actions.transactionList({ params: SCENE_KEYS.WALLET_LIST, fromScene: SCENE_KEYS.WALLET_LIST }) // should use constant
   }
 
   render () {

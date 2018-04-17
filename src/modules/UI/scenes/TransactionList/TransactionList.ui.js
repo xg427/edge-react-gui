@@ -26,14 +26,14 @@ import styles, { styles as styleRaw } from './style'
 
 // import SearchBar from './components/SearchBar.ui'
 const INITIAL_TRANSACTION_BATCH_NUMBER = 10
-const SUBSEQUENT_TRANSACTION_BATCH_NUMBER = 30
+export const SUBSEQUENT_TRANSACTION_BATCH_NUMBER = 30
 const SCROLL_THRESHOLD = 0.5
 
 type Props = {
   getTransactions: (walletId: string, currencyCode: string) => void, // getting transactions from Redux
   updateExchangeRates: () => void,
   transactionsSearchHidden: () => void,
-  fetchTransactions: (walletId: string, currencyCode: string, options: Object) => void,
+  fetchTransactions: (isNewWallet: boolean) => void,
   contacts: Array<GuiContact>,
   selectedWalletId: string,
   selectedCurrencyCode: string,
@@ -47,7 +47,10 @@ type Props = {
   fiatSymbol: string,
   balanceInFiat: number,
   fiatCurrencyCode: string,
-  isoFiatCurrencyCode: string
+  isoFiatCurrencyCode: string,
+  currentEndIndex: number,
+  fromScene: string,
+  loadingTransactions: boolean
 }
 type State = {
   focused: boolean,
@@ -59,8 +62,7 @@ type State = {
   width: ?number,
   showBalance: boolean,
   currentCurrencyCode: string,
-  currentWalletId: string,
-  currentEndIndex: number
+  currentWalletId: string
 }
 
 const SHOW_BALANCE_TEXT = s.strings.string_show_balance
@@ -84,33 +86,30 @@ export default class TransactionList extends Component<Props, State> {
     dataSrc: [],
     width: undefined,
     currentCurrencyCode: '',
-    currentWalletId: '',
-    currentEndIndex: 0
+    currentWalletId: ''
   }
 
   componentWillMount () {
     this.props.updateExchangeRates()
-    this.handleScrollEnd()
   }
 
   componentWillReceiveProps (nextProps: Props) {
     if ((nextProps.selectedWalletId !== this.props.selectedWalletId) ||
         (nextProps.selectedCurrencyCode !== this.props.selectedCurrencyCode)) {
-      this.fetchListOfTransactions(nextProps.selectedWalletId, nextProps.selectedCurrencyCode)
+      this.fetchListOfTransactions(true)
+      console.log('inside of TransactionList->componentWillReceiveProps')
     }
   }
 
-  fetchListOfTransactions = (walletId: string, currencyCode: string) => {
-    this.props.fetchTransactions(walletId, currencyCode, {
-      numEntries: this.state.currentEndIndex,
-      numIndex: 0
-    })
+  fetchListOfTransactions = (isNewWallet: boolean) => {
+    this.props.fetchTransactions(isNewWallet)
   }
 
   handleScrollEnd = () => {
-    const walletId = this.props.selectedWalletId
+    /* const walletId = this.props.selectedWalletId
     const currencyCode = this.props.selectedCurrencyCode
-    const { currentEndIndex, currentWalletId, currentCurrencyCode } = this.state
+    const { currentEndIndex } = this.props
+    const { currentWalletId, currentCurrencyCode } = this.state
     let newEndIndex = currentEndIndex
 
     const txLength = this.props.transactions.length
@@ -118,22 +117,11 @@ export default class TransactionList extends Component<Props, State> {
       newEndIndex = INITIAL_TRANSACTION_BATCH_NUMBER
     } else if (txLength === currentEndIndex) {
       newEndIndex += SUBSEQUENT_TRANSACTION_BATCH_NUMBER
-    }
+    } */
 
-    if (
-      newEndIndex !== currentEndIndex ||
-      (currentWalletId !== '' && currentWalletId !== walletId) ||
-      (currentCurrencyCode !== '' && currentCurrencyCode !== currencyCode)
-    ) {
-      this.setState(
-        state => ({
-          currentCurrencyCode: currencyCode,
-          currentEndIndex: newEndIndex,
-          currentWalletId: walletId
-        }),
-        () => this.fetchListOfTransactions(walletId, currencyCode)
-      )
-    }
+    // not sure what this part is for...
+    console.log('inside of TransactionList->handleScrollEnd')
+    if (!this.props.loadingTransactions) this.fetchListOfTransactions(false)
   }
 
   _onSearchChange = () => {

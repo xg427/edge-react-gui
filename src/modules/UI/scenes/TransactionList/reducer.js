@@ -58,8 +58,19 @@ const loadingTransactions = (state = false, action) => {
   switch (action.type) {
     case ACTION.START_TRANSACTIONS_LOADING:
       return true
-    case ACTION.END_TRANSACTIONS_LOADING:
+    case ACTION.UPDATE_TRANSACTIONS:
       return false
+    default:
+      return state
+  }
+}
+
+const currentEndIndex = (state = 10, action) => {
+  switch (action.type) {
+    case ACTION.UPDATE_TRANSACTIONS:
+      return action.data.newIndex
+    case WALLET_ACTION.SELECT_WALLET:
+      return 0
     default:
       return state
   }
@@ -67,6 +78,7 @@ const loadingTransactions = (state = false, action) => {
 
 export const transactionList = combineReducers({
   transactions,
+  currentEndIndex,
   searchVisible,
   updatingBalance,
   transactionsWalletListModalVisibility,

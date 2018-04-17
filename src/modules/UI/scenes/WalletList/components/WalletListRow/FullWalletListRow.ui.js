@@ -69,7 +69,7 @@ export default FullWalletRow
 class FullWalletListRow extends Component<Props, State> {
   _onPressSelectWallet = (walletId, currencyCode) => {
     this.props.selectWallet(walletId, currencyCode)
-    Actions.transactionList({ params: 'walletList' })
+    Actions.transactionList({ params: 'walletList' }) // should use constant
   }
 
   componentWillMount () {

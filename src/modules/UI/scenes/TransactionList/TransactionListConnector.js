@@ -53,6 +53,8 @@ const mapStateToProps = (state: State) => {
   const balanceInCryptoDisplay = UTILS.convertNativeToExchange(exchangeDenomination.multiplier)(balanceInCrypto)
   const balanceInFiat = currencyConverter.convertCurrency(currencyCode, isoFiatCurrencyCode, balanceInCryptoDisplay)
   const displayDenomination = SETTINGS_SELECTORS.getDisplayDenomination(state, currencyCode)
+  const currentEndIndex = state.ui.scenes.transactionList.currentEndIndex
+  const loadingTransactions = state.ui.scenes.transactionList.loadingTransactions
 
   return {
     displayDenomination,
@@ -72,14 +74,16 @@ const mapStateToProps = (state: State) => {
     multiplier,
     contacts: state.contacts,
     fiatSymbol,
-    showToWalletModal: state.ui.scenes.scan.scanToWalletListModalVisibility
+    showToWalletModal: state.ui.scenes.scan.scanToWalletListModalVisibility,
+    currentEndIndex,
+    loadingTransactions
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   updateExchangeRates: () => dispatch(updateExchangeRates()),
-  fetchTransactions: (walletId: string, currencyCode: string, options: Object) =>
-    dispatch(fetchTransactions(walletId, currencyCode, options))
+  fetchTransactions: (isNewWallet: boolean) =>
+    dispatch(fetchTransactions(isNewWallet))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionList)
