@@ -13,7 +13,7 @@ export type Props = {
   style?: StyleSheet.Styles
 }
 type State = {}
-export default class Gradient extends Component<Props, State> {
+export class Gradient extends Component<Props, State> {
   render () {
     const UPPER_LEFT = { x: 0, y: 0 }
     const UPPER_RIGHT = { x: 1, y: 0 }
@@ -25,3 +25,5 @@ export default class Gradient extends Component<Props, State> {
     )
   }
 }
+
+export default Gradient
