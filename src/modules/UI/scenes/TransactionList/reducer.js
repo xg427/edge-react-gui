@@ -65,7 +65,7 @@ const loadingTransactions = (state = false, action) => {
   }
 }
 
-const currentEndIndex = (state = 10, action) => {
+const currentEndIndex = (state = 0, action) => {
   switch (action.type) {
     case ACTION.UPDATE_TRANSACTIONS:
       return action.data.newIndex

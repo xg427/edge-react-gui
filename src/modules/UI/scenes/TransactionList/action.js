@@ -41,7 +41,7 @@ export const fetchTransactions = (isNewWallet: boolean) => (dispatch: Dispatch, 
   if (isNewWallet) { // if is new wallet or currency code
     numEntries = INITIAL_TRANSACTION_BATCH_NUMBER
   } else { // if same wallet or currency code
-    const currentEndIndex = state.ui.scenes.transactionList.currentEndIndex || INITIAL_TRANSACTION_BATCH_NUMBER
+    const currentEndIndex = state.ui.scenes.transactionList.currentEndIndex
     const txLength = state.ui.scenes.transactionList.transactions.length
     if (!txLength) { // if there are no transactions loaded yet
       numEntries = INITIAL_TRANSACTION_BATCH_NUMBER

@@ -96,7 +96,7 @@ test('initialState', () => {
       transactionsWalletListModalVisibility: false,
       updatingBalance: true,
       loadingTransactions: false,
-      currentEndIndex: 10
+      currentEndIndex: 0
     },
     walletList: {
       deleteWalletModalVisible: false,

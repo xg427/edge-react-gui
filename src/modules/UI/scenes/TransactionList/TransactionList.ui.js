@@ -120,8 +120,10 @@ export default class TransactionList extends Component<Props, State> {
     } */
 
     // not sure what this part is for...
-    console.log('inside of TransactionList->handleScrollEnd')
-    if (!this.props.loadingTransactions) this.fetchListOfTransactions(false)
+    if (!this.props.loadingTransactions && this.props.currentEndIndex !== 0) {
+      this.fetchListOfTransactions(false)
+      console.log('inside of TransactionList->handleScrollEnd, executing fetchListOfTransactions')
+    }
   }
 
   _onSearchChange = () => {
