@@ -59,11 +59,19 @@ export type State = {
     },
     scenes: {
       scan: {
-        torchEnabled: boolean,
-        addressModalVisible: boolean,
-        scanEnabled: boolean,
-        selectedWalletListModalVisibility: boolean,
-        scanToWalletListModalVisibility: boolean
+        camera: {
+          isEnabled: boolean,
+          torch: {
+            isEnabled: boolean
+          }
+        },
+        addressModal: {
+          isActive: boolean
+        },
+        legacyAddressModal: {
+          isActive: boolean,
+          currencyName: string
+        },
       },
       sendConfirmation: {
         transaction: EdgeTransaction | null,

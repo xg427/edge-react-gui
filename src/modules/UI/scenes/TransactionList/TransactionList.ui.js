@@ -4,27 +4,22 @@ import { bns } from 'biggystring'
 import type { EdgeDenomination } from 'edge-core-js'
 import React, { Component } from 'react'
 import { ActivityIndicator, Animated, Image, TouchableHighlight, TouchableOpacity, View, FlatList } from 'react-native'
-// import Contacts from 'react-native-contacts'
-// import Permissions from 'react-native-permissions'
 import { Actions } from 'react-native-router-flux'
 
 import receivedTypeImage from '../../../../assets/images/transactions/transaction-type-received.png'
 import sentTypeImage from '../../../../assets/images/transactions/transaction-type-sent.png'
 import requestImage from '../../../../assets/images/transactions/transactions-request.png'
 import sendImage from '../../../../assets/images/transactions/transactions-send.png'
-import * as Constants from '../../../../constants/indexConstants'
 import { intl } from '../../../../locales/intl'
 import s from '../../../../locales/strings.js'
 
 import type { GuiWallet, TransactionListTx, GuiContact } from '../../../../types'
-import WalletListModal from '../../../UI/components/WalletListModal/WalletListModalConnector'
 import * as UTILS from '../../../utils'
 import T from '../../components/FormattedText'
 import Gradient from '../../components/Gradient/Gradient.ui'
 import SafeAreaView from '../../components/SafeAreaView'
 import styles, { styles as styleRaw } from './style'
 
-// import SearchBar from './components/SearchBar.ui'
 const INITIAL_TRANSACTION_BATCH_NUMBER = 10
 const SUBSEQUENT_TRANSACTION_BATCH_NUMBER = 30
 const SCROLL_THRESHOLD = 0.5
@@ -205,13 +200,6 @@ export default class TransactionList extends Component<Props, State> {
 
   toggleShowBalance = () => this.setState({ showBalance: !this.state.showBalance })
 
-  renderDropUp = () => {
-    if (this.props.showToWalletModal) {
-      return <WalletListModal topDisplacement={Constants.TRANSACTIONLIST_WALLET_DIALOG_TOP} type={Constants.FROM} />
-    }
-    return null
-  }
-
   render () {
     return (
       <SafeAreaView>
@@ -232,7 +220,6 @@ export default class TransactionList extends Component<Props, State> {
               </View>
             </View>
           </View>
-          {this.renderDropUp()}
         </View>
       </SafeAreaView>
     )

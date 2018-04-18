@@ -5,7 +5,7 @@ import { Platform, StyleSheet } from 'react-native'
 import THEME from '../../../../theme/variables/airbitz.js'
 import { PLATFORM } from '../../../../theme/variables/platform.js'
 
-export const styles = {
+export const rawStyles = {
   gradient: {
     height: THEME.HEADER
   },
@@ -190,4 +190,5 @@ export const styles = {
     color: THEME.COLORS.PRIMARY
   }
 }
-export default StyleSheet.create(styles)
+export const styles = StyleSheet.create(rawStyles)
+export default styles

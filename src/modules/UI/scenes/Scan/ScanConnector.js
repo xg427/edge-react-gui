@@ -5,20 +5,18 @@ import { connect } from 'react-redux'
 import Scan from './Scan.ui'
 import type { Dispatch, State } from '../../../ReduxTypes'
 import { getCameraPermission } from '../../../../reducers/permissions/selectors'
-import { toggleScanToWalletListModal } from '../../components/WalletListModal/action'
-import { toggleAddressModal, toggleEnableTorch, parseUri } from './action'
+import { addressButtonPressed, torchButtonPressed, dataSubmitted } from './scanActions.js'
 
 const mapStateToProps = (state: State) => ({
   cameraPermission: getCameraPermission(state),
-  torchEnabled: state.ui.scenes.scan.torchEnabled,
-  scanEnabled: state.ui.scenes.scan.scanEnabled
+  torchEnabled: state.ui.scenes.scan.camera.torch.isEnabled,
+  scanEnabled: state.ui.scenes.scan.camera.isEnabled
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  parseUri: (data) => dispatch(parseUri(data)),
-  toggleEnableTorch: () => dispatch(toggleEnableTorch()),
-  toggleAddressModal: () => dispatch(toggleAddressModal()),
-  toggleScanToWalletListModal: () => dispatch(toggleScanToWalletListModal())
+  dataSubmitted: (data) => dispatch(dataSubmitted(data)),
+  torchButtonPressed: () => dispatch(torchButtonPressed()),
+  addressButtonPressed: () => dispatch(addressButtonPressed())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scan)

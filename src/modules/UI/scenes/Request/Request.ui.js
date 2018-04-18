@@ -7,10 +7,8 @@ import { ActivityIndicator, Alert, Clipboard, Share, View } from 'react-native'
 import ContactsWrapper from 'react-native-contacts-wrapper'
 import { sprintf } from 'sprintf-js'
 
-import * as Constants from '../../../../constants/indexConstants'
 import s from '../../../../locales/strings.js'
 import type { GuiCurrencyInfo, GuiReceiveAddress, GuiTransactionRequest, GuiWallet } from '../../../../types.js'
-import WalletListModal from '../../../UI/components/WalletListModal/WalletListModalConnector'
 import ExchangedExchangeRate from '../../components/ExchangeRate/ExchangedExchangeRate.ui.js'
 import { ExchangedFlipInput } from '../../components/FlipInput/ExchangedFlipInput2.js'
 import type { ExchangedFlipInputAmounts } from '../../components/FlipInput/ExchangedFlipInput2.js'
@@ -160,9 +158,6 @@ export class Request extends Component<Props, State> {
               copyToClipboard={this.copyToClipboard}
             />
           </View>
-
-          {this.props.showToWalletModal &&
-          <WalletListModal topDisplacement={Constants.REQUEST_WALLET_DIALOG_TOP} type={Constants.TO} />}
         </Gradient>
       </SafeAreaView>
     )
@@ -223,7 +218,6 @@ export class Request extends Component<Props, State> {
     ContactsWrapper.getContact()
       .then(() => {
         this.shareMessage()
-        // console.log('shareViaEmail')
       })
       .catch(e => {
         console.log(e)
@@ -234,7 +228,6 @@ export class Request extends Component<Props, State> {
     ContactsWrapper.getContact()
       .then(() => {
         this.shareMessage()
-        // console.log('shareViaSMS')
       })
       .catch(e => {
         console.log(e)
@@ -243,6 +236,5 @@ export class Request extends Component<Props, State> {
 
   shareViaShare = () => {
     this.shareMessage()
-    // console.log('shareViaShare')
   }
 }

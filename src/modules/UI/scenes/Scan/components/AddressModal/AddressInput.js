@@ -3,10 +3,10 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 
-import { FormField } from '../../../../../components/FormField.js'
-import s from '../../../../../locales/strings.js'
-import { TertiaryButton } from '../../../components/Buttons'
-import styles from '../style.js'
+import { FormField } from '../../../../../../components/FormField.js'
+import s from '../../../../../../locales/strings.js'
+import { TertiaryButton } from '../../../../components/Buttons'
+import { styles } from '../../styles.js'
 
 export class AddressInput extends Component {
   // this component is for the input area of the Recipient Address Modal
@@ -16,7 +16,7 @@ export class AddressInput extends Component {
         <View style={[styles.addressInputWrap]}>
           <FormField
             style={[styles.addressInput]}
-            value={this.props.uri}
+            value={this.props.input}
             onChangeText={this.props.onChangeText}
             autoCapitalize={'none'}
             autoFocus

@@ -3,11 +3,11 @@
 import React, { Component } from 'react'
 import { TouchableHighlight, View } from 'react-native'
 
-import s from '../../../../../locales/strings.js'
-import { border } from '../../../../utils.js'
-import T from '../../../components/FormattedText'
-import ModalStyle from '../../../components/Modal/style'
-import { styles as styleRaw } from '../style'
+import s from '../../../../../../locales/strings.js'
+import { border } from '../../../../../utils.js'
+import T from '../../../../components/FormattedText'
+import ModalStyle from '../../../../components/Modal/style'
+import { rawStyles } from '../../styles.js'
 
 const CANCEL_TEXT = s.strings.string_cancel_cap
 const DONE_TEXT = s.strings.string_done_cap
@@ -18,7 +18,7 @@ export class AddressInputButtons extends Component {
       <View style={[ModalStyle.buttonsWrap, border('gray')]}>
         <TouchableHighlight
           style={[ModalStyle.cancelButtonWrap, ModalStyle.stylizedButton]}
-          underlayColor={styleRaw.cancelUnderlay.color}
+          underlayColor={rawStyles.cancelUnderlay.color}
           onPress={this.props.onCancel}
         >
           <View style={ModalStyle.stylizedButtonTextWrap}>
@@ -28,7 +28,7 @@ export class AddressInputButtons extends Component {
 
         <TouchableHighlight
           style={[ModalStyle.doneButtonWrap, ModalStyle.stylizedButton]}
-          underlayColor={styleRaw.doneUnderlay.color}
+          underlayColor={rawStyles.doneUnderlay.color}
           onPress={this.props.onSubmit}
         >
           <View style={ModalStyle.stylizedButtonTextWrap}>

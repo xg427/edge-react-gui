@@ -65,7 +65,6 @@ const mapStateToProps = (state: State): RequestStateProps | RequestLoadingProps 
     primaryCurrencyInfo,
     request: state.ui.scenes.request,
     secondaryCurrencyInfo,
-    showToWalletModal: state.ui.scenes.scan.scanToWalletListModalVisibility,
     useLegacyAddress: state.ui.scenes.requestType.useLegacyAddress
   }
 }

@@ -9,7 +9,7 @@ import makeContextCallbacks from './Core/Context/callbacks'
 import Main from './Main.ui'
 import type { Dispatch } from './ReduxTypes'
 import { setKeyboardHeight } from './UI/dimensions/action'
-import { disableScan, enableScan } from './UI/scenes/Scan/action'
+import { cameraScanEnabled, cameraScanDisabled } from './UI/scenes/Scan/scanActions.js'
 import { addCurrencyPlugin } from './UI/Settings/action'
 import { updateCurrentSceneKey } from './UI/scenes/action.js'
 
@@ -19,10 +19,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     return dispatch(requestPermission(permission))
   },
   dispatchEnableScan: () => {
-    return dispatch(enableScan())
+    return dispatch(cameraScanEnabled())
   },
   dispatchDisableScan: () => {
-    return dispatch(disableScan())
+    return dispatch(cameraScanDisabled())
   },
   addCurrencyPlugin: plugin => {
     return dispatch(addCurrencyPlugin(plugin))
@@ -39,10 +39,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   updateCurrentSceneKey: (sceneKey) => {
     return dispatch(updateCurrentSceneKey(sceneKey))
   },
-  // commented out since it was blowing up flow && doesnt seem to be called.. TODO remove
-  /* setLocaleInfo: (localeInfo) => {
-    return dispatch(setLocaleInfo(localeInfo))
-  }, */
   urlReceived: backupKey => {
     return dispatch(actions.deepLinkLogout(backupKey))
   },
