@@ -23,11 +23,7 @@ type BodyProps = {
 }
 export class Body extends Component<BodyProps> {
   render () {
-    return (
-      <View style={[styles.body, this.props.styles]}>
-        {this.props.children}
-      </View>
-    )
+    return <View style={[styles.body, this.props.styles]}>{this.props.children}</View>
   }
 }
 
@@ -37,11 +33,7 @@ type FooterProps = {
 }
 export class Footer extends Component<FooterProps> {
   render () {
-    return (
-      <View style={[styles.footer, this.props.styles]}>
-        {this.props.children}
-      </View>
-    )
+    return <View style={[styles.footer, this.props.styles]}>{this.props.children}</View>
   }
 }
 
@@ -51,11 +43,7 @@ type ItemProps = {
 }
 export class Item extends Component<ItemProps> {
   render () {
-    return (
-      <View style={[styles.item, this.props.styles]}>
-        {this.props.children}
-      </View>
-    )
+    return <View style={[styles.item, this.props.styles]}>{this.props.children}</View>
   }
 }
 
@@ -72,23 +60,25 @@ export class Scan extends Component<Props> {
         <Gradient style={styles.gradient} />
 
         <Body>
-          <Camera permission={cameraPermission} onBarCodeRead={dataSubmitted}>
-            <Camera.Authorized>
-              <Camera.Overlay>
-                <Camera.Banner>
-                  <Camera.Banner.Text>
-                    <Text>{s.strings.send_scan_header_text}</Text>
-                  </Camera.Banner.Text>
-                </Camera.Banner>
-              </Camera.Overlay>
+          <Camera permission={cameraPermission}>
+            <Camera.Authorized onBarCodeRead={dataSubmitted}>
+              <Camera.Preview>
+                <Camera.Overlay>
+                  <Camera.Banner>
+                    <Camera.Banner.Text>
+                      <Text>{s.strings.send_scan_header_text}</Text>
+                    </Camera.Banner.Text>
+                  </Camera.Banner>
+                </Camera.Overlay>
+              </Camera.Preview>
             </Camera.Authorized>
 
             <Camera.Pending>
-
+              <Text>{'PENDING'}</Text>
             </Camera.Pending>
 
             <Camera.Denied>
-
+              <Text>{'DENIED'}</Text>
             </Camera.Denied>
           </Camera>
         </Body>

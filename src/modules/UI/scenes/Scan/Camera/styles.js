@@ -10,15 +10,25 @@ export const rawStyles = {
     justifyContent: 'flex-start',
     alignItems: 'stretch'
   },
+  body: {
+    flex: 1
+  },
   overlay: {
-    flex: 1,
-    opacity: 0.95
   },
   banner: {
-    height: 38,
+    flex: 1,
+    padding: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: THEME.COLORS.GRAY_1
+    backgroundColor: THEME.COLORS.GRAY_1,
+    opacity: 0.95
+  },
+  bannerText: {
+    color: THEME.COLORS.WHITE,
+    fontFamily: THEME.FONTS.DEFAULT
+  },
+  preview: {
+    flex: 1
   },
   denied: {
     flex: 1,

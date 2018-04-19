@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, Text as RNText, View } from 'react-native'
+import { StyleSheet, Text as RNText, View } from 'react-native'
 import type { Node } from 'react-native'
 import RNCamera from 'react-native-camera'
 
@@ -14,7 +14,9 @@ type BodyProps = {
 }
 export class Body extends Component<BodyProps> {
   render () {
-    return <View style={[styles.body, this.props.style]}>{this.props.children}</View>
+    return <View {...this.props} style={[styles.body, this.props.style]}>
+      {this.props.children}
+    </View>
   }
 }
 
@@ -47,7 +49,9 @@ export type OverlayProps = {
 }
 class Overlay extends Component<OverlayProps> {
   render () {
-    return <View style={[styles.overlay, this.props.style]}>{this.props.children}</View>
+    return <View {...this.props} style={[styles.overlay, this.props.style]}>
+      {this.props.children}
+    </View>
   }
 }
 
@@ -57,7 +61,9 @@ export type TextProps = {
 }
 class Text extends Component<TextProps> {
   render () {
-    return <RNText style={[styles.banner, this.props.style]}>{this.props.children}</RNText>
+    return <RNText {...this.props} style={[styles.bannerText, this.props.style]}>
+      {this.props.children}
+    </RNText>
   }
 }
 
@@ -66,10 +72,24 @@ export type BannerProps = {
   style?: StyleSheet.Styles
 }
 class Banner extends Component<BannerProps> {
-  Text = Text
+  static Text = Text
 
   render () {
-    return <Text style={[styles.banner, this.props.style]}>{this.props.children}</Text>
+    return <View {...this.props} style={[styles.banner, this.props.style]}>
+      {this.props.children}
+    </View>
+  }
+}
+
+export type AuthorizedProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class Authorized extends Component<AuthorizedProps> {
+  render () {
+    return <Camera.Body>
+      {this.props.children}
+    </Camera.Body>
   }
 }
 
@@ -79,8 +99,9 @@ export type DeniedProps = {
 }
 class Denied extends Component<DeniedProps> {
   render () {
-    const DENIED_TEXT = s.strings.camera_permission_denied
-    return <Text style={[styles.denied, this.props.style]}>{DENIED_TEXT}</Text>
+    return <Camera.Body>
+      {this.props.children}
+    </Camera.Body>
   }
 }
 
@@ -90,7 +111,9 @@ export type PendingProps = {
 }
 class Pending extends Component<PendingProps> {
   render () {
-    return <ActivityIndicator size="large" style={[styles.pending, this.props.style]} />
+    return <Camera.Body>
+      {this.props.children}
+    </Camera.Body>
   }
 }
 
@@ -103,25 +126,27 @@ export type Props = {
   onBarCodeRead: (input: string) => void
 }
 export class Camera extends Component<Props> {
-  static Body = Body
+  static Authorized = Authorized
   static Pending = Pending
   static Denied = Denied
-  static Overlay = Overlay
+  static Body = Body
   static Preview = Preview
+  static Overlay = Overlay
   static Banner = Banner
 
   render () {
-    const { scanIsEnabled, cameraPermission, torchIsEnabled, onBarCodeRead } = this.props
-    const torchMode = torchIsEnabled ? RNCamera.constants.TorchMode.on : RNCamera.constants.TorchMode.off
+    // const { scanIsEnabled, cameraPermission, torchIsEnabled, onBarCodeRead } = this.props
+    // const torchMode = torchIsEnabled ? RNCamera.constants.TorchMode.on : RNCamera.constants.TorchMode.off
+
+    const { cameraPermission } = this.props
+    const children = React.Children.toArray(this.props.children)
+    const Authorized = children.find(child => child.type === Camera.Authorized)
+    const Denied = children.find(child => child.type === Camera.Denied)
+    const Pending = children.find(child => child.type === Camera.Pending)
+
     return (
       <Camera.Body>
-        {cameraPermission === AUTHORIZED ? (
-          <Camera.Preview torchMode={torchMode} onBarCodeRead={scanIsEnabled ? onBarCodeRead : null} />
-        ) : cameraPermission === DENIED ? (
-          <Camera.Denied />
-        ) : cameraPermission === UNDETERMINED ? (
-          <Camera.Pending />
-        ) : null}
+        {cameraPermission === AUTHORIZED ? Authorized : cameraPermission === DENIED ? Denied : cameraPermission === UNDETERMINED ? Pending : null}
       </Camera.Body>
     )
   }
