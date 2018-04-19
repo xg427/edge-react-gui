@@ -1,12 +1,11 @@
 // @flow
 
-import React, { Component } from 'react'
+import React, { Component, View } from 'react'
 
 import ABAlert from '../../components/ABAlert/indexABAlert'
 import SafeAreaView from '../../components/SafeAreaView'
 import { AddressModalConnector as AddressModal } from './AddressModal/AddressModalConnector.js'
 // import { LegacyAddressModalConnector as LegacyAddressModal } from './LegacyAddressModal/LegacyAddressModalConnector.js'
-import { NavBar } from './NavBar/NavBar.ui.js'
 import { Body } from './Body/Body.ui.js'
 import { Footer } from './Footer/Footer.ui.js'
 import { Camera } from './Camera/CameraConnector.js'
@@ -24,7 +23,7 @@ export class Scan extends Component<Props> {
     const { dataSubmitted } = this.props
     return (
       <SafeAreaView>
-        <NavBar onPress={() => {}} />
+        <View />
 
         <Body>
           <Camera onBarCodeRead={dataSubmitted} />
