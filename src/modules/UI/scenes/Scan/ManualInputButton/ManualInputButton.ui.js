@@ -1,23 +1,24 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Text, TouchableHighlight } from 'react-native'
+import { Text, TouchableHighlight, View } from 'react-native'
+import FAIcon from 'react-native-vector-icons/FontAwesome'
 
 import s from '../../../../../locales/strings.js'
-import { Icon } from '../../../components/Icon/Icon.ui.js'
+// import { Icon } from '../../../components/Icon/Icon.ui.js'
 
 export type Props = {
   onPress: () => void
 }
-export class ManualInputButton extends Component {
+export class ManualInputButton extends Component<Props> {
   render () {
     const ADDRESS_TEXT = s.strings.fragment_send_address
     const { onPress } = this.props
     return (
-      <TouchableHighlight style={styles.bottomButton} onPress={onPress} underlayColor={rawStyles.underlay.color}>
-        <View style={styles.bottomButtonTextWrap}>
-          <FAIcon style={[styles.addressBookIcon]} name="address-book-o" size={18} />
-          <Text style={[styles.addressButtonText, styles.bottomButtonText]}>{ADDRESS_TEXT}</Text>
+      <TouchableHighlight onPress={onPress}>
+        <View>
+          <FAIcon style={{}} name="address-book-o" size={18} />
+          <Text style={{}}>{ADDRESS_TEXT}</Text>
         </View>
       </TouchableHighlight>
     )

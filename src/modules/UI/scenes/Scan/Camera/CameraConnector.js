@@ -2,9 +2,9 @@
 
 import { connect } from 'react-redux'
 
-import Scan from './Scan.ui'
+import { Camera } from './Camera.ui'
 import type { Dispatch, State } from '../../../ReduxTypes'
-import { getCameraPermission } from '../../../../reducers/permissions/selectors'
+import { getCameraPermission } from '../../../../../reducers/permissions/selectors'
 
 const mapStateToProps = (state: State) => ({
   cameraIsAuthorized: getCameraPermission(state),
@@ -13,4 +13,4 @@ const mapStateToProps = (state: State) => ({
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Scan)
+export default connect(mapStateToProps, mapDispatchToProps)(Camera)

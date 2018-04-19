@@ -11,3 +11,5 @@ export const initialState = {
 export const legacyAddressModal = (state: LegacyAddressModalState = initialState, action: Action) => {
   return state
 }
+
+export default legacyAddressModal

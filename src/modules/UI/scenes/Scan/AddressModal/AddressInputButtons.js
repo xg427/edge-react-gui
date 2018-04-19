@@ -3,11 +3,11 @@
 import React, { Component } from 'react'
 import { TouchableHighlight, View } from 'react-native'
 
-import s from '../../../../../../locales/strings.js'
-import { border } from '../../../../../utils.js'
-import T from '../../../../components/FormattedText'
-import ModalStyle from '../../../../components/Modal/style'
-import { rawStyles } from '../../styles.js'
+import s from '../../../../../locales/strings.js'
+import { border } from '../../../../utils.js'
+import T from '../../../components/FormattedText'
+import ModalStyle from '../../../components/Modal/style'
+import { rawStyles } from '../styles.js'
 
 const CANCEL_TEXT = s.strings.string_cancel_cap
 const DONE_TEXT = s.strings.string_done_cap

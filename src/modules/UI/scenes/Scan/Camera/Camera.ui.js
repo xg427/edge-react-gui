@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
 import RNCamera from 'react-native-camera'
 
-import s from '../../../../../locales/default.js'
+import s from '../../../../../locales/strings.js'
 
 class Overlay extends Component {
   render () {
@@ -59,7 +59,7 @@ export class Camera extends Component<Props, State> {
           ref={ref => {
             this.camera = ref
           }}
-          barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+          barCodeTypes={[RNCamera.constants.BarCodeType.qr]}
           torchMode={torchMode}
           onBarCodeRead={scanIsEnabled ? onBarCodeRead : () => {}}
           notAuthorizedView={Camera.NotAuthorized}

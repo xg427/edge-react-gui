@@ -12,6 +12,7 @@ export type AddressModalState = {
   input: string
 }
 export const addressModal = (state: AddressModalState = initialState, action: Action) => {
+  if (!action.data) return state
   switch (action.type) {
     case ADDRESS_MODAL_TOGGLED:
       return {
@@ -41,3 +42,5 @@ export const addressModal = (state: AddressModalState = initialState, action: Ac
       return state
   }
 }
+
+export default addressModal

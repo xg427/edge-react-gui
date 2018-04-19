@@ -5,8 +5,12 @@ import { combineReducers } from 'redux'
 import type { Action } from '../../../../ReduxTypes.js'
 import { SCAN_ENABLED, SCAN_DISABLED, SCAN_TOGGLED, TORCH_ENABLED, TORCH_DISABLED, TORCH_TOGGLED } from './CameraActions.js'
 
-export type ScanState = boolean
-export const initialScanState = false
+export type ScanState = {
+  isEnabled: boolean
+}
+export const initialScanState = {
+  isEnabled: false
+}
 export const scan = (state: ScanState = initialScanState, action: Action) => {
   const { type } = action
   switch (type) {

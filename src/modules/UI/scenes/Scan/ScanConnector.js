@@ -2,11 +2,13 @@
 
 import { connect } from 'react-redux'
 
-import Scan from './Scan.ui'
+import { Scan } from './Scan.ui'
 import type { Dispatch, State } from '../../../ReduxTypes'
 import { addressButtonPressed, torchButtonPressed, dataSubmitted } from './scanActions.js'
 
-const mapStateToProps = (state: State) => ({})
+const mapStateToProps = (state: State) => ({
+  selectWalletListIsActive: state.ui.scenes.scan.scanToWalletListModalVisibility
+})
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dataSubmitted: (data) => dispatch(dataSubmitted(data)),
   torchButtonPressed: () => dispatch(torchButtonPressed()),

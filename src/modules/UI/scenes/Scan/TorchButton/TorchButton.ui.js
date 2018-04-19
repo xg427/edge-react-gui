@@ -1,10 +1,11 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Text, TouchableHighlight } from 'react-native'
+import { Text, TouchableHighlight, View } from 'react-native'
+import Ionicon from 'react-native-vector-icons/FontAwesome'
 
 import s from '../../../../../locales/strings.js'
-import { Icon } from '../../../components/Icon/Icon.ui.js'
+// import { Icon } from '../../../components/Icon/Icon.ui.js'
 
 export type Props = {
   onPress: () => void
@@ -14,10 +15,10 @@ export class TorchButton extends Component {
     const TORCH_TEXT = s.strings.fragment_send_flash
     const { onPress } = this.props
     return (
-      <TouchableHighlight style={styles.bottomButton} onPress={onPress} underlayColor={rawStyles.underlay.color}>
-        <View style={styles.bottomButtonTextWrap}>
-          <Ionicon style={[styles.flashIcon]} name="ios-flash-outline" size={24} />
-          <T style={[styles.flashButtonText, styles.bottomButtonText]}>{TORCH_TEXT}</T>
+      <TouchableHighlight onPress={onPress}>
+        <View>
+          <Ionicon name="ios-flash-outline" size={24} />
+          <Text>{TORCH_TEXT}</Text>
         </View>
       </TouchableHighlight>
     )
