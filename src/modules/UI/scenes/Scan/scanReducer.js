@@ -2,8 +2,10 @@
 
 import { combineReducers } from 'redux'
 
-import { addressModal, legacyAddressModal, camera } from './reducers'
-// import { invalidUriModal } from './reducers/invalidUriModal.js'
+import { AddressModalReducer as addressModal } from './AddressModal/AddressModalReducer.js'
+import { LegacyAddressReducer as legacyAddressModal } from './LegacyAddress/LegacyAddressReducer.js'
+import { CameraReducer as camera } from './Camera/CameraReducer.js'
+// import { InvalidUriModalReducer as invalidUriModal } from './InvalidUriModal/InvalidUriModalReducer.js'
 
 export const scan = combineReducers({
   addressModal,

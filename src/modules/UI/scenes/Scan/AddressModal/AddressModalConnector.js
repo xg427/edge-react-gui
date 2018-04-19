@@ -2,14 +2,14 @@
 
 import { connect } from 'react-redux'
 
-import type { Dispatch, State } from '../../../../../ReduxTypes'
+import type { Dispatch, State } from '../../../../ReduxTypes'
 import {
   addressModalInputChanged,
   addressModalBackdropPressed,
   addressModalBackButtonPressed,
   addressModalPasteButtonPressed,
   addressModalHidden
-} from '../../scanActions.js'
+} from '../scanActions.js'
 import { AddressModal } from './AddressModal.ui.js'
 
 const mapStateToProps = (state: State) => ({

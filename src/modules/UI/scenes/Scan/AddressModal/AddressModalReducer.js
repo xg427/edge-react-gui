@@ -1,7 +1,7 @@
 // @flow
 
 import type { Action } from '../../../../ReduxTypes.js'
-import { ADDRESS_MODAL_ACTIVATED, ADDRESS_MODAL_DEACTIVATED, ADDRESS_MODAL_HIDDEN, ADDRESS_MODAL_INPUT_CHANGED } from '../scanActions.js'
+import { ADDRESS_MODAL_TOGGLED, ADDRESS_MODAL_ACTIVATED, ADDRESS_MODAL_DEACTIVATED, ADDRESS_MODAL_HIDDEN, ADDRESS_MODAL_INPUT_CHANGED } from '../scanActions.js'
 
 export const initialState = {
   isActive: false,
