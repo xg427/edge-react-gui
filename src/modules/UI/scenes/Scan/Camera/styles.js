@@ -21,10 +21,22 @@ export const rawStyles = {
     color: THEME.COLORS.WHITE,
     fontSize: 14
   },
+  denied: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  deniedText: {},
+  pending: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   debug: {
     borderWidth: 1,
     borderColor: 'red'
   }
 }
 
-export default StyleSheet.create(rawStyles)
+export const styles = StyleSheet.create(rawStyles)
+export default styles
