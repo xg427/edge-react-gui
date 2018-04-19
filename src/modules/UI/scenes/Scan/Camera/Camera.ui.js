@@ -10,8 +10,8 @@ class Overlay extends Component {
   render () {
     const HEADER_TEXT = s.strings.send_scan_header_text
     return (
-      <View style={{}}>
-        <Text style={{}}>{HEADER_TEXT}</Text>
+      <View style={{flex: 1}}>
+        <Text style={{flex: 1}}>{HEADER_TEXT}</Text>
       </View>
     )
   }
@@ -21,8 +21,8 @@ const DENIED_PERMISSION_TEXT = s.strings.camera_permission_denied
 class NotAuthorized extends Component {
   render () {
     return (
-      <View style={{}}>
-        <Text>{DENIED_PERMISSION_TEXT}</Text>
+      <View style={{flex: 1}}>
+        <Text style={{flex: 1}}>{DENIED_PERMISSION_TEXT}</Text>
       </View>
     )
   }
@@ -31,8 +31,8 @@ class NotAuthorized extends Component {
 class Pending extends Component {
   render () {
     return (
-      <View style={{}}>
-        <ActivityIndicator size='large' style={{}} />
+      <View style={{flex: 1}}>
+        <ActivityIndicator size='large' style={{flex: 1}} />
       </View>
     )
   }
@@ -56,6 +56,7 @@ export class Camera extends Component<Props, State> {
     if (cameraIsAuthorized) {
       return (
         <RNCamera
+          style={{borderColor: 'red', borderWidth: 1, flex: 1}}
           ref={ref => {
             this.camera = ref
           }}

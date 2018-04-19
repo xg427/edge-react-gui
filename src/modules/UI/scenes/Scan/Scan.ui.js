@@ -53,11 +53,10 @@ export class Scan extends Component<Props> {
   render () {
     const { dataSubmitted } = this.props
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         <Gradient style={styles.gradient} />
-        <View style={{}} />
 
-        <Body>
+        <Body style={{flex: 1}}>
           <Camera onBarCodeRead={dataSubmitted} />
         </Body>
 
