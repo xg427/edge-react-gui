@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import type { Node } from 'react-native'
 
 import ABAlert from '../../components/ABAlert/indexABAlert'
@@ -11,10 +11,11 @@ import { AddressModalConnector as AddressModal } from './AddressModal/AddressMod
 import Camera from './Camera/CameraConnector.js'
 import { TorchButton } from './TorchButton/TorchButton.ui.js'
 import { ManualInputButton } from './ManualInputButton/ManualInputButton.ui.js'
+import { Button } from './components/Button/Button.ui.js'
 import WalletListModal from '../../components/WalletListModal/WalletListModalConnector.js'
 import * as Constants from '../../../../constants/indexConstants.js'
 import Gradient from '../../components/Gradient/Gradient.ui.js'
-import styles from './styles.js'
+import { styles, rawStyles } from './styles.js'
 
 type BodyProps = {
   children: Node,
@@ -23,7 +24,7 @@ type BodyProps = {
 export class Body extends Component<BodyProps> {
   render () {
     return (
-      <View style={{}}>
+      <View style={[styles.body, this.props.styles]}>
         {this.props.children}
       </View>
     )
@@ -37,7 +38,21 @@ type FooterProps = {
 export class Footer extends Component<FooterProps> {
   render () {
     return (
-      <View style={{}}>
+      <View style={[styles.footer, this.props.styles]}>
+        {this.props.children}
+      </View>
+    )
+  }
+}
+
+type ItemProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+export class Item extends Component<ItemProps> {
+  render () {
+    return (
+      <View style={[styles.item, this.props.styles]}>
         {this.props.children}
       </View>
     )
@@ -53,16 +68,30 @@ export class Scan extends Component<Props> {
   render () {
     const { dataSubmitted } = this.props
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView>
         <Gradient style={styles.gradient} />
 
-        <Body style={{flex: 1}}>
+        <Body>
           <Camera onBarCodeRead={dataSubmitted} />
         </Body>
 
         <Footer>
-          <ManualInputButton />
-          <TorchButton />
+          <Item>
+            <Button>
+              <Button.Text>
+                <Text>Address</Text>
+              </Button.Text>
+            </Button>
+          </Item>
+
+          <Item>
+            <Button>
+              <Button.Text>
+                <Text>Address</Text>
+              </Button.Text>
+            </Button>
+          </Item>
+
         </Footer>
 
         <ABAlert />

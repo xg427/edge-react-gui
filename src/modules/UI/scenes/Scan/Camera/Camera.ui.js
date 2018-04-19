@@ -5,13 +5,14 @@ import { ActivityIndicator, Text, View } from 'react-native'
 import RNCamera from 'react-native-camera'
 
 import s from '../../../../../locales/strings.js'
+import styles from './styles.js'
 
 class Overlay extends Component {
   render () {
     const HEADER_TEXT = s.strings.send_scan_header_text
     return (
-      <View style={{flex: 1}}>
-        <Text style={{flex: 1}}>{HEADER_TEXT}</Text>
+      <View style={[styles.overlay]}>
+        <Text style={[styles.overlayText]}>{HEADER_TEXT}</Text>
       </View>
     )
   }
@@ -21,8 +22,8 @@ const DENIED_PERMISSION_TEXT = s.strings.camera_permission_denied
 class NotAuthorized extends Component {
   render () {
     return (
-      <View style={{flex: 1}}>
-        <Text style={{flex: 1}}>{DENIED_PERMISSION_TEXT}</Text>
+      <View style={[styles.notAuthorized]}>
+        <Text style={styles.notAuthorizedText}>{DENIED_PERMISSION_TEXT}</Text>
       </View>
     )
   }
@@ -31,7 +32,7 @@ class NotAuthorized extends Component {
 class Pending extends Component {
   render () {
     return (
-      <View style={{flex: 1}}>
+      <View style={[styles.pending]}>
         <ActivityIndicator size='large' style={{flex: 1}} />
       </View>
     )
@@ -56,13 +57,13 @@ export class Camera extends Component<Props, State> {
     if (cameraIsAuthorized) {
       return (
         <RNCamera
-          style={{borderColor: 'red', borderWidth: 1, flex: 1}}
+          style={[styles.camera]}
           ref={ref => {
             this.camera = ref
           }}
           barCodeTypes={[RNCamera.constants.BarCodeType.qr]}
           torchMode={torchMode}
-          onBarCodeRead={scanIsEnabled ? onBarCodeRead : () => {}}
+          onBarCodeRead={scanIsEnabled ? onBarCodeRead : null}
           notAuthorizedView={Camera.NotAuthorized}
           pendingView={Camera.Pending}
           permissionDialogTitle={s.strings.camera_permission_title}
