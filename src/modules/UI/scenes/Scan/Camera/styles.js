@@ -11,15 +11,14 @@ export const rawStyles = {
     alignItems: 'stretch'
   },
   overlay: {
-    height: 37,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: THEME.COLORS.GRAY_1,
+    flex: 1,
     opacity: 0.95
   },
-  overlayText: {
-    color: THEME.COLORS.WHITE,
-    fontSize: 14
+  banner: {
+    height: 38,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: THEME.COLORS.GRAY_1
   },
   denied: {
     flex: 1,

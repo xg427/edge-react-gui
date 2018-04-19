@@ -66,14 +66,30 @@ type Props = {
 }
 export class Scan extends Component<Props> {
   render () {
-    const { dataSubmitted, torchButtonPressed, addressButtonPressed } = this.props
+    const { dataSubmitted, torchButtonPressed, addressButtonPressed, cameraPermission } = this.props
     return (
       <SafeAreaView>
         <Gradient style={styles.gradient} />
 
         <Body>
-          <Camera onBarCodeRead={dataSubmitted}>
-            <Camera.Overlay />
+          <Camera permission={cameraPermission} onBarCodeRead={dataSubmitted}>
+            <Camera.Authorized>
+              <Camera.Overlay>
+                <Camera.Banner>
+                  <Camera.Banner.Text>
+                    <Text>{s.strings.send_scan_header_text}</Text>
+                  </Camera.Banner.Text>
+                </Camera.Banner>
+              </Camera.Overlay>
+            </Camera.Authorized>
+
+            <Camera.Pending>
+
+            </Camera.Pending>
+
+            <Camera.Denied>
+
+            </Camera.Denied>
           </Camera>
         </Body>
 

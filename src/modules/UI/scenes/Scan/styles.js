@@ -21,6 +21,10 @@ export const rawStyles = {
     paddingHorizontal: 8,
     backgroundColor: THEME.COLORS.SECONDARY
   },
+  bannerText: {
+    color: THEME.COLORS.WHITE,
+    fontSize: 14
+  },
   item: {
     flex: 1,
     paddingHorizontal: 4

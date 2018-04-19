@@ -1,83 +1,128 @@
 // @flow
 
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text as RNText, View } from 'react-native'
 import type { Node } from 'react-native'
 import RNCamera from 'react-native-camera'
 
 import { AUTHORIZED, DENIED, RESTRICTED, UNDETERMINED } from '../../../permissions.js'
-import s from '../../../../../locales/strings.js'
 import { styles } from './styles.js'
 
-class Overlay extends Component {
+type BodyProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+export class Body extends Component<BodyProps> {
   render () {
-    const HEADER_TEXT = s.strings.send_scan_header_text
+    return <View style={[styles.body, this.props.style]}>{this.props.children}</View>
+  }
+}
+
+export type PreviewProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class Preview extends Component<PreviewProps> {
+  render () {
+    const { torchMode, onBarCodeRead } = this.props
     return (
-      <View style={[styles.overlay]}>
-        <Text style={[styles.overlayText]}>{HEADER_TEXT}</Text>
-      </View>
+      <RNCamera
+        style={[styles.preview, this.props.style]}
+        ref={ref => {
+          this.camera = ref
+        }}
+        barCodeTypes={[RNCamera.constants.BarCodeType.qr]}
+        torchMode={torchMode}
+        onBarCodeRead={onBarCodeRead}
+      >
+        {this.props.children}
+      </RNCamera>
     )
   }
 }
 
-class Denied extends Component {
+export type OverlayProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class Overlay extends Component<OverlayProps> {
   render () {
-    const DENIED_TEXT = 'Camera permission denied' // s.strings.camera_permission_denied
-    return (
-      <View style={[styles.denied, this.props.style]}>
-        <Text style={[styles.deniedText, this.props.textStyle]}>{DENIED_TEXT}</Text>
-      </View>
-    )
+    return <View style={[styles.overlay, this.props.style]}>{this.props.children}</View>
   }
 }
 
-class Pending extends Component {
+export type TextProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class Text extends Component<TextProps> {
   render () {
-    return (
-      <View style={[styles.pending, this.props.style]}>
-        <ActivityIndicator size="large" style={{ flex: 1 }} />
-      </View>
-    )
+    return <RNText style={[styles.banner, this.props.style]}>{this.props.children}</RNText>
+  }
+}
+
+export type BannerProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class Banner extends Component<BannerProps> {
+  Text = Text
+
+  render () {
+    return <Text style={[styles.banner, this.props.style]}>{this.props.children}</Text>
+  }
+}
+
+export type DeniedProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class Denied extends Component<DeniedProps> {
+  render () {
+    const DENIED_TEXT = s.strings.camera_permission_denied
+    return <Text style={[styles.denied, this.props.style]}>{DENIED_TEXT}</Text>
+  }
+}
+
+export type PendingProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class Pending extends Component<PendingProps> {
+  render () {
+    return <ActivityIndicator size="large" style={[styles.pending, this.props.style]} />
   }
 }
 
 export type Props = {
   children: Node,
   style?: StyleSheet.Styles,
-  cameraIsAuthorized: boolean,
+  cameraPermission: typeof AUTHORIZED | typeof RESTRICTED | typeof DENIED | typeof UNDETERMINED,
   scanIsEnabled: boolean,
   torchIsEnabled: boolean,
   onBarCodeRead: (input: string) => void
 }
-export type State = {}
-export class Camera extends Component<Props, State> {
+export class Camera extends Component<Props> {
+  static Body = Body
   static Pending = Pending
   static Denied = Denied
   static Overlay = Overlay
+  static Preview = Preview
+  static Banner = Banner
 
   render () {
     const { scanIsEnabled, cameraPermission, torchIsEnabled, onBarCodeRead } = this.props
     const torchMode = torchIsEnabled ? RNCamera.constants.TorchMode.on : RNCamera.constants.TorchMode.off
-    if (cameraPermission === AUTHORIZED) {
-      return (
-        <RNCamera
-          style={[styles.camera, this.props.style]}
-          ref={ref => {
-            this.camera = ref
-          }}
-          barCodeTypes={[RNCamera.constants.BarCodeType.qr]}
-          torchMode={torchMode}
-          onBarCodeRead={scanIsEnabled ? onBarCodeRead : null}
-          permissionDialogTitle={s.strings.camera_permission_title}
-          permissionDialogMessage={s.strings.camera_permission_message}
-        >
-          {this.props.children}
-        </RNCamera>
-      )
-    } else if (cameraPermission === DENIED || cameraPermission === RESTRICTED) {
-      return <Camera.Denied />
-    } else if (cameraPermission === UNDETERMINED) {
-      return <Camera.Pending />
-    }
+    return (
+      <Camera.Body>
+        {cameraPermission === AUTHORIZED ? (
+          <Camera.Preview torchMode={torchMode} onBarCodeRead={scanIsEnabled ? onBarCodeRead : null} />
+        ) : cameraPermission === DENIED ? (
+          <Camera.Denied />
+        ) : cameraPermission === UNDETERMINED ? (
+          <Camera.Pending />
+        ) : null}
+      </Camera.Body>
+    )
   }
 }

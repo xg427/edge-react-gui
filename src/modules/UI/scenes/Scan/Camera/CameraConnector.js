@@ -3,7 +3,7 @@
 import { connect } from 'react-redux'
 
 import { Camera } from './Camera.ui'
-import type { Dispatch, State } from '../../../ReduxTypes'
+import type { Dispatch, State } from '../../../../ReduxTypes'
 import { getCameraPermission } from '../../../../../reducers/permissions/selectors'
 
 const mapStateToProps = (state: State) => ({
