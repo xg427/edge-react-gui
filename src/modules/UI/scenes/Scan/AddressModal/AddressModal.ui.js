@@ -27,16 +27,17 @@ export type State = {
 }
 export class AddressModal extends Component<Props, State> {
   render () {
+    const {input, inputChanged, confirmButtonPressed} = this.props
     const icon = <FAIcon name={Constants.ADDRESS_BOOK_O} size={24} color={colors.primary} style={styles.icon} />
 
     const copyMessage = this.props.input ? sprintf(s.strings.string_paste_address, this.props.input) : null
     const middle = (
       <AddressInput
         copyMessage={copyMessage}
-        onChangeText={this.props.addressModalInputChanged}
-        onSubmit={this.props.confirmButtonPressed}
+        onChangeText={inputChanged}
+        onSubmit={confirmButtonPressed}
         onPaste={this.pasteButtonPressed}
-        input={this.props.input}
+        input={input}
       />
     )
 

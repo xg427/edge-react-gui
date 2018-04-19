@@ -1,7 +1,7 @@
 // @flow
 
 import type { Action } from '../../../../ReduxTypes.js'
-import { ADDRESS_MODAL_TOGGLED, ADDRESS_MODAL_ACTIVATED, ADDRESS_MODAL_DEACTIVATED, ADDRESS_MODAL_HIDDEN, ADDRESS_MODAL_INPUT_CHANGED } from '../scanActions.js'
+import { TOGGLED, ACTIVATED, DEACTIVATED, HIDDEN, INPUT_CHANGED } from './AddressModalActions.js'
 
 export const initialState = {
   isActive: false,
@@ -14,28 +14,29 @@ export type AddressModalState = {
 export const addressModal = (state: AddressModalState = initialState, action: Action) => {
   if (!action.data) return state
   switch (action.type) {
-    case ADDRESS_MODAL_TOGGLED:
+    case TOGGLED:
       return {
         ...state,
         isActive: !state.isActive
       }
-    case ADDRESS_MODAL_ACTIVATED:
+    case ACTIVATED:
       return {
         ...state,
-        isActive: true
+        isActive: true,
+        input: action.data.input
       }
-    case ADDRESS_MODAL_DEACTIVATED:
+    case DEACTIVATED:
       return {
         ...state,
         isActive: false
       }
-    case ADDRESS_MODAL_INPUT_CHANGED: {
+    case INPUT_CHANGED: {
       return {
         ...state,
         input: action.data.input
       }
     }
-    case ADDRESS_MODAL_HIDDEN: {
+    case HIDDEN: {
       return initialState
     }
     default:

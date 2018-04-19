@@ -11,16 +11,22 @@ export const rawStyles = {
     alignItems: 'center',
     backgroundColor: `${THEME.COLORS.WHITE}${THEME.ALPHA.LOW}`,
     borderRadius: 3,
-    height: 50
+    paddingTop: 4
   },
   text: {
     color: THEME.COLORS.WHITE,
     fontSize: 14,
     backgroundColor: THEME.COLORS.TRANSPARENT,
-    fontFamily: THEME.FONTS.DEFAULT
+    fontFamily: THEME.FONTS.DEFAULT,
+    alignSelf: 'center',
+    alignItems: 'center'
   },
   underlay: {
     color: THEME.COLORS.SECONDARY
+  },
+  debug: {
+    borderWidth: 1,
+    borderColor: 'red'
   }
 }
 

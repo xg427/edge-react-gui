@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from 'react'
-import { ActivityIndicator, Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import type { Node } from 'react-native'
 import RNCamera from 'react-native-camera'
 
 import s from '../../../../../locales/strings.js'
@@ -40,6 +41,8 @@ class Pending extends Component {
 }
 
 export type Props = {
+  children: Node,
+  style?: StyleSheet.Styles,
   cameraIsAuthorized: boolean,
   scanIsEnabled: boolean,
   torchIsEnabled: boolean,
@@ -57,7 +60,7 @@ export class Camera extends Component<Props, State> {
     if (cameraIsAuthorized) {
       return (
         <RNCamera
-          style={[styles.camera]}
+          style={[styles.camera, this.props.style]}
           ref={ref => {
             this.camera = ref
           }}
@@ -69,7 +72,7 @@ export class Camera extends Component<Props, State> {
           permissionDialogTitle={s.strings.camera_permission_title}
           permissionDialogMessage={s.strings.camera_permission_message}
         >
-          <Camera.Overlay />
+          {this.props.children}
         </RNCamera>
       )
     }

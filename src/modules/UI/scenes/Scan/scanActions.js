@@ -9,6 +9,8 @@ import * as WALLET_API from '../../../Core/Wallets/api.js'
 import * as UTILS from '../../../utils.js'
 import { loginWithEdge } from '../../../../actions/EdgeLoginActions.js'
 import { updateParsedURI } from '../../scenes/SendConfirmation/action.js'
+import { qrCodeScanned, torchToggled } from './Camera/CameraActions.js'
+import { activated as addressModalActivated } from './AddressModal/AddressModalActions.js'
 
 export const PREFIX = 'SCAN/'
 
@@ -21,64 +23,6 @@ export const sceneEntered = () => ({
 export const SCENE_EXITED = PREFIX + 'SCENE_EXITED'
 export const sceneExited = () => ({
   type: SCENE_EXITED
-})
-
-// ADDRESS_MODAL ////////////////////////////////////////////////////////////////
-export const ADDRESS_MODAL_ACTIVATED = PREFIX + 'ADDRESS_MODAL_ACTIVATED'
-export const addressModalActivated = (input: string) => ({
-  type: ADDRESS_MODAL_ACTIVATED,
-  data: { input }
-})
-
-export const ADDRESS_MODAL_DEACTIVATED = PREFIX + 'ADDRESS_MODAL_DEACTIVATED'
-export const addressModalDeactivated = () => ({
-  type: ADDRESS_MODAL_DEACTIVATED
-})
-
-export const ADDRESS_MODAL_TOGGLED = PREFIX + 'ADDRESS_MODAL_TOGGLED'
-export const addressModalToggled = () => ({
-  type: ADDRESS_MODAL_TOGGLED
-})
-
-export const ADDRESS_MODAL_DEPLOYED = PREFIX + 'ADDRESS_MODAL_DEPLOYED'
-export const addressModalDeployed = () => ({
-  type: ADDRESS_MODAL_DEPLOYED
-})
-
-export const ADDRESS_MODAL_HIDDEN = PREFIX + 'ADDRESS_MODAL_HIDDEN'
-export const addressModalHidden = () => ({
-  type: ADDRESS_MODAL_HIDDEN
-})
-
-export const ADDRESS_MODAL_BACKDROP_PRESSED = PREFIX + 'ADDRESS_MODAL_BACKDROP_PRESSED'
-export const addressModalBackdropPressed = () => ({
-  type: ADDRESS_MODAL_BACKDROP_PRESSED
-})
-
-export const ADDRESS_MODAL_BACK_BUTTON_PRESSED = PREFIX + 'ADDRESS_MODAL_BACK_BUTTON_PRESSED'
-export const addressModalBackButtonPressed = () => ({
-  type: ADDRESS_MODAL_BACK_BUTTON_PRESSED
-})
-
-export const ADDRESS_MODAL_CONFIRM_BUTTON_PRESSED = PREFIX + 'ADDRESS_MODAL_CONFIRM_BUTTON_PRESSED'
-export const addressModalConfirmButtonPressed = () => ({
-  type: ADDRESS_MODAL_CONFIRM_BUTTON_PRESSED
-})
-
-export const ADDRESS_MODAL_CANCEL_BUTTON_PRESSED = PREFIX + 'ADDRESS_MODAL_CANCEL_BUTTON_PRESSED'
-export const legacyAddressCancelButtonPressed = () => ({
-  type: ADDRESS_MODAL_CANCEL_BUTTON_PRESSED
-})
-
-export const ADDRESS_MODAL_PASTE_BUTTON_PRESSED = PREFIX + 'ADDRESS_MODAL_PASTE_BUTTON_PRESSED'
-export const addressModalPasteButtonPressed = () => ({
-  type: ADDRESS_MODAL_PASTE_BUTTON_PRESSED
-})
-
-export const ADDRESS_MODAL_INPUT_CHANGED = PREFIX + 'ADDRESS_MODAL_INPUT_CHANGED'
-export const addressModalInputChanged = (input: string) => ({
-  type: ADDRESS_MODAL_INPUT_CHANGED,
-  data: { input }
 })
 
 // LEGACY_ADDRESS_MODAL ////////////////////////////////////////////////////////////////
@@ -168,43 +112,6 @@ export const invalidUriModalExpired = () => ({
   type: INVALID_URI_MODAL_EXPIRED
 })
 
-// CAMERA ////////////////////////////////////////////////////////////////
-export const CAMERA_SCAN_ENABLED = PREFIX + 'CAMERA_SCAN_ENABLED'
-export const cameraScanDisabled = () => ({
-  type: CAMERA_SCAN_ENABLED
-})
-
-export const CAMERA_SCAN_DISABLED = PREFIX + 'CAMERA_SCAN_DISABLED'
-export const cameraScanEnabled = () => ({
-  type: CAMERA_SCAN_DISABLED
-})
-
-export const CAMERA_SCAN_TOGGLED = PREFIX + 'CAMERA_SCAN_TOGGLED'
-export const cameraScanToggled = () => ({
-  type: CAMERA_SCAN_TOGGLED
-})
-
-export const CAMERA_TORCH_ENABLED = PREFIX + 'CAMERA_TORCH_ENABLED'
-export const cameraTorchEnabled = () => ({
-  type: CAMERA_TORCH_ENABLED
-})
-
-export const CAMERA_TORCH_DISABLED = PREFIX + 'CAMERA_TORCH_DISABLED'
-export const cameraTorchDisabled = () => ({
-  type: CAMERA_TORCH_DISABLED
-})
-
-export const CAMERA_TORCH_TOGGLED = PREFIX + 'CAMERA_TORCH_TOGGLED'
-export const cameraTorchToggled = () => ({
-  type: CAMERA_TORCH_TOGGLED
-})
-
-export const CAMERA_QR_CODE_SCANNED = PREFIX + 'CAMERA_QR_CODE_SCANNED'
-export const cameraQrCodeScanned = (data: string) => ({
-  type: CAMERA_QR_CODE_SCANNED,
-  data: { data }
-})
-
 // PARSE ////////////////////////////////////////////////////////////////
 export const PARSE_URI_SUCCEEDED = PREFIX + 'PARSE_URI_SUCCEEDED'
 export const parseUriSuceeded = (parsedUri: EdgeParsedUri) => ({
@@ -251,7 +158,7 @@ export const dataSubmitted = (data: string) => (dispatch: Dispatch, getState: Ge
   const state = getState()
   if (!state.ui.scenes.scan.scanEnabled) return
 
-  dispatch(cameraQrCodeScanned(data))
+  dispatch(qrCodeScanned(data))
 
   // EDGE LOGIN ///////////////////////////////////////////////////////////
   if (UTILS.isEdgeLogin(data)) {
@@ -306,14 +213,15 @@ export const dataSubmitted = (data: string) => (dispatch: Dispatch, getState: Ge
 
 // ADDRESS_BUTTON ///////////////////////////////////////////////////////
 export const addressButtonPressed = () => (dispatch: Dispatch) => {
-  return Promise.resolve()
-    .then(() => Clipboard.getText())
-    .then(input => {
-      return dispatch(addressModalActivated(input))
-    })
+  return dispatch(addressModalActivated(''))
+  // return Promise.resolve()
+  //   .then(() => Clipboard.getText())
+  //   .then(input => {
+  //     return dispatch(activated as addressModalActivated(input))
+  //   })
 }
 
 // TORCH_BUTTON ///////////////////////////////////////////////////////
 export const torchButtonPressed = () => (dispatch: Dispatch) => {
-  return dispatch(cameraTorchToggled())
+  return dispatch(torchToggled())
 }

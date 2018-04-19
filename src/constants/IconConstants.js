@@ -25,6 +25,7 @@ export const ION_ICONS = 'ionIcons'
 export const CLOSE_ICON = 'close'
 export const UNLOCKED_ICON = 'ios-unlock-outline'
 export const LOCKED_ICON = 'ios-lock-outline'
+export const FLASH = 'ios-flash-outline'
 
 // Material
 export const MATERIAL_ICONS = 'material'

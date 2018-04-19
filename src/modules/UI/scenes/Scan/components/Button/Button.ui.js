@@ -24,15 +24,14 @@ export type Props = {
   children: Node,
   style?: Object
 }
-export class Button extends Component {
+export class Button extends Component<Props> {
   static Text = Text
   render () {
-    const { onPress } = this.props
     return (
       <TouchableHighlight
-        underlayColor={rawStyles.underlayColor}
+        underlayColor={rawStyles.underlay.color}
         {...this.props}
-        style={[styles.button, this.props.styles]}>
+        style={[styles.button, this.props.style]}>
         <View>
           {this.props.children}
         </View>
