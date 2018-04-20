@@ -11,13 +11,13 @@ import {
   backdropPressed,
   hidden
 } from './LegacyAddressModalActions.js'
-import { LegacyAddressModalComponent } from './LegacyAddressModal.ui.js'
+import { LegacyAddressModal } from './LegacyAddressModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
   isActive: state.ui.scenes.scan.legacyAddressModal.isActive,
   currencyName: state.ui.scenes.scan.legacyAddressModal.currencyName
 })
-export const mapDispatchToProps = (dispatch: Dispatch, ownProps: { confirm: () => void }) => ({
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
   continueButtonPressed: () => {
     dispatch(continueButtonPressed())
   },
@@ -30,10 +30,10 @@ export const mapDispatchToProps = (dispatch: Dispatch, ownProps: { confirm: () =
   backdropPressed: () => {
     dispatch(backdropPressed())
   },
-  reset: () => {
+  hidden: () => {
     dispatch(hidden())
   }
 })
 
-export const LegacyAddressModalConnector = connect(mapStateToProps, mapDispatchToProps)(LegacyAddressModalComponent)
+export const LegacyAddressModalConnector = connect(mapStateToProps, mapDispatchToProps)(LegacyAddressModal)
 export default LegacyAddressModalConnector

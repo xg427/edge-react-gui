@@ -49,7 +49,7 @@ export default class StylizedModal extends Component<Props, State> {
     const { headerText, headerSubtext } = this.props
 
     return (
-      <Modal style={[styles.topLevelModal, this.props.style]} isVisible={this.props.visibilityBoolean}>
+      <Modal {...this.props} style={[styles.topLevelModal, this.props.style]} isVisible={this.props.visibilityBoolean}>
         <View style={[styles.modalHeaderIconWrapBottom, this.props.modalHeaderIcon]}>{this.props.featuredIcon}</View>
 
         <View style={[styles.visibleModal, this.props.modalVisibleStyle]}>

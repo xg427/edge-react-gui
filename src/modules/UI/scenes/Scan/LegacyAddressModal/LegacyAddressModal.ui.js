@@ -16,27 +16,32 @@ type Props = {
   cancelButtonPressed: () => void,
   backButtonPressed: () => void,
   backdropPressed: () => void,
-  reset: () => void
+  hidden: () => void
 }
-export class LegacyAddressModalComponent extends Component<Props> {
+export class LegacyAddressModal extends Component<Props> {
   static defaultProps = {
     isActive: false,
     currencyName: 'Currency Name',
     continueButtonPressed: () => {},
     cancelButtonPressed: () => {},
     backButtonPressed: () => {},
-    backdropPressed: () => {}
+    backdropPressed: () => {},
+    hidden: () => {}
   }
 
   render () {
-    const { isActive, currencyName } = this.props
+    const { isActive, currencyName, continueButtonPressed, cancelButtonPressed, backdropPressed, backButtonPressed, hidden } = this.props
     const WARNING = sprintf(s.strings.legacy_address_modal_warning, currencyName || 'your intended currency')
     const TITLE = s.strings.legacy_address_modal_title
-    const CONFIRM = s.strings.legacy_address_modal_continue
+    const CONTINUE = s.strings.legacy_address_modal_continue
     const CANCEL = s.strings.legacy_address_modal_cancel
 
     return (
-      <InteractiveModal isActive={isActive} onBackButtonPress={this.backButtonPressed} onBackdropPress={this.backdropPressed} onModalHide={this.onModalHide}>
+      <InteractiveModal
+        isActive={isActive}
+        onBackButtonPress={backButtonPressed}
+        onBackdropPress={backdropPressed}
+        onModalHide={hidden}>
         <InteractiveModal.Icon>
           <Icon style={{}} type={'ionIcons'} name={'ios-alert-outline'} size={30} />
         </InteractiveModal.Icon>
@@ -51,13 +56,13 @@ export class LegacyAddressModalComponent extends Component<Props> {
 
         <InteractiveModal.Footer>
           <InteractiveModal.Item>
-            <PrimaryButton onPress={this.continueButtonPressed}>
-              <PrimaryButton.Text>{CONFIRM}</PrimaryButton.Text>
+            <PrimaryButton onPress={continueButtonPressed}>
+              <PrimaryButton.Text>{CONTINUE}</PrimaryButton.Text>
             </PrimaryButton>
           </InteractiveModal.Item>
 
           <InteractiveModal.Item>
-            <SecondaryButton onPress={this.cancelButtonPressed}>
+            <SecondaryButton onPress={cancelButtonPressed}>
               <SecondaryButton.Text>{CANCEL}</SecondaryButton.Text>
             </SecondaryButton>
           </InteractiveModal.Item>
@@ -65,26 +70,6 @@ export class LegacyAddressModalComponent extends Component<Props> {
       </InteractiveModal>
     )
   }
-
-  continueButtonPressed = () => {
-    this.props.continueButtonPressed()
-  }
-
-  cancelButtonPressed = () => {
-    this.props.cancelButtonPressed()
-  }
-
-  backButtonPressed = () => {
-    this.props.backButtonPressed()
-  }
-
-  backdropPressed = () => {
-    this.props.backdropPressed()
-  }
-
-  onModalHide = () => {
-    this.props.reset()
-  }
 }
 
-export default LegacyAddressModalComponent
+export default LegacyAddressModal

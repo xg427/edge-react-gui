@@ -6,7 +6,7 @@ import { ActivityIndicator, Text } from 'react-native'
 import ABAlert from '../../components/ABAlert/indexABAlert'
 import SafeAreaView from '../../components/SafeAreaView'
 import { AddressModalConnector as AddressModal } from './AddressModal/AddressModalConnector.js'
-// import { LegacyAddressModalConnector as LegacyAddressModal } from './LegacyAddressModal/LegacyAddressModalConnector.js'
+import { LegacyAddressModalConnector as LegacyAddressModal } from './LegacyAddressModal/LegacyAddressModalConnector.js'
 import { Camera } from './Camera/Camera.ui.js'
 import { Body } from './components/Body.ui.js'
 import { Button } from './components/Button.ui.js'
@@ -85,7 +85,7 @@ export class Scan extends Component<Props> {
 
         <ABAlert />
         <AddressModal onExitButtonFxn={() => {}} />
-        {/* <LegacyAddressModal /> */}
+        <LegacyAddressModal />
         {/* <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} /> */}
       </SafeAreaView>
     )
