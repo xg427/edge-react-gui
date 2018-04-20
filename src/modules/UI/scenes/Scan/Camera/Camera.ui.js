@@ -147,7 +147,11 @@ export class Camera extends Component<Props> {
 
     return (
       <Camera.Body>
-        {permission === AUTHORIZED ? Authorized : permission === DENIED ? Denied : permission === UNDETERMINED ? Pending : null}
+        {
+          permission === AUTHORIZED ? Authorized
+            : permission === DENIED || permission === RESTRICTED ? Denied
+            : permission === UNDETERMINED ? Pending
+            : null}
       </Camera.Body>
     )
   }
