@@ -22,6 +22,20 @@ export class Body extends Component<BodyProps> {
   }
 }
 
+type ItemProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+export class Item extends Component<ItemProps> {
+  render () {
+    return (
+      <View {...this.props} style={[styles.item, this.props.style]}>
+        {this.props.children}
+      </View>
+    )
+  }
+}
+
 export type PreviewProps = {
   children: Node,
   scanIsEnabled: boolean,
@@ -104,11 +118,24 @@ class Authorized extends Component<AuthorizedProps> {
   }
 }
 
+export type DeniedTextProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+class DeniedText extends Component<DeniedTextProps> {
+  render () {
+    return <RNText {...this.props} style={[styles.deniedText, this.props.style]}>
+      {this.props.children}
+    </RNText>
+  }
+}
+
 export type DeniedProps = {
   children: Node,
   style?: StyleSheet.Styles
 }
 class Denied extends Component<DeniedProps> {
+  static Text = DeniedText
   render () {
     return <Camera.Body>{this.props.children}</Camera.Body>
   }
@@ -137,6 +164,7 @@ export class Camera extends Component<Props> {
   static Preview = Preview
   static Overlay = Overlay
   static Banner = Banner
+  static Item = Item
 
   render () {
     const { permission } = this.props
@@ -147,11 +175,7 @@ export class Camera extends Component<Props> {
 
     return (
       <Camera.Body>
-        {
-          permission === AUTHORIZED ? Authorized
-            : permission === DENIED || permission === RESTRICTED ? Denied
-            : permission === UNDETERMINED ? Pending
-            : null}
+        {permission === AUTHORIZED ? Authorized : permission === DENIED || permission === RESTRICTED ? Denied : permission === UNDETERMINED ? Pending : null}
       </Camera.Body>
     )
   }

@@ -11,7 +11,9 @@ export const rawStyles = {
     alignItems: 'stretch'
   },
   body: {
-    flex: 1
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   overlay: {
     flex: 1
@@ -36,7 +38,14 @@ export const rawStyles = {
     alignItems: 'center',
     justifyContent: 'center'
   },
-  deniedText: {},
+  deniedText: {
+    fontSize: 24,
+    color: THEME.COLORS.GRAY_1,
+    fontFamily: THEME.FONTS.DEFAULT
+  },
+  item: {
+    padding: 10
+  },
   pending: {
     flex: 1,
     alignItems: 'center',

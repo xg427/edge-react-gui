@@ -54,7 +54,12 @@ export class Scan extends Component<Props> {
             </Camera.Pending>
 
             <Camera.Denied>
-              <Text>{'DENIED'}</Text>
+              <Camera.Item>
+                <Camera.Denied.Text>{s.strings.camera_permission_denied_title}</Camera.Denied.Text>
+              </Camera.Item>
+              <Camera.Item>
+                <Camera.Denied.Text>{s.strings.camera_permission_denied_body}</Camera.Denied.Text>
+              </Camera.Item>
             </Camera.Denied>
           </Camera>
         </Body>

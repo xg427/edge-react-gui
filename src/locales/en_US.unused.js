@@ -481,8 +481,7 @@ const strings = {
   password_set_skip: 'Skip',
   password_set_title: 'No password set',
   permission_camera_permission_denied_not_be_asked: 'Camera permission denied. You will not be asked again',
-  permission_camera_permission_denied:
-    "Camera permission denied. You will not be able to scan QR codes. Please re-enable access in your phone\\'s Settings -> Applications",
+
   permission_contacts_permission_denied_not_be_asked: 'Contacts permission denied. You will not be asked again',
   permission_contacts_permission_denied: "Contacts permission denied. Please re-enable access in your phone\\'s Settings -> Apps",
   permission_location_permission_denied_not_be_asked: 'Location permission denied. You will not be asked again',

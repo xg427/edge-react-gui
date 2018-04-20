@@ -255,7 +255,8 @@ const strings = {
   legacy_address_modal_continue: 'Continue',
   legacy_address_modal_cancel: 'Cancel',
 
-  camera_permission_denied: 'Camera permission denied'
+  camera_permission_denied_title: 'Camera permission denied',
+  camera_permission_denied_body: "You will not be able to scan QR codes. Please re-enable access in your phone's Settings -> Applications"
 }
 
 export default strings
