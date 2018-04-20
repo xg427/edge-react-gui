@@ -8,7 +8,9 @@ import { addressButtonPressed, torchButtonPressed, dataSubmitted } from './scanA
 
 const mapStateToProps = (state: State) => ({
   selectWalletListIsActive: state.ui.scenes.scan.scanToWalletListModalVisibility,
-  cameraPermssion: state.permissions.camera
+  cameraPermission: state.permissions.camera,
+  scanIsEnabled: state.ui.scenes.scan.camera.scan.isEnabled,
+  torchIsEnabled: state.ui.scenes.scan.camera.torch.isEnabled
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dataSubmitted: data => {

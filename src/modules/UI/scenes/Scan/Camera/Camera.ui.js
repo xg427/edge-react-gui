@@ -32,6 +32,7 @@ export type PreviewProps = {
 class Preview extends Component<PreviewProps> {
   render () {
     const { torchIsEnabled, onBarCodeRead, scanIsEnabled } = this.props
+    const torchMode = torchIsEnabled ? RNCamera.constants.TorchMode.on : RNCamera.constants.TorchMode.off
     return (
       <RNCamera
         style={[styles.preview, this.props.style]}
@@ -40,7 +41,7 @@ class Preview extends Component<PreviewProps> {
           this.camera = ref
         }}
         barCodeTypes={[RNCamera.constants.BarCodeType.qr]}
-        torchMode={torchIsEnabled}
+        torchMode={torchMode}
         onBarCodeRead={scanIsEnabled ? onBarCodeRead : null}
       >
         {this.props.children}
