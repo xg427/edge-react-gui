@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Scan } from './Scan.ui'
 import type { Dispatch, State } from '../../../ReduxTypes'
 import { addressButtonPressed, torchButtonPressed, dataSubmitted } from './scanActions.js'
+import { activated } from './LegacyAddressModal/LegacyAddressModalActions.js'
 
 const mapStateToProps = (state: State) => ({
   selectWalletListIsActive: state.ui.scenes.scan.scanToWalletListModalVisibility,
@@ -21,6 +22,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   addressButtonPressed: () => {
     dispatch(addressButtonPressed())
+  },
+  legacyAddressButtonPressed: () => {
+    dispatch(activated())
   }
 })
 

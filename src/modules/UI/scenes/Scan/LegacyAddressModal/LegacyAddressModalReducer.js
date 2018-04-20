@@ -2,22 +2,13 @@
 
 import type { Action } from '../../../../ReduxTypes.js'
 
-import {
-  ACTIVATED,
-  DEACTIVATED,
-  TOGGLED,
-  DEPLOYED,
-  HIDDEN,
-  BACKDROP_PRESSED,
-  BACK_BUTTON_PRESSED
-} from './LegacyAddressModalActions.js'
+import { ACTIVATED, DEACTIVATED, TOGGLED } from './LegacyAddressModalActions.js'
 
 export type LegacyAddressModalState = {
-  status: 'HIDDEN' | 'OPENING' | 'DEPLOYED' | 'CLOSING'
+  isActive: boolean
 }
 export const initialState = {
-  isActive: false,
-  status: 'HIDDEN'
+  isActive: false
 }
 export const legacyAddressModal = (state: LegacyAddressModalState = initialState, action: Action) => {
   switch (action.type) {
@@ -27,8 +18,6 @@ export const legacyAddressModal = (state: LegacyAddressModalState = initialState
         isActive: true
       }
     }
-    case BACKDROP_PRESSED:
-    case BACK_BUTTON_PRESSED:
     case DEACTIVATED: {
       return {
         ...state,
@@ -41,10 +30,6 @@ export const legacyAddressModal = (state: LegacyAddressModalState = initialState
         isActive: !state.isActive
       }
     }
-    case HIDDEN: {
-      return initialState
-    }
-    case DEPLOYED:
     default:
       return state
   }

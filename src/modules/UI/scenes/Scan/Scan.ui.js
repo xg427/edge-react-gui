@@ -66,6 +66,17 @@ export class Scan extends Component<Props> {
 
         <Footer>
           <Item>
+            <Button onPress={this.props.legacyAddressButtonPressed}>
+              <Button.Text>
+                <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
+              </Button.Text>
+              <Button.Text>
+                <Text>{'Legacy Address'}</Text>
+              </Button.Text>
+            </Button>
+          </Item>
+
+          <Item>
             <Button onPress={addressButtonPressed}>
               <Button.Text>
                 <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
@@ -90,7 +101,9 @@ export class Scan extends Component<Props> {
 
         <ABAlert />
         <AddressModal onExitButtonFxn={() => {}} />
-        <LegacyAddressModal />
+        <LegacyAddressModal
+          onBackButtonPressed={this.props.legacyAddressModalBackButtonPressed}
+        />
         {/* <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} /> */}
       </SafeAreaView>
     )
