@@ -50,7 +50,7 @@ export class Scan extends Component<Props> {
             </Camera.Authorized>
 
             <Camera.Pending>
-              <ActivityIndicator size='large' />
+              <ActivityIndicator size={'large'} />
             </Camera.Pending>
 
             <Camera.Denied>
