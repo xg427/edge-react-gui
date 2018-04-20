@@ -18,27 +18,31 @@ import Gradient from '../../components/Gradient/Gradient.ui.js'
 import { styles } from './styles.js'
 import { Icon } from '../../components/Icon/Icon.ui.js'
 import s from '../../../../locales/strings.js'
-import { AUTHORIZED, DENIED, RESTRICTED, UNDETERMINED } from '../../permissions.js'
+import type { Permission, PermissionStatus } from '../../permissions.js'
 
 type Props = {
   torchButtonPressed: () => void,
   addressButtonPressed: () => void,
-  cameraPermission: typeof AUTHORIZED | typeof DENIED | typeof RESTRICTED | typeof UNDETERMINED,
-  scanIsEnabled: boolean,
-  torchIsEnabled: boolean,
+  manualInputModalHidden: () => void,
+  inputChanged: (input: string) => void,
+  permissions: {[Permission]: PermissionStatus},
+  camera: {
+    scan: { isEnabled: boolean },
+    torch: { isEnabled: boolean }
+  },
   dataSubmitted: string => void
 }
 export class Scan extends Component<Props> {
   render () {
-    const { dataSubmitted, torchButtonPressed, addressButtonPressed, cameraPermission, scanIsEnabled, torchIsEnabled } = this.props
+    const { dataSubmitted, torchButtonPressed, addressButtonPressed, permissions, camera, inputChanged, manualInputModalHidden } = this.props
     return (
       <SafeAreaView>
         <Gradient style={styles.gradient} />
 
         <Body>
-          <Camera permission={cameraPermission}>
+          <Camera permission={permissions.camera}>
             <Camera.Authorized>
-              <Camera.Preview onBarCodeRead={dataSubmitted} torchIsEnabled={torchIsEnabled} scanIsEnabled={scanIsEnabled}>
+              <Camera.Preview onBarCodeRead={dataSubmitted} torchIsEnabled={camera.torch.isEnabled} scanIsEnabled={camera.scan.isEnabled}>
                 <Camera.Overlay>
                   <Camera.Banner>
                     <Camera.Banner.Text>
@@ -100,9 +104,15 @@ export class Scan extends Component<Props> {
         </Footer>
 
         <ABAlert />
-        <ManualInputModal onExitButtonFxn={() => {}} />
+        <ManualInputModal
+          hidden={manualInputModalHidden}
+          inputChanged={inputChanged}
+          onContinueButtonPressed={() => {}}
+          onCancelButtonPressed={() => {}} />
         <LegacyAddressModal
-          onBackButtonPressed={this.props.legacyAddressModalBackButtonPressed}
+          isActive={this.props.legacyAddressModal.isActive}
+          onContinueButtonPressed={() => {}}
+          onCancelButtonPressed={() => {}}
         />
         {/* <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} /> */}
       </SafeAreaView>

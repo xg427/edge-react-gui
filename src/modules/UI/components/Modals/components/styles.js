@@ -10,7 +10,8 @@ export const rawStyles = {
     height: 55,
     borderRadius: 5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingHorizontal: 12
   },
   buttonText: {
     fontFamily: THEME.FONTS.DEFAULT,
@@ -47,7 +48,8 @@ export const rawStyles = {
   },
 
   // TextInput
-  textInput: {},
+  textInput: {
+  },
   debug: {
     borderColor: 'red',
     borderWidth: 1

@@ -1,11 +1,11 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, TextInput, View } from 'react-native'
 import { sprintf } from 'sprintf-js'
 
 import { Icon } from '../../../components/Icon/Icon.ui.js'
-import { InteractiveModal, PrimaryButton, SecondaryButton, TertiaryButton, TextInput } from '../../../components/Modals'
+import { InteractiveModal, PrimaryButton, SecondaryButton, TertiaryButton } from '../../../components/Modals'
 
 import * as Constants from '../../../../../constants/indexConstants.js'
 import s from '../../../../../locales/strings.js'
@@ -14,7 +14,7 @@ import { styles } from './styles.js'
 export type Props = {
   isActive: boolean,
   input: string,
-  clipboard: string,
+  publicAddress: string,
   inputChanged: string => void,
   doneButtonPressed: () => void,
   cancelButtonPressed: () => void,
@@ -27,6 +27,7 @@ export class ManualInputModal extends Component<Props> {
   static defaultProps = {
     isActive: false,
     input: '',
+    publicAddress: '',
     inputChanged: () => {},
     doneButtonPressed: () => {},
     cancelButtonPressed: () => {},
@@ -39,8 +40,8 @@ export class ManualInputModal extends Component<Props> {
   render () {
     const {
       isActive,
-      clipboard,
       input,
+      publicAddress,
       inputChanged,
       doneButtonPressed,
       cancelButtonPressed,
@@ -49,10 +50,11 @@ export class ManualInputModal extends Component<Props> {
       pasteButtonPressed,
       hidden
     } = this.props
-    const copyMessage = this.props.input ? sprintf(s.strings.string_paste_address, this.props.input) : null
+    const PASTE = publicAddress ? sprintf(s.strings.string_paste_address, publicAddress) : null
     const TITLE = s.strings.fragment_send_address_dialog_title
     const DONE = 'DONE'
     const CANCEL = 'CANCEL'
+    const INSERT = 'INSERT'
 
     return (
       <InteractiveModal isActive={isActive} onBackButtonPress={backButtonPressed} onBackdropPress={backdropPressed} onModalHide={hidden}>
@@ -66,16 +68,16 @@ export class ManualInputModal extends Component<Props> {
 
         <InteractiveModal.Body>
           <InteractiveModal.Row>
-            <TextInput onChangeText={inputChanged} label={'LABEL'} value={''} />
+            <TextInput style={{flex: 1}} onChangeText={inputChanged} label={INSERT} value={input} />
           </InteractiveModal.Row>
         </InteractiveModal.Body>
 
         <InteractiveModal.Footer>
-          {clipboard && (
+          {publicAddress && (
             <InteractiveModal.Row>
               <InteractiveModal.Item>
                 <TertiaryButton onPress={pasteButtonPressed}>
-                  <TertiaryButton.Text>{'Paste'}</TertiaryButton.Text>
+                  <TertiaryButton.Text>{PASTE}</TertiaryButton.Text>
                 </TertiaryButton>
               </InteractiveModal.Item>
             </InteractiveModal.Row>

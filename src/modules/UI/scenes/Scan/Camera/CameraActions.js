@@ -31,9 +31,3 @@ export const TORCH_TOGGLED = PREFIX + 'TORCH_TOGGLED'
 export const torchToggled = () => ({
   type: TORCH_TOGGLED
 })
-
-export const QR_CODE_SCANNED = PREFIX + 'QR_CODE_SCANNED'
-export const qrCodeScanned = (data: string) => ({
-  type: QR_CODE_SCANNED,
-  data: { data }
-})

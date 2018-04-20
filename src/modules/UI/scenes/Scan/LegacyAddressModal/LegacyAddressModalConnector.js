@@ -11,7 +11,19 @@ export const mapStateToProps = (state: State) => ({
   isActive: state.ui.scenes.scan.legacyAddressModal.isActive,
   currencyName: state.ui.scenes.scan.currencyName
 })
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
+export const mapDispatchToProps = (dispatch: Dispatch, ownProps: any) => ({
+  continueButtonPressed: () => {
+    dispatch(deactivated())
+    if (ownProps.continueButtonPressed) {
+      dispatch(ownProps.continueButtonPressed())
+    }
+  },
+  cancelButtonPressed: () => {
+    dispatch(deactivated())
+    if (ownProps.cancelButtonPressed) {
+      dispatch(ownProps.cancelButtonPressed())
+    }
+  },
   backButtonPressed: () => {
     dispatch(deactivated())
   },

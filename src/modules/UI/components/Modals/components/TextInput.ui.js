@@ -42,6 +42,6 @@ export class TextInput extends Component<Props> {
   }
 
   render () {
-    return <TextField {...this.props} style={[styles.textInput, this.props.style]} />
+    return <TextField {...this.props} inputContainerStyle={[styles.textInput, styles.debug]} style={[styles.textInput, this.props.style]} />
   }
 }

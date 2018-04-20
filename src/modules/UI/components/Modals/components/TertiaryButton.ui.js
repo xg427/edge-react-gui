@@ -13,7 +13,7 @@ export type TextProps = {
 class Text extends Component<TextProps> {
   render () {
     return (
-      <RN.Text style={[styles.buttonText, styles.tertiaryButtonText, this.props.style]}>
+      <RN.Text numberOfLines={1} ellipsizeMode={'middle'} {...this.props} style={[styles.buttonText, styles.tertiaryButtonText, this.props.style]}>
         {this.props.children}
       </RN.Text>
     )

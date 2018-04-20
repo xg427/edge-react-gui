@@ -9,20 +9,32 @@ import * as WALLET_API from '../../../Core/Wallets/api.js'
 import * as UTILS from '../../../utils.js'
 import { loginWithEdge } from '../../../../actions/EdgeLoginActions.js'
 import { updateParsedURI } from '../../scenes/SendConfirmation/action.js'
-import { qrCodeScanned, torchToggled } from './Camera/CameraActions.js'
-import { activated as manualInputModalActivated } from './ManualInputModal/ManualInputModalActions.js'
+import { torchToggled } from './Camera/CameraActions.js'
+import { activated as manualInputModalActivated, deactivated as manualInputModalDeactivated } from './ManualInputModal/ManualInputModalActions.js'
+import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
 
 export const PREFIX = 'SCAN/'
 
 // SCENE ////////////////////////////////////////////////////////////////
-export const SCENE_ENTERED = PREFIX + 'SCENE_ENTERED'
-export const sceneEntered = () => ({
-  type: SCENE_ENTERED
+export const ENTERED = PREFIX + 'ENTERED'
+export const entered = () => ({
+  type: ENTERED
 })
 
-export const SCENE_EXITED = PREFIX + 'SCENE_EXITED'
-export const sceneExited = () => ({
-  type: SCENE_EXITED
+export const EXITED = PREFIX + 'EXITED'
+export const exited = () => ({
+  type: EXITED
+})
+
+export const INPUT_CHANGED = PREFIX + 'INPUT_CHANGED'
+export const inputChanged = (input: string) => ({
+  type: INPUT_CHANGED,
+  data: { input }
+})
+
+export const INPUT_RESET = PREFIX + 'INPUT_RESET'
+export const inputReset = () => ({
+  type: INPUT_RESET
 })
 
 // INVALID_URI_MODAL /////////////////////////////////////////////////////////
@@ -68,7 +80,7 @@ export const invalidUriModalExpired = () => ({
 
 // PARSE ////////////////////////////////////////////////////////////////
 export const PARSE_URI_SUCCEEDED = PREFIX + 'PARSE_URI_SUCCEEDED'
-export const parseUriSuceeded = (parsedUri: EdgeParsedUri) => ({
+export const parseUriSucceeded = (parsedUri: EdgeParsedUri) => ({
   type: PARSE_URI_SUCCEEDED,
   data: { parsedUri }
 })
@@ -108,73 +120,102 @@ export const publicAddressDetected = (parsedUri: EdgeParsedUri) => ({
 })
 
 // OPERATIONS ////////////////////////////////////////////////////////////////
-export const dataSubmitted = (data: string) => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
-  if (!state.ui.scenes.scan.scanEnabled) return
-
-  dispatch(qrCodeScanned(data))
-
-  // EDGE LOGIN ///////////////////////////////////////////////////////////
-  if (UTILS.isEdgeLogin(data)) {
-    dispatch(edgeLoginDetected(data))
-    dispatch(loginWithEdge(data))
-    return
-  }
-
-  const edgeWallet = state.core.wallets.byId[state.ui.wallets.selectedWalletId]
-  let parsedUri
-  try {
-    parsedUri = WALLET_API.parseURI(edgeWallet, data)
-  } catch (error) {
-    // INVALID QRCODE ///////////////////////////////////////////////////////
-    dispatch(parseUriFailed(error))
-    return
-  }
-  // TOKEN ////////////////////////////////////////////////////////////////
-  if (parsedUri.token) {
-    // token URI, not pay
-    const { contractAddress, currencyName, multiplier } = parsedUri.token
-    const currencyCode = parsedUri.token.currencyCode.toUpperCase()
-    const walletId = state.ui.wallets.selectedWalletId
-    const wallet = state.ui.wallets.byId[walletId]
-    let decimalPlaces = 18
-    if (parsedUri.token && parsedUri.token.multiplier) {
-      decimalPlaces = UTILS.denominationToDecimalPlaces(parsedUri.token.multiplier)
-    }
-    const parameters = {
-      contractAddress,
-      currencyCode,
-      currencyName,
-      multiplier,
-      decimalPlaces,
-      walletId,
-      wallet,
-      onAddToken: UTILS.noOp
-    }
-
-    dispatch(tokenDetected(parameters))
-    Actions.addToken(parameters)
-    return
-  }
-
-  // LEGACY ADDRESS ///////////////////////////////////////////////////////
-  if (parsedUri.legacyAddress) {
-    dispatch(legacyAddressDetected(parsedUri))
-    return
-  }
-
-  // PUBLIC ADDRESS ///////////////////////////////////////////////////////
-  dispatch(publicAddressDetected(parsedUri))
-  dispatch(updateParsedURI(parsedUri))
-  Actions.sendConfirmation('fromScan')
+export const manualInputChanged = (data: string) => (dispatch: Dispatch) => {
+  dispatch(inputChanged(data))
 }
 
+export const manualInputSubmitted = (data: string) => (dispatch: Dispatch) => {
+  dispatch(manualInputModalDeactivated())
+}
+
+export const manualInputCancelled = (data: string) => (dispatch: Dispatch) => {
+  dispatch(manualInputModalDeactivated())
+}
+
+export const legacyAddressSubmitted = (data: string) => (dispatch: Dispatch) => {
+  dispatch(legacyAddressModalDeactivated())
+}
+
+export const legacyAddressCancelled = (data: string) => (dispatch: Dispatch) => {
+  dispatch(legacyAddressModalDeactivated())
+}
+
+export const qrCodeScanned = (data: string) => (dispatch: Dispatch) => {
+  dispatch(inputChanged(data))
+}
+
+// export const qrCodeScanned = (data: string) => (dispatch: Dispatch, getState: GetState) => {
+//   dispatch(qrCodeScanned(data))
+//
+//   const state = getState()
+//
+//
+//   // EDGE LOGIN ///////////////////////////////////////////////////////////
+//   if (UTILS.isEdgeLogin(data)) {
+//     dispatch(edgeLoginDetected(data))
+//     dispatch(loginWithEdge(data))
+//     return
+//   }
+//
+//   const edgeWallet = state.core.wallets.byId[state.ui.wallets.selectedWalletId]
+//   let parsedUri
+//   try {
+//     parsedUri = WALLET_API.parseURI(edgeWallet, data)
+//   } catch (error) {
+//     // INVALID QRCODE ///////////////////////////////////////////////////////
+//     dispatch(parseUriFailed(error))
+//     return
+//   }
+//   // TOKEN ////////////////////////////////////////////////////////////////
+//   if (parsedUri.token) {
+//     // token URI, not pay
+//     const { contractAddress, currencyName, multiplier } = parsedUri.token
+//     const currencyCode = parsedUri.token.currencyCode.toUpperCase()
+//     const walletId = state.ui.wallets.selectedWalletId
+//     const wallet = state.ui.wallets.byId[walletId]
+//     let decimalPlaces = 18
+//     if (parsedUri.token && parsedUri.token.multiplier) {
+//       decimalPlaces = UTILS.denominationToDecimalPlaces(parsedUri.token.multiplier)
+//     }
+//     const parameters = {
+//       contractAddress,
+//       currencyCode,
+//       currencyName,
+//       multiplier,
+//       decimalPlaces,
+//       walletId,
+//       wallet,
+//       onAddToken: UTILS.noOp
+//     }
+//
+//     dispatch(tokenDetected(parameters))
+//     Actions.addToken(parameters)
+//     return
+//   }
+//
+//   // LEGACY ADDRESS ///////////////////////////////////////////////////////
+//   if (parsedUri.legacyAddress) {
+//     dispatch(legacyAddressDetected(parsedUri))
+//     return
+//   }
+//
+//   // PUBLIC ADDRESS ///////////////////////////////////////////////////////
+//   dispatch(publicAddressDetected(parsedUri))
+//   dispatch(updateParsedURI(parsedUri))
+//   Actions.sendConfirmation('fromScan')
+// }
+
 // ADDRESS_BUTTON ///////////////////////////////////////////////////////
-export const addressButtonPressed = () => (dispatch: Dispatch) => {
-  // return dispatch(manualInputModalActivated(''))
-  return Clipboard.getString().then(input => {
-    return dispatch(manualInputModalActivated(input))
-  })
+export const addressButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const selectedWalletId = state.ui.wallets.selectedWalletId
+  const edgeWallet = state.core.wallets.byId[selectedWalletId]
+
+  Promise.resolve()
+    .then(Clipboard.getString)
+    .then(input => WALLET_API.parseURI(edgeWallet, input))
+    .then(parsedUri => dispatch(parseUriSucceeded(parsedUri)), console.log)
+    .then(() => dispatch(manualInputModalActivated()))
 }
 
 // TORCH_BUTTON ///////////////////////////////////////////////////////
