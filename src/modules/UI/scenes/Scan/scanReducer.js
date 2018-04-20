@@ -4,7 +4,7 @@ import { combineReducers } from 'redux'
 
 import * as WALLET_LIST_MODAL_ACTION from '../../components/WalletListModal/action.js'
 
-import { addressModal } from './AddressModal/AddressModalReducer.js'
+import { manualInputModal } from './ManualInputModal/ManualInputModalReducer.js'
 import { legacyAddressModal } from './LegacyAddressModal/LegacyAddressModalReducer.js'
 import { camera } from './Camera/CameraReducer.js'
 // import { InvalidUriModalReducer as invalidUriModal } from './InvalidUriModal/InvalidUriModalReducer.js'
@@ -40,7 +40,7 @@ const scanToWalletListModalVisibility = (state = false, action) => {
 }
 
 export const scan = combineReducers({
-  addressModal,
+  manualInputModal,
   legacyAddressModal,
   // invalidUriModal,
   camera,

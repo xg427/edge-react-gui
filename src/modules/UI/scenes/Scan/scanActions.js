@@ -10,7 +10,7 @@ import * as UTILS from '../../../utils.js'
 import { loginWithEdge } from '../../../../actions/EdgeLoginActions.js'
 import { updateParsedURI } from '../../scenes/SendConfirmation/action.js'
 import { qrCodeScanned, torchToggled } from './Camera/CameraActions.js'
-import { activated as addressModalActivated } from './AddressModal/AddressModalActions.js'
+import { activated as manualInputModalActivated } from './ManualInputModal/ManualInputModalActions.js'
 
 export const PREFIX = 'SCAN/'
 
@@ -171,9 +171,9 @@ export const dataSubmitted = (data: string) => (dispatch: Dispatch, getState: Ge
 
 // ADDRESS_BUTTON ///////////////////////////////////////////////////////
 export const addressButtonPressed = () => (dispatch: Dispatch) => {
-  // return dispatch(addressModalActivated(''))
+  // return dispatch(manualInputModalActivated(''))
   return Clipboard.getString().then(input => {
-    return dispatch(addressModalActivated(input))
+    return dispatch(manualInputModalActivated(input))
   })
 }
 

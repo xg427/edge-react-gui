@@ -5,7 +5,7 @@ import { ActivityIndicator, Text } from 'react-native'
 
 import ABAlert from '../../components/ABAlert/indexABAlert'
 import SafeAreaView from '../../components/SafeAreaView'
-import { AddressModalConnector as AddressModal } from './AddressModal/AddressModalConnector.js'
+import { ManualInputModalConnector as ManualInputModal } from './ManualInputModal/ManualInputModalConnector.js'
 import { LegacyAddressModalConnector as LegacyAddressModal } from './LegacyAddressModal/LegacyAddressModalConnector.js'
 import { Camera } from './Camera/Camera.ui.js'
 import { Body } from './components/Body.ui.js'
@@ -100,7 +100,7 @@ export class Scan extends Component<Props> {
         </Footer>
 
         <ABAlert />
-        <AddressModal onExitButtonFxn={() => {}} />
+        <ManualInputModal onExitButtonFxn={() => {}} />
         <LegacyAddressModal
           onBackButtonPressed={this.props.legacyAddressModalBackButtonPressed}
         />

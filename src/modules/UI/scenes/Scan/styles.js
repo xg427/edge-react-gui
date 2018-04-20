@@ -15,7 +15,6 @@ export const rawStyles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    width: '100%',
     height: 72,
     paddingVertical: 12,
     paddingHorizontal: 8,
@@ -26,18 +25,11 @@ export const rawStyles = {
     fontSize: 14
   },
   item: {
-    flex: 1,
     paddingHorizontal: 4
   },
   debug: {
     borderColor: 'red',
     borderWidth: 1
-  },
-  cancelUnderlay: {
-    color: THEME.COLORS.GRAY_1
-  },
-  doneUnderlay: {
-    color: THEME.COLORS.PRIMARY
   }
 }
 export const styles = StyleSheet.create(rawStyles)
