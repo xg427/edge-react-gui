@@ -26,6 +26,7 @@ export type Props = {
 }
 export class Button extends Component<Props> {
   static Text = Text
+
   render () {
     return (
       <TouchableHighlight

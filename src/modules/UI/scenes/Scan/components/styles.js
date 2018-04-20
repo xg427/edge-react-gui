@@ -2,7 +2,7 @@
 
 import { StyleSheet } from 'react-native'
 
-import THEME from '../../../../../../theme/variables/airbitz.js'
+import THEME from '../../../../../theme/variables/airbitz.js'
 
 export const rawStyles = {
   button: {
@@ -24,9 +24,26 @@ export const rawStyles = {
   underlay: {
     color: THEME.COLORS.SECONDARY
   },
+  body: {
+    flex: 1
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: '100%',
+    height: 72,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    backgroundColor: THEME.COLORS.SECONDARY
+  },
+  item: {
+    flex: 1,
+    paddingHorizontal: 4
+  },
   debug: {
-    borderWidth: 1,
-    borderColor: 'red'
+    borderColor: 'red',
+    borderWidth: 1
   }
 }
 

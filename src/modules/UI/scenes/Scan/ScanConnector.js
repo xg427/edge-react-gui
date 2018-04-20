@@ -7,7 +7,8 @@ import type { Dispatch, State } from '../../../ReduxTypes'
 import { addressButtonPressed, torchButtonPressed, dataSubmitted } from './scanActions.js'
 
 const mapStateToProps = (state: State) => ({
-  selectWalletListIsActive: state.ui.scenes.scan.scanToWalletListModalVisibility
+  selectWalletListIsActive: state.ui.scenes.scan.scanToWalletListModalVisibility,
+  cameraPermssion: state.permissions.camera
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dataSubmitted: (data) => dispatch(dataSubmitted(data)),

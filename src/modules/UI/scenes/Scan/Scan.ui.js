@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import type { Node } from 'react-native'
 
 import ABAlert from '../../components/ABAlert/indexABAlert'
@@ -9,48 +9,24 @@ import SafeAreaView from '../../components/SafeAreaView'
 import { AddressModalConnector as AddressModal } from './AddressModal/AddressModalConnector.js'
 // import { LegacyAddressModalConnector as LegacyAddressModal } from './LegacyAddressModal/LegacyAddressModalConnector.js'
 import Camera from './Camera/CameraConnector.js'
-import { Button } from './components/Button/Button.ui.js'
+import { Body } from './components/Body.ui.js'
+import { Button } from './components/Button.ui.js'
+import { Footer } from './components/Footer.ui.js'
+import { Item } from './components/Item.ui.js'
 // import WalletListModal from '../../components/WalletListModal/WalletListModalConnector.js'
 import * as Constants from '../../../../constants/indexConstants.js'
 import Gradient from '../../components/Gradient/Gradient.ui.js'
 import { styles } from './styles.js'
 import { Icon } from '../../components/Icon/Icon.ui.js'
 import s from '../../../../locales/strings.js'
-
-type BodyProps = {
-  children: Node,
-  style?: StyleSheet.Styles
-}
-export class Body extends Component<BodyProps> {
-  render () {
-    return <View style={[styles.body, this.props.styles]}>{this.props.children}</View>
-  }
-}
-
-type FooterProps = {
-  children: Node,
-  style?: StyleSheet.Styles
-}
-export class Footer extends Component<FooterProps> {
-  render () {
-    return <View style={[styles.footer, this.props.styles]}>{this.props.children}</View>
-  }
-}
-
-type ItemProps = {
-  children: Node,
-  style?: StyleSheet.Styles
-}
-export class Item extends Component<ItemProps> {
-  render () {
-    return <View style={[styles.item, this.props.styles]}>{this.props.children}</View>
-  }
-}
+import { AUTHORIZED, DENIED, RESTRICTED, UNDETERMINED } from '../../permissions.js'
 
 type Props = {
   torchButtonPressed: () => void,
   addressButtonPressed: () => void,
-  parseUri: (data: string) => void
+  parseUri: (data: string) => void,
+  cameraPermission: typeof AUTHORIZED | typeof DENIED | typeof RESTRICTED | typeof UNDETERMINED,
+  dataSubmitted: (string) => void
 }
 export class Scan extends Component<Props> {
   render () {
@@ -74,7 +50,7 @@ export class Scan extends Component<Props> {
             </Camera.Authorized>
 
             <Camera.Pending>
-              <Text>{'PENDING'}</Text>
+              <ActivityIndicator size='large' />
             </Camera.Pending>
 
             <Camera.Denied>

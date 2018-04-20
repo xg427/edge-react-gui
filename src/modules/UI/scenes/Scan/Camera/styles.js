@@ -14,10 +14,11 @@ export const rawStyles = {
     flex: 1
   },
   overlay: {
+    flex: 1
   },
   banner: {
-    flex: 1,
-    padding: 24,
+    paddingVertical: 18,
+    paddingHorizontal: 8,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: THEME.COLORS.GRAY_1,
