@@ -68,7 +68,7 @@ export class ManualInputModal extends Component<Props> {
 
         <InteractiveModal.Body>
           <InteractiveModal.Row>
-            <TextInput style={{flex: 1}} onChangeText={inputChanged} label={INSERT} value={input} />
+            <TextInput style={[{ flex: 1, height: 50 }, styles.debug]} onChangeText={inputChanged} label={INSERT} value={input} />
           </InteractiveModal.Row>
         </InteractiveModal.Body>
 

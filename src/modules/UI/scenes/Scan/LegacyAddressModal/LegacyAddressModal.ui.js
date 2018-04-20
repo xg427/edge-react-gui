@@ -7,6 +7,7 @@ import { sprintf } from 'sprintf-js'
 import { Icon } from '../../../components/Icon/Icon.ui.js'
 import { InteractiveModal, PrimaryButton, SecondaryButton } from '../../../components/Modals'
 
+import { styles } from '../styles.js'
 import s from '../../../../../locales/strings.js'
 
 type Props = {
@@ -21,7 +22,7 @@ type Props = {
 export class LegacyAddressModal extends Component<Props> {
   static defaultProps = {
     isActive: false,
-    currencyName: 'Currency Name',
+    currencyName: 'the intended currency',
     continueButtonPressed: () => {},
     cancelButtonPressed: () => {},
     backButtonPressed: () => {},
@@ -31,7 +32,7 @@ export class LegacyAddressModal extends Component<Props> {
 
   render () {
     const { isActive, currencyName, continueButtonPressed, cancelButtonPressed, backdropPressed, backButtonPressed, hidden } = this.props
-    const WARNING = sprintf(s.strings.legacy_address_modal_warning, currencyName || 'your intended currency')
+    const WARNING = sprintf(s.strings.legacy_address_modal_warning, currencyName)
     const TITLE = s.strings.legacy_address_modal_title
     const CONTINUE = s.strings.legacy_address_modal_continue
     const CANCEL = s.strings.legacy_address_modal_cancel
@@ -55,17 +56,19 @@ export class LegacyAddressModal extends Component<Props> {
         </InteractiveModal.Body>
 
         <InteractiveModal.Footer>
-          <InteractiveModal.Item>
-            <PrimaryButton onPress={continueButtonPressed}>
-              <PrimaryButton.Text>{CONTINUE}</PrimaryButton.Text>
-            </PrimaryButton>
-          </InteractiveModal.Item>
+          <InteractiveModal.Row>
+            <InteractiveModal.Item>
+              <PrimaryButton onPress={continueButtonPressed}>
+                <PrimaryButton.Text>{CONTINUE}</PrimaryButton.Text>
+              </PrimaryButton>
+            </InteractiveModal.Item>
 
-          <InteractiveModal.Item>
-            <SecondaryButton onPress={cancelButtonPressed}>
-              <SecondaryButton.Text>{CANCEL}</SecondaryButton.Text>
-            </SecondaryButton>
-          </InteractiveModal.Item>
+            <InteractiveModal.Item>
+              <SecondaryButton onPress={cancelButtonPressed}>
+                <SecondaryButton.Text>{CANCEL}</SecondaryButton.Text>
+              </SecondaryButton>
+            </InteractiveModal.Item>
+          </InteractiveModal.Row>
         </InteractiveModal.Footer>
       </InteractiveModal>
     )
