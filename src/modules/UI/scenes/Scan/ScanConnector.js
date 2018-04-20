@@ -11,9 +11,15 @@ const mapStateToProps = (state: State) => ({
   cameraPermssion: state.permissions.camera
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  dataSubmitted: (data) => dispatch(dataSubmitted(data)),
-  torchButtonPressed: () => dispatch(torchButtonPressed()),
-  addressButtonPressed: () => dispatch(addressButtonPressed())
+  dataSubmitted: data => {
+    dispatch(dataSubmitted(data))
+  },
+  torchButtonPressed: () => {
+    dispatch(torchButtonPressed())
+  },
+  addressButtonPressed: () => {
+    dispatch(addressButtonPressed())
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scan)

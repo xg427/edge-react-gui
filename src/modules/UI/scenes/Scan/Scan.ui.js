@@ -1,14 +1,13 @@
 // @flow
 
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
-import type { Node } from 'react-native'
+import { ActivityIndicator, Text } from 'react-native'
 
 import ABAlert from '../../components/ABAlert/indexABAlert'
 import SafeAreaView from '../../components/SafeAreaView'
 import { AddressModalConnector as AddressModal } from './AddressModal/AddressModalConnector.js'
 // import { LegacyAddressModalConnector as LegacyAddressModal } from './LegacyAddressModal/LegacyAddressModalConnector.js'
-import Camera from './Camera/CameraConnector.js'
+import { Camera } from './Camera/Camera.ui.js'
 import { Body } from './components/Body.ui.js'
 import { Button } from './components/Button.ui.js'
 import { Footer } from './components/Footer.ui.js'
@@ -24,21 +23,22 @@ import { AUTHORIZED, DENIED, RESTRICTED, UNDETERMINED } from '../../permissions.
 type Props = {
   torchButtonPressed: () => void,
   addressButtonPressed: () => void,
-  parseUri: (data: string) => void,
   cameraPermission: typeof AUTHORIZED | typeof DENIED | typeof RESTRICTED | typeof UNDETERMINED,
-  dataSubmitted: (string) => void
+  scanIsEnabled: boolean,
+  torchIsEnabled: boolean,
+  dataSubmitted: string => void
 }
 export class Scan extends Component<Props> {
   render () {
-    const { dataSubmitted, torchButtonPressed, addressButtonPressed, cameraPermission } = this.props
+    const { dataSubmitted, torchButtonPressed, addressButtonPressed, cameraPermission, scanIsEnabled, torchIsEnabled } = this.props
     return (
       <SafeAreaView>
         <Gradient style={styles.gradient} />
 
         <Body>
           <Camera permission={cameraPermission}>
-            <Camera.Authorized onBarCodeRead={dataSubmitted}>
-              <Camera.Preview>
+            <Camera.Authorized>
+              <Camera.Preview onBarCodeRead={dataSubmitted} torchIsEnabled={torchIsEnabled} scanIsEnabled={scanIsEnabled}>
                 <Camera.Overlay>
                   <Camera.Banner>
                     <Camera.Banner.Text>
@@ -50,7 +50,7 @@ export class Scan extends Component<Props> {
             </Camera.Authorized>
 
             <Camera.Pending>
-              <ActivityIndicator size='large' />
+              <ActivityIndicator size="large" />
             </Camera.Pending>
 
             <Camera.Denied>

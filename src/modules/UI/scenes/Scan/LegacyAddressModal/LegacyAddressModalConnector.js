@@ -2,15 +2,15 @@
 
 import { connect } from 'react-redux'
 
-import type { Dispatch, State } from '../../../../../ReduxTypes.js'
+import type { Dispatch, State } from '../../../../ReduxTypes.js'
 
 import {
-  legacyAddressModalContinueButtonPressed,
-  legacyAddressModalCancelButtonPressed,
-  legacyAddressModalBackButtonPressed,
-  legacyAddressModalBackdropPressed,
-  legacyAddressModalHidden
-} from '../../scanActions.js'
+  continueButtonPressed,
+  cancelButtonPressed,
+  backButtonPressed,
+  backdropPressed,
+  hidden
+} from './LegacyAddressModalActions.js'
 import { LegacyAddressModalComponent } from './LegacyAddressModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
@@ -19,19 +19,19 @@ export const mapStateToProps = (state: State) => ({
 })
 export const mapDispatchToProps = (dispatch: Dispatch, ownProps: { confirm: () => void }) => ({
   continueButtonPressed: () => {
-    dispatch(legacyAddressModalContinueButtonPressed())
+    dispatch(continueButtonPressed())
   },
   cancelButtonPressed: () => {
-    dispatch(legacyAddressModalCancelButtonPressed())
+    dispatch(cancelButtonPressed())
   },
   backButtonPressed: () => {
-    dispatch(legacyAddressModalBackButtonPressed())
+    dispatch(backButtonPressed())
   },
   backdropPressed: () => {
-    dispatch(legacyAddressModalBackdropPressed())
+    dispatch(backdropPressed())
   },
   reset: () => {
-    dispatch(legacyAddressModalHidden())
+    dispatch(hidden())
   }
 })
 

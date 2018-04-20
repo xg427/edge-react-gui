@@ -1,8 +1,8 @@
 // @flow
 
 import React, { Component } from 'react'
+import type { Node } from 'react'
 import { StyleSheet, View } from 'react-native'
-import type { Node } from 'react-native'
 
 import { styles } from './styles.js'
 

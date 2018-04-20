@@ -16,6 +16,8 @@ export type Props = {
   isActive: boolean,
   input: string,
   inputChanged: (string) => void,
+  confirmButtonPressed: () => void,
+  cancelButtonPressed: () => void,
   backdropPressed: () => void,
   backButtonPressed: () => void,
   pasteButtonPressed: () => void,
@@ -36,7 +38,7 @@ export class AddressModal extends Component<Props, State> {
         copyMessage={copyMessage}
         onChangeText={inputChanged}
         onSubmit={confirmButtonPressed}
-        onPaste={this.pasteButtonPressed}
+        onPaste={this.props.pasteButtonPressed}
         input={input}
       />
     )

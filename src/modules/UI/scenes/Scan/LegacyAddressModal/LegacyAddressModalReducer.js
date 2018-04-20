@@ -2,7 +2,7 @@
 
 import type { Action } from '../../../../ReduxTypes.js'
 
-export type LegacyAddressModal = {
+export type LegacyAddressModalState = {
   isActive: boolean
 }
 export const initialState = {

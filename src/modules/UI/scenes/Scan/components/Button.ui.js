@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
+import type { Node } from 'react'
 import RN, { TouchableHighlight, View } from 'react-native'
 
 import { styles, rawStyles } from './styles.js'

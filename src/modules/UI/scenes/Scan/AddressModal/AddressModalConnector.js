@@ -4,12 +4,14 @@ import { connect } from 'react-redux'
 
 import type { Dispatch, State } from '../../../../ReduxTypes'
 import {
-  addressModalInputChanged,
-  addressModalBackdropPressed,
-  addressModalBackButtonPressed,
-  addressModalPasteButtonPressed,
-  addressModalHidden
-} from '../scanActions.js'
+  inputChanged,
+  confirmButtonPressed,
+  cancelButtonPressed,
+  backdropPressed,
+  backButtonPressed,
+  pasteButtonPressed,
+  hidden
+} from './AddressModalActions.js'
 import { AddressModal } from './AddressModal.ui.js'
 
 const mapStateToProps = (state: State) => ({
@@ -18,11 +20,13 @@ const mapStateToProps = (state: State) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  inputChanged: (input) => dispatch(addressModalInputChanged(input)),
-  backdropPressed: () => dispatch(addressModalBackdropPressed()),
-  backButtonPressed: () => dispatch(addressModalBackButtonPressed()),
-  pasteButtonPressed: () => dispatch(addressModalPasteButtonPressed()),
-  hidden: () => dispatch(addressModalHidden())
+  inputChanged: (input) => dispatch(inputChanged(input)),
+  confirmButtonPressed: () => dispatch(confirmButtonPressed()),
+  cancelButtonPressed: () => dispatch(cancelButtonPressed()),
+  backdropPressed: () => dispatch(backdropPressed()),
+  backButtonPressed: () => dispatch(backButtonPressed()),
+  pasteButtonPressed: () => dispatch(pasteButtonPressed()),
+  hidden: () => dispatch(hidden())
 })
 
 export const AddressModalConnector = connect(mapStateToProps, mapDispatchToProps)(AddressModal)

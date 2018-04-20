@@ -25,52 +25,6 @@ export const sceneExited = () => ({
   type: SCENE_EXITED
 })
 
-// LEGACY_ADDRESS_MODAL ////////////////////////////////////////////////////////////////
-export const LEGACY_ADDRESS_MODAL_ACTIVATED = PREFIX + 'LEGACY_ADDRESS_MODAL_ACTIVATED'
-export const legacyAddressModalActivated = () => ({
-  type: LEGACY_ADDRESS_MODAL_ACTIVATED
-})
-
-export const LEGACY_ADDRESS_MODAL_DEACTIVATED = PREFIX + 'LEGACY_ADDRESS_MODAL_DEACTIVATED'
-export const legacyAddressModalDeactivated = () => ({
-  type: LEGACY_ADDRESS_MODAL_DEACTIVATED
-})
-
-export const LEGACY_ADDRESS_MODAL_TOGGLED = PREFIX + 'LEGACY_ADDRESS_MODAL_TOGGLED'
-export const legacyAddressModalToggled = () => ({
-  type: LEGACY_ADDRESS_MODAL_TOGGLED
-})
-
-export const LEGACY_ADDRESS_MODAL_DEPLOYED = PREFIX + 'LEGACY_ADDRESS_MODAL_DEPLOYED'
-export const legacyAddressModalDeployed = () => ({
-  type: LEGACY_ADDRESS_MODAL_DEPLOYED
-})
-
-export const LEGACY_ADDRESS_MODAL_HIDDEN = PREFIX + 'LEGACY_ADDRESS_MODAL_HIDDEN'
-export const legacyAddressModalHidden = () => ({
-  type: LEGACY_ADDRESS_MODAL_HIDDEN
-})
-
-export const LEGACY_ADDRESS_MODAL_BACKDROP_PRESSED = PREFIX + 'LEGACY_ADDRESS_MODAL_BACKDROP_PRESSED'
-export const legacyAddressModalBackdropPressed = () => ({
-  type: LEGACY_ADDRESS_MODAL_BACKDROP_PRESSED
-})
-
-export const LEGACY_ADDRESS_MODAL_BACK_BUTTON_PRESSED = PREFIX + 'LEGACY_ADDRESS_MODAL_BACK_BUTTON_PRESSED'
-export const legacyAddressModalBackButtonPressed = () => ({
-  type: LEGACY_ADDRESS_MODAL_BACK_BUTTON_PRESSED
-})
-
-export const LEGACY_ADDRESS_MODAL_CONTINUE_BUTTON_PRESSED = PREFIX + 'LEGACY_ADDRESS_MODAL_CONTINUE_BUTTON_PRESSED'
-export const legacyAddressModalContinueButtonPressed = () => ({
-  type: LEGACY_ADDRESS_MODAL_CONTINUE_BUTTON_PRESSED
-})
-
-export const LEGACY_ADDRESS_MODAL_CANCEL_BUTTON_PRESSED = PREFIX + 'LEGACY_ADDRESS_MODAL_CANCEL_BUTTON_PRESSED'
-export const legacyAddressModalCancelButtonPressed = () => ({
-  type: LEGACY_ADDRESS_MODAL_CANCEL_BUTTON_PRESSED
-})
-
 // INVALID_URI_MODAL /////////////////////////////////////////////////////////
 export const INVALID_URI_MODAL_ACTIVATED = PREFIX + 'INVALID_URI_MODAL_ACTIVATED'
 export const invalidUriModalActivated = () => ({
@@ -163,7 +117,8 @@ export const dataSubmitted = (data: string) => (dispatch: Dispatch, getState: Ge
   // EDGE LOGIN ///////////////////////////////////////////////////////////
   if (UTILS.isEdgeLogin(data)) {
     dispatch(edgeLoginDetected(data))
-    return dispatch(loginWithEdge(data))
+    dispatch(loginWithEdge(data))
+    return
   }
 
   const edgeWallet = state.core.wallets.byId[state.ui.wallets.selectedWalletId]
@@ -172,7 +127,8 @@ export const dataSubmitted = (data: string) => (dispatch: Dispatch, getState: Ge
     parsedUri = WALLET_API.parseURI(edgeWallet, data)
   } catch (error) {
     // INVALID QRCODE ///////////////////////////////////////////////////////
-    return dispatch(parseUriFailed(error))
+    dispatch(parseUriFailed(error))
+    return
   }
   // TOKEN ////////////////////////////////////////////////////////////////
   if (parsedUri.token) {
@@ -197,33 +153,33 @@ export const dataSubmitted = (data: string) => (dispatch: Dispatch, getState: Ge
     }
 
     dispatch(tokenDetected(parameters))
-    return Actions.addToken(parameters)
+    Actions.addToken(parameters)
+    return
   }
 
   // LEGACY ADDRESS ///////////////////////////////////////////////////////
   if (parsedUri.legacyAddress) {
-    return dispatch(legacyAddressDetected(parsedUri))
+    dispatch(legacyAddressDetected(parsedUri))
+    return
   }
 
   // PUBLIC ADDRESS ///////////////////////////////////////////////////////
   dispatch(publicAddressDetected(parsedUri))
   dispatch(updateParsedURI(parsedUri))
-  return Actions.sendConfirmation('fromScan')
+  Actions.sendConfirmation('fromScan')
 }
 
 // ADDRESS_BUTTON ///////////////////////////////////////////////////////
 export const addressButtonPressed = () => (dispatch: Dispatch) => {
-  return dispatch(addressModalActivated(''))
-  // return Promise.resolve()
-  //   .then(() => Clipboard.getText())
-  //   .then(input => {
-  //     return dispatch(activated as addressModalActivated(input))
-  //   })
+  // return dispatch(addressModalActivated(''))
+  return Clipboard.getString().then(input => {
+    return dispatch(addressModalActivated(input))
+  })
 }
 
 // TORCH_BUTTON ///////////////////////////////////////////////////////
 export const torchButtonPressed = () => (dispatch: Dispatch) => {
-  return dispatch(torchToggled())
+  dispatch(torchToggled())
 }
 
 // SCAN
