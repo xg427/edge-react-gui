@@ -148,8 +148,8 @@ type Props = {
   addContext: EdgeContext => void,
   addUsernames: (Array<string>) => void,
   setDeviceDimensions: any => void,
-  dispatchEnableScan: () => void,
-  dispatchDisableScan: () => void,
+  scanEnabled: () => void,
+  scanDisabled: () => void,
   urlReceived: string => void,
   updateCurrentSceneKey: (string) => void,
   contextCallbacks: EdgeContextCallbacks
@@ -361,9 +361,9 @@ export default class Main extends Component<Props, State> {
                           navTransparent={true}
                           onEnter={() => {
                             this.props.requestPermission(CAMERA)
-                            this.props.dispatchEnableScan()
+                            this.props.scanEnabled()
                           }}
-                          onExit={this.props.dispatchDisableScan}
+                          onExit={this.props.scanDisabled}
                           component={Scan}
                           renderTitle={this.renderWalletListNavBar()}
                           renderLeftButton={this.renderHelpButton()}

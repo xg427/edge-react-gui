@@ -225,3 +225,6 @@ export const addressButtonPressed = () => (dispatch: Dispatch) => {
 export const torchButtonPressed = () => (dispatch: Dispatch) => {
   return dispatch(torchToggled())
 }
+
+// SCAN
+export { scanEnabled, scanDisabled } from './Camera/CameraActions.js'

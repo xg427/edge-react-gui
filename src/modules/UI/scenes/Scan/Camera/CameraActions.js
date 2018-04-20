@@ -3,12 +3,12 @@
 export const PREFIX = 'CAMERA/'
 
 export const SCAN_ENABLED = PREFIX + 'SCAN_ENABLED'
-export const scanDisabled = () => ({
+export const scanEnabled = () => ({
   type: SCAN_ENABLED
 })
 
 export const SCAN_DISABLED = PREFIX + 'SCAN_DISABLED'
-export const scanEnabled = () => ({
+export const scanDisabled = () => ({
   type: SCAN_DISABLED
 })
 
