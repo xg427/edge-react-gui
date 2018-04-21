@@ -24,6 +24,14 @@ type Props = {
   torchButtonPressed: () => void,
   addressButtonPressed: () => void,
   manualInputModalHidden: () => void,
+  legacyAddressModalContinueButtonPressed: () => void,
+  legacyAddressModalCancelButtonPressed: () => void,
+  manualInputModalPasteButtonPressed: () => void,
+  manualInputModalDoneButtonPressed: () => void,
+  manualInputModalCancelButtonPressed: () => void,
+  manualInputModalInputChanged: () => void,
+  manualInputModalHidden: () => void,
+  legacyAddressButtonPressed: () => void,
   inputChanged: (input: string) => void,
   permissions: {[Permission]: PermissionStatus},
   camera: {
@@ -34,7 +42,21 @@ type Props = {
 }
 export class Scan extends Component<Props> {
   render () {
-    const { dataSubmitted, torchButtonPressed, addressButtonPressed, permissions, camera, inputChanged, manualInputModalHidden } = this.props
+    const {
+      dataSubmitted,
+      torchButtonPressed,
+      addressButtonPressed,
+      permissions,
+      camera,
+      legacyAddressModalContinueButtonPressed,
+      legacyAddressModalCancelButtonPressed,
+      manualInputModalPasteButtonPressed,
+      manualInputModalDoneButtonPressed,
+      manualInputModalCancelButtonPressed,
+      manualInputModalInputChanged,
+      manualInputModalHidden,
+      legacyAddressButtonPressed
+    } = this.props
     return (
       <SafeAreaView>
         <Gradient style={styles.gradient} />
@@ -70,7 +92,7 @@ export class Scan extends Component<Props> {
 
         <Footer>
           <Item>
-            <Button onPress={this.props.legacyAddressButtonPressed}>
+            <Button onPress={legacyAddressButtonPressed}>
               <Button.Text>
                 <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
               </Button.Text>
@@ -104,16 +126,16 @@ export class Scan extends Component<Props> {
         </Footer>
 
         <ABAlert />
-        <ManualInputModal
-          hidden={manualInputModalHidden}
-          inputChanged={inputChanged}
-          onContinueButtonPressed={() => {}}
-          onCancelButtonPressed={() => {}} />
+
+        <ManualInputModal hidden={manualInputModalHidden}
+          inputChanged={manualInputModalInputChanged}
+          pasteButtonPressed={manualInputModalPasteButtonPressed}
+          doneButtonPressed={manualInputModalDoneButtonPressed}
+          cancelButtonPressed={manualInputModalCancelButtonPressed} />
+
         <LegacyAddressModal
-          isActive={this.props.legacyAddressModal.isActive}
-          onContinueButtonPressed={() => {}}
-          onCancelButtonPressed={() => {}}
-        />
+          continueButtonPressed={legacyAddressModalContinueButtonPressed}
+          cancelButtonPressed={legacyAddressModalCancelButtonPressed} />
         {/* <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} /> */}
       </SafeAreaView>
     )

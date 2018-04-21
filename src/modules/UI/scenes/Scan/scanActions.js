@@ -144,6 +144,26 @@ export const qrCodeScanned = (data: string) => (dispatch: Dispatch) => {
   dispatch(inputChanged(data))
 }
 
+export const legacyAddressModalContinueButtonPressed = () => (dispatch: Dispatch) => {
+  dispatch(legacyAddressModalDeactivated())
+}
+
+export const legacyAddressModalCancelButtonPressed = () => (dispatch: Dispatch) => {
+  dispatch(legacyAddressModalDeactivated())
+}
+
+export const manualInputModalPasteButtonPressed = () => (dispatch: Dispatch) => {
+  dispatch(manualInputModalDeactivated())
+}
+
+export const manualInputModalDoneButtonPressed = () => (dispatch: Dispatch) => {
+  dispatch(manualInputModalDeactivated())
+}
+
+export const manualInputModalCancelButtonPressed = () => (dispatch: Dispatch) => {
+  dispatch(manualInputModalDeactivated())
+}
+
 // export const qrCodeScanned = (data: string) => (dispatch: Dispatch, getState: GetState) => {
 //   dispatch(qrCodeScanned(data))
 //

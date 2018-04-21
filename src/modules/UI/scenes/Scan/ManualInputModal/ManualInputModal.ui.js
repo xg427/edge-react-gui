@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Text, TextInput, View } from 'react-native'
+import { Text, TextInput } from 'react-native'
 import { sprintf } from 'sprintf-js'
 
 import { Icon } from '../../../components/Icon/Icon.ui.js'

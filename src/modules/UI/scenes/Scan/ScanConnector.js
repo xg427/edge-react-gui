@@ -4,7 +4,19 @@ import { connect } from 'react-redux'
 
 import { Scan } from './Scan.ui'
 import type { Dispatch, State } from '../../../ReduxTypes'
-import { addressButtonPressed, torchButtonPressed, dataSubmitted, inputChanged, inputReset } from './scanActions.js'
+import {
+  addressButtonPressed,
+  torchButtonPressed,
+  dataSubmitted,
+  inputChanged,
+  inputReset,
+  manualInputModalPasteButtonPressed,
+  manualInputModalDoneButtonPressed,
+  manualInputModalCancelButtonPressed,
+  legacyAddressModalContinueButtonPressed,
+  legacyAddressModalCancelButtonPressed
+} from './scanActions.js'
+
 import { activated } from './LegacyAddressModal/LegacyAddressModalActions.js'
 
 const mapStateToProps = (state: State) => ({
@@ -13,11 +25,12 @@ const mapStateToProps = (state: State) => ({
   permissions: state.permissions,
   legacyAddressModal: state.ui.scenes.scan.legacyAddressModal,
   manualInputModal: state.ui.scenes.scan.manualInputModal,
-  camera: state.ui.scenes.scan.camera,
-  scanIsEnabled: state.ui.scenes.scan.camera.scan.isEnabled,
-  torchIsEnabled: state.ui.scenes.scan.camera.torch.isEnabled
+  camera: state.ui.scenes.scan.camera
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+  legacyAddressButtonPressed: () => {
+    dispatch(activated())
+  },
   dataSubmitted: data => {
     dispatch(dataSubmitted(data))
   },
@@ -30,11 +43,23 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   inputChanged: (input: string) => {
     dispatch(inputChanged(input))
   },
+  manualInputModalPasteButtonPressed: () => {
+    dispatch(manualInputModalPasteButtonPressed())
+  },
+  manualInputModalDoneButtonPressed: () => {
+    dispatch(manualInputModalDoneButtonPressed())
+  },
+  manualInputModalCancelButtonPressed: () => {
+    dispatch(manualInputModalCancelButtonPressed())
+  },
   manualInputModalHidden: () => {
     dispatch(inputReset())
   },
-  legacyAddressButtonPressed: () => {
-    dispatch(activated())
+  legacyAddressModalContinueButtonPressed: () => {
+    dispatch(legacyAddressModalContinueButtonPressed())
+  },
+  legacyAddressModalCancelButtonPressed: () => {
+    dispatch(legacyAddressModalCancelButtonPressed())
   }
 })
 
