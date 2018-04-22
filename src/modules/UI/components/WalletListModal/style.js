@@ -86,8 +86,12 @@ export const styles = {
   },
   symbol: {
     fontFamily: THEME.FONTS.SYMBOLS
-  }
+  },
   // end of token rows //
+  debug: {
+    borderColor: 'red',
+    borderWidth: 1
+  }
 }
 
 export default StyleSheet.create(styles)

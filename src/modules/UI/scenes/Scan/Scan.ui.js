@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { ActivityIndicator, Text } from 'react-native'
 
-import ABAlert from '../../components/ABAlert/indexABAlert'
+// import ABAlert from '../../components/ABAlert/indexABAlert'
 import SafeAreaView from '../../components/SafeAreaView'
 import { ManualInputModalConnector as ManualInputModal } from './ManualInputModal/ManualInputModalConnector.js'
 import { LegacyAddressModalConnector as LegacyAddressModal } from './LegacyAddressModal/LegacyAddressModalConnector.js'
@@ -12,7 +12,8 @@ import { Body } from './components/Body.ui.js'
 import { Button } from './components/Button.ui.js'
 import { Footer } from './components/Footer.ui.js'
 import { Item } from './components/Item.ui.js'
-// import WalletListModal from '../../components/WalletListModal/WalletListModalConnector.js'
+import WalletListModal from '../../components/WalletListModal/WalletListModalConnector.js'
+import { WalletSelectorModalConnector as WalletSelectorModal } from './WalletSelectorModal/WalletSelectorModalConnector.js'
 import * as Constants from '../../../../constants/indexConstants.js'
 import Gradient from '../../components/Gradient/Gradient.ui.js'
 import { styles } from './styles.js'
@@ -55,7 +56,8 @@ export class Scan extends Component<Props> {
       manualInputModalCancelButtonPressed,
       manualInputModalInputChanged,
       manualInputModalHidden,
-      legacyAddressButtonPressed
+      legacyAddressButtonPressed,
+      walletSelectorButtonPressed
     } = this.props
     return (
       <SafeAreaView>
@@ -92,6 +94,17 @@ export class Scan extends Component<Props> {
 
         <Footer>
           <Item>
+            <Button onPress={walletSelectorButtonPressed}>
+              <Button.Text>
+                <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
+              </Button.Text>
+              <Button.Text>
+                <Text>{'Wallet Selector'}</Text>
+              </Button.Text>
+            </Button>
+          </Item>
+
+          <Item>
             <Button onPress={legacyAddressButtonPressed}>
               <Button.Text>
                 <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
@@ -125,8 +138,6 @@ export class Scan extends Component<Props> {
           </Item>
         </Footer>
 
-        <ABAlert />
-
         <ManualInputModal hidden={manualInputModalHidden}
           inputChanged={manualInputModalInputChanged}
           pasteButtonPressed={manualInputModalPasteButtonPressed}
@@ -136,7 +147,13 @@ export class Scan extends Component<Props> {
         <LegacyAddressModal
           continueButtonPressed={legacyAddressModalContinueButtonPressed}
           cancelButtonPressed={legacyAddressModalCancelButtonPressed} />
-        {/* <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} /> */}
+
+        {/* <ABAlert /> */}
+
+        <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} />
+        {/* <WalletSelectorModal
+          dismissButtonPressed={() => {}}
+          walletRowPressed={() => {}} /> */}
       </SafeAreaView>
     )
   }

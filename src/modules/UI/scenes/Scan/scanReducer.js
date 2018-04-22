@@ -9,6 +9,7 @@ import * as WALLET_LIST_MODAL_ACTION from '../../components/WalletListModal/acti
 
 import { manualInputModal } from './ManualInputModal/ManualInputModalReducer.js'
 import { legacyAddressModal } from './LegacyAddressModal/LegacyAddressModalReducer.js'
+import { walletSelectorModal } from './WalletSelectorModal/WalletSelectorModalReducer.js'
 import { camera } from './Camera/CameraReducer.js'
 // import { InvalidUriModalReducer as invalidUriModal } from './InvalidUriModal/InvalidUriModalReducer.js'
 import { INPUT_CHANGED, INPUT_RESET, PARSE_URI_SUCCEEDED, PARSE_URI_FAILED } from './scanActions.js'
@@ -83,7 +84,8 @@ export const scan = combineReducers({
   selectedWalletListModalVisibility,
   scanToWalletListModalVisibility,
   input,
-  uri
+  uri,
+  walletSelectorModal
 })
 
 export default scan

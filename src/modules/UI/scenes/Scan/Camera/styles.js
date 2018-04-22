@@ -13,7 +13,7 @@ export const rawStyles = {
   body: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'stretch'
   },
   overlay: {
     flex: 1

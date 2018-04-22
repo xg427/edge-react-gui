@@ -12,8 +12,13 @@ import { updateParsedURI } from '../../scenes/SendConfirmation/action.js'
 import { torchToggled } from './Camera/CameraActions.js'
 import { activated as manualInputModalActivated, deactivated as manualInputModalDeactivated } from './ManualInputModal/ManualInputModalActions.js'
 import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
+import { activated as walletSelectorModalActivated, deactivated as walletSelectorModalDeactivated } from './WalletSelectorModal/WalletSelectorModalActions.js'
 
 export const PREFIX = 'SCAN/'
+
+export const walletSelectorButtonPressed = () => (dispatch) => {
+  dispatch(walletSelectorModalActivated())
+}
 
 // SCENE ////////////////////////////////////////////////////////////////
 export const ENTERED = PREFIX + 'ENTERED'

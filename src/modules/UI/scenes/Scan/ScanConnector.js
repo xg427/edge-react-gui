@@ -14,7 +14,8 @@ import {
   manualInputModalDoneButtonPressed,
   manualInputModalCancelButtonPressed,
   legacyAddressModalContinueButtonPressed,
-  legacyAddressModalCancelButtonPressed
+  legacyAddressModalCancelButtonPressed,
+  walletSelectorButtonPressed
 } from './scanActions.js'
 
 import { activated } from './LegacyAddressModal/LegacyAddressModalActions.js'
@@ -60,6 +61,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   legacyAddressModalCancelButtonPressed: () => {
     dispatch(legacyAddressModalCancelButtonPressed())
+  },
+  walletSelectorButtonPressed: () => {
+    dispatch(walletSelectorButtonPressed())
   }
 })
 
