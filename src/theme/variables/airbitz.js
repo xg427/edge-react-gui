@@ -37,9 +37,11 @@ if (Platform.OS !== 'ios') {
 } else {
   const majorVersionIOS = parseInt(Platform.Version, 10)
   if (majorVersionIOS > 9 && majorVersionIOS < 11) {
-    gradientHeaderHeight = 62
+    // gradientHeaderHeight = 62
+    gradientHeaderHeight = 86
   } else {
-    gradientHeaderHeight = 44
+    // gradientHeaderHeight = 44
+    gradientHeaderHeight = 62
   }
 }
 

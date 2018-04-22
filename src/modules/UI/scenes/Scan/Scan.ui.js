@@ -12,7 +12,7 @@ import { Body } from './components/Body.ui.js'
 import { Button } from './components/Button.ui.js'
 import { Footer } from './components/Footer.ui.js'
 import { Item } from './components/Item.ui.js'
-import WalletListModal from '../../components/WalletListModal/WalletListModalConnector.js'
+// import WalletListModal from '../../components/WalletListModal/WalletListModalConnector.js'
 import { WalletSelectorModalConnector as WalletSelectorModal } from './WalletSelectorModal/WalletSelectorModalConnector.js'
 import * as Constants from '../../../../constants/indexConstants.js'
 import Gradient from '../../components/Gradient/Gradient.ui.js'
@@ -61,7 +61,7 @@ export class Scan extends Component<Props> {
     } = this.props
     return (
       <SafeAreaView>
-        <Gradient style={styles.gradient} />
+        {/* <Gradient style={[styles.gradient, {borderColor: 'red', borderWidth: 1}]} /> */}
 
         <Body>
           <Camera permission={permissions.camera}>
@@ -95,10 +95,10 @@ export class Scan extends Component<Props> {
         <Footer>
           <Item>
             <Button onPress={walletSelectorButtonPressed}>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
               </Button.Text>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Text>{'Wallet Selector'}</Text>
               </Button.Text>
             </Button>
@@ -106,10 +106,10 @@ export class Scan extends Component<Props> {
 
           <Item>
             <Button onPress={legacyAddressButtonPressed}>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
               </Button.Text>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Text>{'Legacy Address'}</Text>
               </Button.Text>
             </Button>
@@ -117,10 +117,10 @@ export class Scan extends Component<Props> {
 
           <Item>
             <Button onPress={addressButtonPressed}>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Icon style={{}} type={Constants.FONT_AWESOME} name={Constants.ADDRESS_BOOK_O} size={18} />
               </Button.Text>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Text>{s.strings.fragment_send_address}</Text>
               </Button.Text>
             </Button>
@@ -128,10 +128,10 @@ export class Scan extends Component<Props> {
 
           <Item>
             <Button onPress={torchButtonPressed}>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Icon style={{}} type={Constants.ION_ICONS} name={Constants.FLASH} size={18} />
               </Button.Text>
-              <Button.Text>
+              <Button.Text style={{fontSize: 12}}>
                 <Text>{s.strings.fragment_send_flash}</Text>
               </Button.Text>
             </Button>
@@ -150,10 +150,10 @@ export class Scan extends Component<Props> {
 
         {/* <ABAlert /> */}
 
-        <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} />
-        {/* <WalletSelectorModal
+        {/* <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} /> */}
+        <WalletSelectorModal
           dismissButtonPressed={() => {}}
-          walletRowPressed={() => {}} /> */}
+          walletRowPressed={() => {}} />
       </SafeAreaView>
     )
   }

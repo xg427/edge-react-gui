@@ -102,8 +102,6 @@ global.etherscanApiKey = ENV.ETHERSCAN_API_KEY
 
 const RouterWithRedux = connect()(Router)
 
-StatusBar.setBarStyle('light-content', true)
-
 const tabBarIconFiles: { [tabName: string]: string } = {}
 tabBarIconFiles[Constants.WALLET_LIST] = walletIcon
 tabBarIconFiles[Constants.REQUEST] = receiveIcon

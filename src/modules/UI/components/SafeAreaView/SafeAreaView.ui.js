@@ -1,9 +1,11 @@
 // @flow
 import React from 'react'
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, StatusBar } from 'react-native'
 
 import THEME from '../../../../theme/variables/airbitz.js'
 import Gradient from '../../components/Gradient/Gradient.ui'
+
+StatusBar.setNetworkActivityIndicatorVisible(true)
 
 type props = {
   style: any,
@@ -13,19 +15,12 @@ type props = {
 // The Gradient Component is a hack to make the upper portion of the safe area view have the edge gradient
 const SafeAreaViewComponent = ({ style, children }: props) => {
   return (
+    <Gradient style={{ flex: 1, borderColor: 'red', borderWidth: 1 }}>
     <SafeAreaView style={[style, { flex: 1 }]}>
-      {children}
-      <Gradient
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          left: 0,
-          height: THEME.HEADER,
-          zIndex: -1000
-        }}
-      />
+        {children}
+      <StatusBar barStyle={'light-content'} transparent networkActivityIndicatorVisible />
     </SafeAreaView>
+  </Gradient>
   )
 }
 
