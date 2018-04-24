@@ -2,6 +2,7 @@
 
 export const LOGIN = 'login'
 export const ROOT = 'root'
+export const WRAPPER = 'wrapper' // created to prevent crash on Android
 export const EDGE = 'edge'
 export const CHANGE_PASSWORD = 'changePassword'
 export const CHANGE_PIN = 'changePin'
