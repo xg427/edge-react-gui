@@ -8,8 +8,9 @@ import IonIcon from 'react-native-vector-icons/Ionicons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
-import * as Constants from '../../../../constants/indexConstants'
+import { ENTYPO, MATERIAL_ICONS, FONT_AWESOME, ION_ICONS, SIMPLE_ICONS, MATERIAL_COMMUNITY, FEATHER_ICONS } from '../../../../constants/indexConstants'
 
 type Props = {
   style: StyleSheet.Styles,
@@ -20,18 +21,20 @@ type Props = {
 
 const Icon = ({ style, name, size, type }: Props) => {
   switch (type) {
-    case Constants.ENTYPO:
+    case ENTYPO:
       return <Entypo style={style} name={name} size={size} />
-    case Constants.MATERIAL_ICONS:
+    case MATERIAL_ICONS:
       return <MaterialIcon style={style} name={name} size={size} />
-    case Constants.FONT_AWESOME:
+    case FONT_AWESOME:
       return <FAIcon style={style} name={name} size={size} />
-    case Constants.ION_ICONS:
+    case ION_ICONS:
       return <IonIcon style={style} name={name} size={size} />
-    case Constants.SIMPLE_ICONS:
+    case SIMPLE_ICONS:
       return <SimpleIcon style={style} name={name} size={size} />
-    case Constants.MATERIAL_COMMUNITY:
+    case MATERIAL_COMMUNITY:
       return <MCIcon style={style} name={name} size={size} />
+    case FEATHER_ICONS:
+      return <FeatherIcon style={style} name={name} size={size} />
   }
   return null
 }

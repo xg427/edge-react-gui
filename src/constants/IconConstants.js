@@ -37,3 +37,6 @@ export const EXCLAMATION = 'exclamation'
 // MaterialCommunity
 export const MATERIAL_COMMUNITY = 'materialCommunity'
 export const ALERT = 'alert-circle-outline'
+
+// FeatherIcon
+export const FEATHER_ICONS = 'feather'

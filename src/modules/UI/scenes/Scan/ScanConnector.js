@@ -13,7 +13,9 @@ import {
   legacyAddressModalContinueButtonPressed,
   legacyAddressModalCancelButtonPressed,
   addressModalDoneButtonPressed,
-  addressModalCancelButtonPressed
+  addressModalCancelButtonPressed,
+  privateKeyModalImportFundsButtonPressed,
+  privateKeyModalCancelButtonPressed
 } from './action'
 
 const mapStateToProps = (state: State) => ({
@@ -31,7 +33,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   legacyAddressModalContinueButtonPressed: () => dispatch(legacyAddressModalContinueButtonPressed()),
   legacyAddressModalCancelButtonPressed: () => dispatch(legacyAddressModalCancelButtonPressed()),
   addressModalDoneButtonPressed: data => dispatch(addressModalDoneButtonPressed(data)),
-  addressModalCancelButtonPressed: () => dispatch(addressModalCancelButtonPressed())
+  addressModalCancelButtonPressed: () => dispatch(addressModalCancelButtonPressed()),
+  privateKeyModalImportFundsButtonPressed: () => dispatch(privateKeyModalImportFundsButtonPressed()),
+  privateKeyModalCancelButtonPressed: () => dispatch(privateKeyModalCancelButtonPressed())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scan)

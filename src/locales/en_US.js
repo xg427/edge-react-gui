@@ -252,9 +252,17 @@ const strings = {
   word_to_in_convert_from_to_string: 'to',
 
   legacy_address_modal_title: 'Legacy Address Detected',
-  legacy_address_modal_warning: 'Warning: You have scanned a legacy format address that may not be for %1$s as it is indistinguishable from other currency addresses.\n\nDo you want to continue sending to this address?',
+  legacy_address_modal_warning:
+    'Warning: You have scanned a legacy format address that may not be for %1$s as it is indistinguishable from other currency addresses.\n\nDo you want to continue sending to this address?',
   legacy_address_modal_continue: 'Continue',
-  legacy_address_modal_cancel: 'Cancel'
+  legacy_address_modal_cancel: 'Cancel',
+
+  private_key_modal_private_key: '%1$1 Private Key',
+  private_key_modal_with_public_address: 'with Public Address:',
+  private_key_modal_sweep_from_private_address: 'Sweep Funds From Private Key',
+  private_key_modal_send_to_public_address: 'Send Funds to Public Address',
+  private_key_modal_cancel: 'Cancel',
+  private_key_modal_importing_private_key: 'Importing Private Key'
 }
 
 export default strings

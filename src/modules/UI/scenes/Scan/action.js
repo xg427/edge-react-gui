@@ -100,6 +100,9 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
       // LEGACY ADDRESS
       setTimeout(() => dispatch(legacyAddressModalActivated()), 1000)
       return
+    }
+    if (parsedUri.privateKey) {
+      // PRIVATE KEY
     } else {
       // PUBLIC ADDRESS
       dispatch(updateParsedURI(parsedUri))
@@ -143,4 +146,71 @@ export const legacyAddressModalContinueButtonPressed = () => (dispatch: Dispatch
 export const legacyAddressModalCancelButtonPressed = () => (dispatch: Dispatch) => {
   dispatch(legacyAddressModalDeactivated())
   dispatch(enableScan())
+}
+
+export const privateKeyModalImportFundsButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
+  // dispatch(privateKeyModalDeactivated())
+  dispatch(enableScan())
+
+  const state = getState()
+  const parsedUri = state.ui.scenes.scan.parsedUri
+  if (!parsedUri) return
+
+  dispatch(updateParsedURI(parsedUri))
+  Actions.sendConfirmation('fromScan')
+}
+
+export const privateKeyModalCancelButtonPressed = () => (dispatch: Dispatch) => {
+  // dispatch(privateKeyModalDeactivated())
+  dispatch(enableScan())
+}
+
+export const SWEEP_PRIVATE_KEY_START = PREFIX + 'SWEEP_PRIVATE_KEY_START'
+export const sweepPrivateKeyStart = () => ({
+  type: SWEEP_PRIVATE_KEY_START
+})
+
+export const SWEEP_PRIVATE_KEY_SUCCESS = PREFIX + 'SWEEP_PRIVATE_KEY_SUCCESS'
+export const sweepPrivateKeySuccess = () => ({
+  type: SWEEP_PRIVATE_KEY_SUCCESS,
+  data: {}
+})
+
+export const SWEEP_PRIVATE_KEY_FAIL = PREFIX + 'SWEEP_PRIVATE_KEY_FAIL'
+export const sweepPrivateKeyFail = (error: Error) => ({
+  type: SWEEP_PRIVATE_KEY_FAIL,
+  data: {
+    error
+  }
+})
+
+export const sweepPrivateKey = () => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const selectedWalletId = state.ui.wallets.selectedWalletId
+  const wallet: EdgeCurrencyWallet = state.core.wallets.byId[selectedWalletId]
+  const parsedUri = state.ui.scenes.scan.parsedUri
+  if (!parsedUri) {
+    return
+  }
+
+  const spendInfo: EdgeSpendInfo = {
+    privateKeys: [parsedUri.privateKey],
+    spendTargets: []
+  }
+
+  dispatch(sweepPrivateKeyStart())
+  Promise.resolve(() => spendInfo)
+    // $FlowFixMe
+    .then(wallet.sweepPrivateKey)
+    // $FlowFixMe
+    .then(wallet.signTx)
+    .then(wallet.broadcastTx)
+    .then(wallet.saveTx)
+    .then(
+      edgeTransaction => {
+        dispatch(sweepPrivateKeySuccess())
+        Actions.transactionDetails({ edgeTransaction })
+      },
+      error => dispatch(sweepPrivateKeyFail(error))
+    )
 }

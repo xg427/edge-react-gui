@@ -22,6 +22,7 @@ import { AUTHORIZED, DENIED } from '../../permissions'
 import AddressModal from './components/AddressModalConnector'
 import styles, { styles as styleRaw } from './style'
 import LegacyAddressModal from './LegacyAddressModal/LegacyAddressModalConnector.js'
+import PrivateKeyModal from './PrivateKeyModal/PrivateKeyModalConnector.js'
 
 type Props = {
   cameraPermission: PermissionStatus,
@@ -34,7 +35,9 @@ type Props = {
   toggleScanToWalletListModal: () => void,
   addressModalDoneButtonPressed: () => void,
   legacyAddressModalContinueButtonPressed: () => void,
-  legacyAddressModalCancelButtonPressed: () => void
+  legacyAddressModalCancelButtonPressed: () => void,
+  privateKeyModalImportFundsButtonPressed: () => void,
+  privateKeyModalCancelButtonPressed: () => void
 }
 
 const HEADER_TEXT = s.strings.send_scan_header_text
@@ -47,7 +50,13 @@ const FLASH_TEXT = s.strings.fragment_send_flash
 
 export default class Scan extends Component<Props> {
   render () {
-    const { addressModalDoneButtonPressed, legacyAddressModalContinueButtonPressed, legacyAddressModalCancelButtonPressed } = this.props
+    const {
+      privateKeyModalImportFundsButtonPressed,
+      privateKeyModalCancelButtonPressed,
+      addressModalDoneButtonPressed,
+      legacyAddressModalContinueButtonPressed,
+      legacyAddressModalCancelButtonPressed
+    } = this.props
 
     return (
       <SafeAreaView>
@@ -89,6 +98,7 @@ export default class Scan extends Component<Props> {
         </View>
 
         <LegacyAddressModal continueButtonPressed={legacyAddressModalContinueButtonPressed} cancelButtonPressed={legacyAddressModalCancelButtonPressed} />
+        <PrivateKeyModal importFundsButtonPressed={privateKeyModalImportFundsButtonPressed} cancelButtonPressed={privateKeyModalCancelButtonPressed} />
       </SafeAreaView>
     )
   }

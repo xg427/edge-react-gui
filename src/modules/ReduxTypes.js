@@ -67,6 +67,12 @@ export type State = {
         scanToWalletListModalVisibility: boolean,
         legacyAddressModal: {
           isActive: boolean
+        },
+        privateKeyModal: {
+          primaryModalIsActive: boolean,
+          secondaryModalIsActive: boolean,
+          publicAddress: string | null,
+          error: Error | null
         }
       },
       sendConfirmation: {
