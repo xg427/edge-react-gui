@@ -42,7 +42,7 @@ test('initialState', () => {
       selectedWalletListModalVisibility: false,
       torchEnabled: false,
       legacyAddressModal: {
-        isActive: false
+        isVisible: false
       },
       parsedUri: null
     },

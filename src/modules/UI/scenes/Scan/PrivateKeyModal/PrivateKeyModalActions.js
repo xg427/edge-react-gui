@@ -1,33 +1,37 @@
 // @flow
 
-import type { EdgeCurrencyWallet, EdgeSpendInfo } from 'edge-login'
-import { Actions } from 'react-native-router-flux'
-
-import type { Dispatch, GetState } from '../../../../ReduxTypes.js'
+import type { Dispatch } from '../../../../ReduxTypes.js'
+import { activated as primaryModalActivated, deactivated as primaryModalDeactivated } from './PrimaryModal/PrimaryModalActions.js'
+import { deactivated as secondaryModalDeactivated } from './SecondaryModal/SecondaryModalActions.js'
 
 export const PREFIX = 'PRIVATE_KEY_MODAL/'
 
-export const ACTIVATED = PREFIX + 'ACTIVATED'
-export const activated = () => ({
-  type: ACTIVATED
+export const activated = () => (dispatch: Dispatch) => {
+  dispatch(primaryModalActivated())
+}
+
+export const deactivated = () => (dispatch: Dispatch) => {
+  dispatch(primaryModalDeactivated())
+  dispatch(secondaryModalDeactivated())
+}
+
+export const sweepPrivateKeyStarted = () => (dispatch: Dispatch) => {}
+export const sweepPrivateKeySucceeded = () => (dispatch: Dispatch) => {}
+export const sweepPrivateKeyFailed = () => (dispatch: Dispatch) => {}
+
+export const SWEEP_PRIVATE_KEY_START = PREFIX + 'SWEEP_PRIVATE_KEY_START'
+export const sweepPrivateKeyStart = () => ({
+  type: SWEEP_PRIVATE_KEY_START
 })
 
-export const DEACTIVATED = PREFIX + 'DEACTIVATED'
-export const deactivated = () => ({
-  type: DEACTIVATED
+export const SWEEP_PRIVATE_KEY_SUCCESS = PREFIX + 'SWEEP_PRIVATE_KEY_SUCCESS'
+export const sweepPrivateKeySuccess = () => ({
+  type: SWEEP_PRIVATE_KEY_SUCCESS,
+  data: {}
 })
 
-export const TOGGLED = PREFIX + 'TOGGLED'
-export const toggled = () => ({
-  type: TOGGLED
-})
-
-export const RESET = PREFIX + 'RESET'
-export const reset = () => ({
-  type: RESET
-})
-
-export const DISMISS_MODAL = PREFIX + 'DISMISS_MODAL'
-export const dismissModal = () => ({
-  type: DISMISS_MODAL
+export const SWEEP_PRIVATE_KEY_FAIL = PREFIX + 'SWEEP_PRIVATE_KEY_FAIL'
+export const sweepPrivateKeyFail = (error: Error) => ({
+  type: SWEEP_PRIVATE_KEY_FAIL,
+  data: { error }
 })

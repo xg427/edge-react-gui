@@ -10,7 +10,7 @@ import { InteractiveModal, PrimaryButton, SecondaryButton } from '../../../compo
 import s from '../../../../../locales/strings.js'
 
 type Props = {
-  isActive: boolean,
+  isVisible: boolean,
   currencyName: string,
   continueButtonPressed: () => void,
   cancelButtonPressed: () => void,
@@ -20,7 +20,7 @@ type Props = {
 }
 export class LegacyAddressModal extends Component<Props> {
   static defaultProps = {
-    isActive: false,
+    isVisible: false,
     currencyName: 'the intended currency',
     continueButtonPressed: () => {},
     cancelButtonPressed: () => {},
@@ -30,14 +30,14 @@ export class LegacyAddressModal extends Component<Props> {
   }
 
   render () {
-    const { isActive, currencyName, continueButtonPressed, cancelButtonPressed, backdropPressed, backButtonPressed, hidden } = this.props
+    const { isVisible, currencyName, continueButtonPressed, cancelButtonPressed, backdropPressed, backButtonPressed, hidden } = this.props
     const WARNING = sprintf(s.strings.legacy_address_modal_warning, currencyName)
     const TITLE = s.strings.legacy_address_modal_title
     const CONTINUE = s.strings.legacy_address_modal_continue
     const CANCEL = s.strings.legacy_address_modal_cancel
 
     return (
-      <InteractiveModal isActive={isActive} onBackButtonPress={backButtonPressed} onBackdropPress={backdropPressed} onModalHide={hidden}>
+      <InteractiveModal isVisible={isVisible} onBackButtonPress={backButtonPressed} onBackdropPress={backdropPressed} onModalHide={hidden}>
         <InteractiveModal.Icon>
           <Icon style={{}} type={'ionIcons'} name={'ios-alert-outline'} size={30} />
         </InteractiveModal.Icon>

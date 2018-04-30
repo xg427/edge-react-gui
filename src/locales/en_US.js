@@ -257,10 +257,11 @@ const strings = {
   legacy_address_modal_continue: 'Continue',
   legacy_address_modal_cancel: 'Cancel',
 
-  private_key_modal_private_key: '%1$1 Private Key',
+  private_key_modal_private_key: '%1$s Private Key',
   private_key_modal_with_public_address: 'with Public Address:',
   private_key_modal_sweep_from_private_address: 'Sweep Funds From Private Key',
   private_key_modal_send_to_public_address: 'Send Funds to Public Address',
+  private_key_modal_import: 'Import',
   private_key_modal_cancel: 'Cancel',
   private_key_modal_importing_private_key: 'Importing Private Key'
 }

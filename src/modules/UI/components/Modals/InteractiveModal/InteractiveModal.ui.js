@@ -51,9 +51,7 @@ type AndroidHackSpacerProps = {
 }
 export class AndroidHackSpacer extends Component<AndroidHackSpacerProps> {
   render () {
-    return (
-      <View style={styles.androidHackSpacer} />
-    )
+    return <View style={styles.androidHackSpacer} />
   }
 }
 
@@ -165,7 +163,7 @@ export class Row extends Component<RowProps> {
 
 // INTERACTIVE_MODAL /////////////////////////////////////////////////////////////////////////////
 type Props = {
-  isActive: boolean,
+  isVisible: boolean,
   children: Node,
   style?: StyleSheet.Styles
 }
@@ -179,7 +177,7 @@ export class InteractiveModal extends Component<Props> {
   static Row = Row
 
   render () {
-    const { isActive } = this.props
+    const { isVisible } = this.props
     const children = React.Children.toArray(this.props.children)
     const icon = children.find(child => child.type === InteractiveModal.Icon)
     const title = children.find(child => child.type === InteractiveModal.Title)
@@ -187,11 +185,7 @@ export class InteractiveModal extends Component<Props> {
     const footer = children.find(child => child.type === InteractiveModal.Footer)
 
     return (
-      <Modal useNativeDriver hideModalContentWhileAnimating
-        avoidKeyboard
-        isVisible={isActive}
-        {...this.props}
-        style={[styles.modal, this.props.style]}>
+      <Modal useNativeDriver hideModalContentWhileAnimating avoidKeyboard isVisible={isVisible} {...this.props} style={[styles.modal, this.props.style]}>
         {icon}
         <Container>
           <Icon.AndroidHackSpacer />

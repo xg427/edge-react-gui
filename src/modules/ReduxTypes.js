@@ -66,13 +66,17 @@ export type State = {
         selectedWalletListModalVisibility: boolean,
         scanToWalletListModalVisibility: boolean,
         legacyAddressModal: {
-          isActive: boolean
+          isVisible: boolean
         },
         privateKeyModal: {
-          primaryModalIsActive: boolean,
-          secondaryModalIsActive: boolean,
-          publicAddress: string | null,
-          error: Error | null
+          primaryModal: {
+            isVisible: boolean
+          },
+          secondaryModal: {
+            isVisible: boolean
+          },
+          error: Error | null,
+          isThinking: boolean
         }
       },
       sendConfirmation: {

@@ -7,8 +7,9 @@ import type { Dispatch, State } from '../../../../ReduxTypes.js'
 import { PrivateKeyModal } from './PrivateKeyModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
-  primaryModalIsActive: state.ui.scenes.scan.privateKeyModal.primaryModalIsActive,
-  secondaryModalIsActive: state.ui.scenes.scan.privateKeyModal.secondaryModalIsActive
+  error: state.ui.scenes.scan.privateKeyModal.error,
+  isThinking: state.ui.scenes.scan.privateKeyModal.isThinking,
+  parsedUri: state.ui.scenes.scan.parsedUri
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({})
 

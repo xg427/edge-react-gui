@@ -444,3 +444,8 @@ export const getReceiveAddresses = (currencyWallets: { [id: string]: EdgeCurrenc
     }, {})
   })
 }
+
+export const EDGE_LOGIN_REG_EXP = /^airbitz:\/\/edge\//
+export const isEdgeLogin = (data: string) => {
+  return EDGE_LOGIN_REG_EXP.test(data)
+}

@@ -32,7 +32,9 @@ export class Header extends Component<HeaderProps> {
   render () {
     return (
       <View style={[styles.header, this.props.style]}>
-        <Gradient reverse style={[styles.gradient]}>{this.props.children}</Gradient>
+        <Gradient reverse style={[styles.gradient]}>
+          {this.props.children}
+        </Gradient>
       </View>
     )
   }
@@ -85,15 +87,14 @@ export class Message extends Component<MessageProps> {
 
 // NON_INTERACTIVE_MODAL /////////////////////////////////////////////////////////////////////////////
 export type Props = {
-  isVisible: boolean,
-  durationInSeconds: number,
   children: Node,
-  onModalShow: () => void,
-  onModalHide: () => void,
-  onExpired?: () => void,
-  onCancel?: () => void,
+  durationInSeconds: number,
+  isVisible: boolean,
+  onBackButtonPress?: () => void,
   onBackdropPress?: () => void,
-  onBackButtonPress?: () => void
+  onExpire?: () => void,
+  onModalHide: () => void,
+  onModalShow: () => void
 }
 export class NonInteractiveModal extends Component<Props> {
   static Header = Header
@@ -103,12 +104,11 @@ export class NonInteractiveModal extends Component<Props> {
 
   static defaultProps = {
     durationInSeconds: 8,
-    onModalShow: () => {},
-    onModalHide: () => {},
-    onExpired: () => {},
-    onCancel: () => {},
+    onBackButtonPress: () => {},
     onBackdropPress: () => {},
-    onBackButtonPress: () => {}
+    onExpire: () => {},
+    onModalHide: () => {},
+    onModalShow: () => {}
   }
 
   timer: number
@@ -130,7 +130,7 @@ export class NonInteractiveModal extends Component<Props> {
   }
 
   onModalShow = () => {
-    this.timer = setTimeout(this.props.onExpired, this.props.durationInSeconds * 1000)
+    this.timer = setTimeout(this.props.onExpire, this.props.durationInSeconds * 1000)
     this.props.onModalShow()
   }
 

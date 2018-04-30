@@ -25,19 +25,19 @@ import LegacyAddressModal from './LegacyAddressModal/LegacyAddressModalConnector
 import PrivateKeyModal from './PrivateKeyModal/PrivateKeyModalConnector.js'
 
 type Props = {
+  addressModalDoneButtonPressed: () => void,
   cameraPermission: PermissionStatus,
-  torchEnabled: boolean,
+  onLegacyAddessAccept: () => void,
+  onLegacyAddressReject: () => void,
+  onPrivateKeyAccept: () => void,
+  onPrivateKeyReject: () => void,
+  onQrCodeScan: (data: string) => void,
   scanEnabled: boolean,
   showToWalletModal: boolean,
-  qrCodeScanned: (data: string) => void,
-  toggleEnableTorch: () => void,
   toggleAddressModal: () => void,
+  toggleEnableTorch: () => void,
   toggleScanToWalletListModal: () => void,
-  addressModalDoneButtonPressed: () => void,
-  legacyAddressModalContinueButtonPressed: () => void,
-  legacyAddressModalCancelButtonPressed: () => void,
-  privateKeyModalImportFundsButtonPressed: () => void,
-  privateKeyModalCancelButtonPressed: () => void
+  torchEnabled: boolean
 }
 
 const HEADER_TEXT = s.strings.send_scan_header_text
@@ -50,13 +50,7 @@ const FLASH_TEXT = s.strings.fragment_send_flash
 
 export default class Scan extends Component<Props> {
   render () {
-    const {
-      privateKeyModalImportFundsButtonPressed,
-      privateKeyModalCancelButtonPressed,
-      addressModalDoneButtonPressed,
-      legacyAddressModalContinueButtonPressed,
-      legacyAddressModalCancelButtonPressed
-    } = this.props
+    const { addressModalDoneButtonPressed, onLegacyAddessAccept, onLegacyAddressReject, onPrivateKeyAccept, onPrivateKeyReject } = this.props
 
     return (
       <SafeAreaView>
@@ -97,8 +91,8 @@ export default class Scan extends Component<Props> {
           {this.props.showToWalletModal && <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} />}
         </View>
 
-        <LegacyAddressModal continueButtonPressed={legacyAddressModalContinueButtonPressed} cancelButtonPressed={legacyAddressModalCancelButtonPressed} />
-        <PrivateKeyModal importFundsButtonPressed={privateKeyModalImportFundsButtonPressed} cancelButtonPressed={privateKeyModalCancelButtonPressed} />
+        <LegacyAddressModal onAccept={onLegacyAddessAccept} onReject={onLegacyAddressReject} />
+        <PrivateKeyModal />
       </SafeAreaView>
     )
   }
@@ -136,7 +130,7 @@ export default class Scan extends Component<Props> {
     if (this.props.cameraPermission === AUTHORIZED) {
       const torchMode = this.props.torchEnabled ? Camera.constants.TorchMode.on : Camera.constants.TorchMode.off
 
-      return <Camera style={styles.preview} ref="cameraCapture" torchMode={torchMode} onBarCodeRead={({ data }) => this.props.qrCodeScanned(data)} />
+      return <Camera style={styles.preview} ref="cameraCapture" torchMode={torchMode} onBarCodeRead={({ data }) => this.props.onQrCodeScan(data)} />
     } else if (this.props.cameraPermission === DENIED) {
       return (
         <View style={[styles.preview, { justifyContent: 'center', alignItems: 'center' }]}>

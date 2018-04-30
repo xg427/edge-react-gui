@@ -2,17 +2,24 @@
 
 import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import type { EdgeParsedUri } from 'edge-core-js'
+import type { EdgeParsedUri, EdgeSpendInfo } from 'edge-core-js'
 
 import * as Constants from '../../../../constants/indexConstants.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
 import * as WALLET_API from '../../../Core/Wallets/api.js'
-import * as UTILS from '../../../utils.js'
+import { isEdgeLogin, denominationToDecimalPlaces, noOp } from '../../../utils.js'
 import { loginWithEdge } from '../../../../actions/EdgeLoginActions.js'
 import { updateParsedURI } from '../SendConfirmation/action.js'
 import s from '../../../../locales/strings.js'
 
 import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
+import {
+  activated as privateKeyModalActivated,
+  deactivated as privateKeyModalDeactivated,
+  sweepPrivateKeyStart,
+  sweepPrivateKeySuccess,
+  sweepPrivateKeyFail
+} from './PrivateKeyModal/PrivateKeyModalActions.js'
 
 export const PREFIX = 'SCAN/'
 
@@ -61,60 +68,67 @@ export const parseUriReset = () => ({
 
 export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
-  const edgeWallet = state.core.wallets.byId[state.ui.wallets.selectedWalletId]
-  const guiWallet = state.ui.wallets.byId[state.ui.wallets.selectedWalletId]
-  if (/^airbitz:\/\/edge\//.test(data)) {
+  const selectedWalletId = state.ui.wallets.selectedWalletId
+  const edgeWallet = state.core.wallets.byId[selectedWalletId]
+  const guiWallet = state.ui.wallets.byId[selectedWalletId]
+  if (isEdgeLogin(data)) {
     // EDGE LOGIN
     dispatch(loginWithEdge(data))
     Actions[Constants.EDGE_LOGIN]()
     return
   }
 
-  let parsedUri
-  try {
-    parsedUri = WALLET_API.parseURI(edgeWallet, data)
-    dispatch(parseUriSucceeded(parsedUri))
+  WALLET_API.parseUri(edgeWallet, data).then(
+    parsedUri => {
+      dispatch(parseUriSucceeded(parsedUri))
 
-    if (parsedUri.token) {
-      // TOKEN
-      const { contractAddress, currencyName, multiplier } = parsedUri.token
-      const currencyCode = parsedUri.token.currencyCode.toUpperCase()
-      const wallet = guiWallet
-      const walletId = guiWallet.id
-      let decimalPlaces = 18
-      if (parsedUri.token && parsedUri.token.multiplier) {
-        decimalPlaces = UTILS.denominationToDecimalPlaces(parsedUri.token.multiplier)
+      if (parsedUri.token) {
+        // TOKEN URI
+        const { contractAddress, currencyName, multiplier } = parsedUri.token
+        const currencyCode = parsedUri.token.currencyCode.toUpperCase()
+        let decimalPlaces = 18
+        if (parsedUri.token && parsedUri.token.multiplier) {
+          decimalPlaces = denominationToDecimalPlaces(parsedUri.token.multiplier)
+        }
+        const parameters = {
+          contractAddress,
+          currencyCode,
+          currencyName,
+          multiplier,
+          decimalPlaces,
+          walletId: selectedWalletId,
+          wallet: guiWallet,
+          onAddToken: noOp
+        }
+        Actions.addToken(parameters)
+      } else if (parsedUri.legacyAddress) {
+        // LEGACY ADDRESS URI
+        legacyAddressModalActivated()
+        return
       }
-      const parameters = {
-        contractAddress,
-        currencyCode,
-        currencyName,
-        multiplier,
-        decimalPlaces,
-        walletId,
-        wallet,
-        onAddToken: UTILS.noOp
+      if (parsedUri.privateKey) {
+        // PRIVATE KEY URI
+        dispatch(privateKeyModalActivated(parsedUri))
+      } else {
+        // PUBLIC ADDRESS URI
+        dispatch(updateParsedURI(parsedUri))
+        Actions.sendConfirmation('fromScan')
       }
-      Actions.addToken(parameters)
-    } else if (parsedUri.legacyAddress) {
-      // LEGACY ADDRESS
-      setTimeout(() => dispatch(legacyAddressModalActivated()), 1000)
-      return
+    },
+    error => {
+      // INVALID URI
+      dispatch(disableScan())
+      Alert.alert(s.strings.fragment_send_send_bitcoin_unscannable, error.toString(), [
+        {
+          text: s.strings.string_ok,
+          onPress: () => dispatch(enableScan())
+        }
+      ])
     }
-    if (parsedUri.privateKey) {
-      // PRIVATE KEY
-    } else {
-      // PUBLIC ADDRESS
-      dispatch(updateParsedURI(parsedUri))
-      Actions.sendConfirmation('fromScan')
-    }
-  } catch (error) {
-    dispatch(disableScan())
-    Alert.alert(s.strings.fragment_send_send_bitcoin_unscannable, error.toString(), [{ text: s.strings.string_ok, onPress: () => dispatch(enableScan()) }])
-  }
+  )
 }
 
-export const qrCodeScanned = (data: string) => (dispatch: Dispatch, getState: GetState) => {
+export const onQrCodeScan = (data: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const isScanEnabled = state.ui.scenes.scan.scanEnabled
   if (!isScanEnabled) return
@@ -123,15 +137,7 @@ export const qrCodeScanned = (data: string) => (dispatch: Dispatch, getState: Ge
   dispatch(parseUri(data))
 }
 
-export const addressModalDoneButtonPressed = (data: string) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(parseUri(data))
-}
-
-export const addressModalCancelButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
-  // dispatch(addressModalDeactivated())
-}
-
-export const legacyAddressModalContinueButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
+export const onLegacyAddressAccept = () => (dispatch: Dispatch, getState: GetState) => {
   dispatch(legacyAddressModalDeactivated())
   dispatch(enableScan())
 
@@ -143,55 +149,21 @@ export const legacyAddressModalContinueButtonPressed = () => (dispatch: Dispatch
   Actions.sendConfirmation('fromScan')
 }
 
-export const legacyAddressModalCancelButtonPressed = () => (dispatch: Dispatch) => {
+export const onLegacyAddressReject = () => (dispatch: Dispatch) => {
   dispatch(legacyAddressModalDeactivated())
   dispatch(enableScan())
 }
 
-export const privateKeyModalImportFundsButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
-  // dispatch(privateKeyModalDeactivated())
+// PRIVATE KEY
+export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState) => {
+  dispatch(privateKeyModalDeactivated())
   dispatch(enableScan())
 
   const state = getState()
   const parsedUri = state.ui.scenes.scan.parsedUri
   if (!parsedUri) return
-
-  dispatch(updateParsedURI(parsedUri))
-  Actions.sendConfirmation('fromScan')
-}
-
-export const privateKeyModalCancelButtonPressed = () => (dispatch: Dispatch) => {
-  // dispatch(privateKeyModalDeactivated())
-  dispatch(enableScan())
-}
-
-export const SWEEP_PRIVATE_KEY_START = PREFIX + 'SWEEP_PRIVATE_KEY_START'
-export const sweepPrivateKeyStart = () => ({
-  type: SWEEP_PRIVATE_KEY_START
-})
-
-export const SWEEP_PRIVATE_KEY_SUCCESS = PREFIX + 'SWEEP_PRIVATE_KEY_SUCCESS'
-export const sweepPrivateKeySuccess = () => ({
-  type: SWEEP_PRIVATE_KEY_SUCCESS,
-  data: {}
-})
-
-export const SWEEP_PRIVATE_KEY_FAIL = PREFIX + 'SWEEP_PRIVATE_KEY_FAIL'
-export const sweepPrivateKeyFail = (error: Error) => ({
-  type: SWEEP_PRIVATE_KEY_FAIL,
-  data: {
-    error
-  }
-})
-
-export const sweepPrivateKey = () => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
   const selectedWalletId = state.ui.wallets.selectedWalletId
-  const wallet: EdgeCurrencyWallet = state.core.wallets.byId[selectedWalletId]
-  const parsedUri = state.ui.scenes.scan.parsedUri
-  if (!parsedUri) {
-    return
-  }
+  const edgeWallet = state.core.wallets.byId[selectedWalletId]
 
   const spendInfo: EdgeSpendInfo = {
     privateKeys: [parsedUri.privateKey],
@@ -199,18 +171,33 @@ export const sweepPrivateKey = () => (dispatch: Dispatch, getState: GetState) =>
   }
 
   dispatch(sweepPrivateKeyStart())
-  Promise.resolve(() => spendInfo)
+  // $FlowFixMe
+  Promise.resolve(spendInfo)
     // $FlowFixMe
-    .then(wallet.sweepPrivateKey)
+    .then(edgeWallet.sweepPrivateKey)
     // $FlowFixMe
-    .then(wallet.signTx)
-    .then(wallet.broadcastTx)
-    .then(wallet.saveTx)
+    .then(edgeWallet.signTx)
+    .then(edgeWallet.broadcastTx)
+    .then(edgeWallet.saveTx)
     .then(
       edgeTransaction => {
         dispatch(sweepPrivateKeySuccess())
-        Actions.transactionDetails({ edgeTransaction })
+        dispatch(updateParsedURI(parsedUri))
+        Actions.sendConfirmation('fromScan')
       },
       error => dispatch(sweepPrivateKeyFail(error))
     )
+}
+
+export const onPrivateKeyReject = () => (dispatch: Dispatch) => {
+  dispatch(privateKeyModalDeactivated())
+  dispatch(enableScan())
+}
+
+export const addressModalDoneButtonPressed = (data: string) => (dispatch: Dispatch, getState: GetState) => {
+  dispatch(parseUri(data))
+}
+
+export const addressModalCancelButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
+  // dispatch(addressModalDeactivated())
 }

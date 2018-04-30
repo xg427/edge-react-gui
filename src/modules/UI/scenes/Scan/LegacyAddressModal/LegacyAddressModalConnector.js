@@ -8,7 +8,7 @@ import { deactivated } from './LegacyAddressModalActions.js'
 import { LegacyAddressModal } from './LegacyAddressModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
-  isActive: state.ui.scenes.scan.legacyAddressModal.isActive
+  isVisible: state.ui.scenes.scan.legacyAddressModal.isVisible
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
   backButtonPressed: () => {
