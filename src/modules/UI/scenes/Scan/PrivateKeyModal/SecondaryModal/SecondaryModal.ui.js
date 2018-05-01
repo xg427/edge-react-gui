@@ -18,17 +18,21 @@ export type Props = {
 }
 export class SecondaryModal extends Component<Props> {
   render () {
-    const { error, isVisible, onBackButtonPress, onBackdropPress, onExpire, isSweeping } = this.props
+    const { error, isVisible, onBackButtonPress, onBackdropPress, isSweeping } = this.props
 
     return (
-      <NonInteractiveModal isVisible={isVisible} onBackButtonPress={onBackButtonPress} onBackdropPress={onBackdropPress} onExpire={onExpire}>
+      <NonInteractiveModal isVisible={isVisible} onBackButtonPress={onBackButtonPress} onBackdropPress={onBackdropPress}>
         <NonInteractiveModal.Icon>
           <Icon style={{}} type={'ionIcons'} name="ios-key" size={30} />
         </NonInteractiveModal.Icon>
 
-        <NonInteractiveModal.Message>
-          {isSweeping ? <ActivityIndicator /> : <Text>{error ? error.message : s.strings.private_key_modal_importing_private_key}</Text>}
-        </NonInteractiveModal.Message>
+        {isSweeping ? (
+          <ActivityIndicator />
+        ) : (
+          <NonInteractiveModal.Message>
+            <Text>{error ? error.message : s.strings.private_key_modal_importing_private_key}</Text>
+          </NonInteractiveModal.Message>
+        )}
       </NonInteractiveModal>
     )
   }

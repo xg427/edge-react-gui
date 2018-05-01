@@ -18,9 +18,6 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   onBackdropPress: () => {
     dispatch(deactivated())
-  },
-  onExpire: () => {
-    dispatch(deactivated())
   }
 })
 

@@ -48,7 +48,7 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
   const edgeWallet = state.core.wallets.byId[selectedWalletId]
 
   const spendInfo: EdgeSpendInfo = {
-    privateKeys: [parsedUri.privateKey],
+    privateKeys: parsedUri.privateKeys,
     spendTargets: []
   }
 
@@ -56,7 +56,9 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
   // $FlowFixMe
   Promise.resolve(spendInfo)
     // $FlowFixMe
-    .then(edgeWallet.sweepPrivateKey)
+    .then(spendInfo => {
+      return edgeWallet.sweepPrivateKey(spendInfo)
+    })
     // $FlowFixMe
     .then(edgeWallet.signTx)
     .then(edgeWallet.broadcastTx)

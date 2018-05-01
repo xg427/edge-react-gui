@@ -8,8 +8,7 @@ import { deactivated } from './PrimaryModalActions.js'
 import { PrimaryModal } from './PrimaryModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
-  isVisible: state.ui.scenes.scan.privateKeyModal.primaryModal.isVisible,
-  parsedUri: state.ui.scenes.scan.parsedUri
+  isVisible: state.ui.scenes.scan.privateKeyModal.primaryModal.isVisible
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onBackButtonPress: () => {

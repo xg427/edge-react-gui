@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react'
 import { Text } from 'react-native'
-import { sprintf } from 'sprintf-js'
-import type { EdgeParsedUri } from 'edge-core-js'
 
 import { InteractiveModal, PrimaryButton, SecondaryButton } from '../../../../components/Modals'
 import { Icon } from '../../../../components/Icon/Icon.ui'
@@ -14,12 +12,11 @@ export type Props = {
   onAccept: () => void,
   onBackButtonPress: () => void,
   onBackdropPress: () => void,
-  onReject: () => void,
-  parsedUri: EdgeParsedUri | null
+  onReject: () => void
 }
 export class PrimaryModal extends Component<Props> {
   render () {
-    const { onBackButtonPress, onBackdropPress, isVisible, onAccept, onReject, parsedUri } = this.props
+    const { onBackButtonPress, onBackdropPress, isVisible, onAccept, onReject } = this.props
 
     return (
       <InteractiveModal isVisible={isVisible} onBackdropPress={onBackdropPress} onBackButtonPress={onBackButtonPress}>
@@ -30,16 +27,6 @@ export class PrimaryModal extends Component<Props> {
         <InteractiveModal.Title>
           <Text>{s.strings.private_key_modal_sweep_from_private_address}</Text>
         </InteractiveModal.Title>
-
-        <InteractiveModal.Body>
-          <InteractiveModal.Description>
-            <Text>{sprintf(s.strings.private_key_modal_private_key, 'Bitcoin')}</Text>
-            <Text>{' with public address: '}</Text>
-          </InteractiveModal.Description>
-          <InteractiveModal.Description ellipsizeMode={'middle'} numberOfLines={1}>
-            <Text>{parsedUri && parsedUri.publicAddress}</Text>
-          </InteractiveModal.Description>
-        </InteractiveModal.Body>
 
         <InteractiveModal.Footer>
           <InteractiveModal.Row>

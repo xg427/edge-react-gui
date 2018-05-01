@@ -100,7 +100,7 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
         dispatch(legacyAddressModalActivated())
         return
       }
-      if (parsedUri.privateKey) {
+      if (parsedUri.privateKeys && parsedUri.privateKeys.length >= 1) {
         // PRIVATE KEY URI
         dispatch(privateKeyModalActivated())
       } else {
