@@ -2,7 +2,7 @@
 
 import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import type { EdgeParsedUri, EdgeSpendInfo } from 'edge-core-js'
+import type { EdgeParsedUri } from 'edge-core-js'
 
 import * as Constants from '../../../../constants/indexConstants.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
@@ -13,13 +13,7 @@ import { updateParsedURI } from '../SendConfirmation/action.js'
 import s from '../../../../locales/strings.js'
 
 import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
-import {
-  activated as privateKeyModalActivated,
-  deactivated as privateKeyModalDeactivated,
-  sweepPrivateKeyStart,
-  sweepPrivateKeySuccess,
-  sweepPrivateKeyFail
-} from './PrivateKeyModal/PrivateKeyModalActions.js'
+import { activated as privateKeyModalActivated } from './PrivateKeyModal/PrivateKeyModalActions.js'
 
 export const PREFIX = 'SCAN/'
 
@@ -103,12 +97,12 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
         Actions.addToken(parameters)
       } else if (parsedUri.legacyAddress) {
         // LEGACY ADDRESS URI
-        legacyAddressModalActivated()
+        dispatch(legacyAddressModalActivated())
         return
       }
       if (parsedUri.privateKey) {
         // PRIVATE KEY URI
-        dispatch(privateKeyModalActivated(parsedUri))
+        dispatch(privateKeyModalActivated())
       } else {
         // PUBLIC ADDRESS URI
         dispatch(updateParsedURI(parsedUri))
@@ -151,46 +145,6 @@ export const onLegacyAddressAccept = () => (dispatch: Dispatch, getState: GetSta
 
 export const onLegacyAddressReject = () => (dispatch: Dispatch) => {
   dispatch(legacyAddressModalDeactivated())
-  dispatch(enableScan())
-}
-
-// PRIVATE KEY
-export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(privateKeyModalDeactivated())
-  dispatch(enableScan())
-
-  const state = getState()
-  const parsedUri = state.ui.scenes.scan.parsedUri
-  if (!parsedUri) return
-  const selectedWalletId = state.ui.wallets.selectedWalletId
-  const edgeWallet = state.core.wallets.byId[selectedWalletId]
-
-  const spendInfo: EdgeSpendInfo = {
-    privateKeys: [parsedUri.privateKey],
-    spendTargets: []
-  }
-
-  dispatch(sweepPrivateKeyStart())
-  // $FlowFixMe
-  Promise.resolve(spendInfo)
-    // $FlowFixMe
-    .then(edgeWallet.sweepPrivateKey)
-    // $FlowFixMe
-    .then(edgeWallet.signTx)
-    .then(edgeWallet.broadcastTx)
-    .then(edgeWallet.saveTx)
-    .then(
-      edgeTransaction => {
-        dispatch(sweepPrivateKeySuccess())
-        dispatch(updateParsedURI(parsedUri))
-        Actions.sendConfirmation('fromScan')
-      },
-      error => dispatch(sweepPrivateKeyFail(error))
-    )
-}
-
-export const onPrivateKeyReject = () => (dispatch: Dispatch) => {
-  dispatch(privateKeyModalDeactivated())
   dispatch(enableScan())
 }
 

@@ -29,8 +29,6 @@ type Props = {
   cameraPermission: PermissionStatus,
   onLegacyAddessAccept: () => void,
   onLegacyAddressReject: () => void,
-  onPrivateKeyAccept: () => void,
-  onPrivateKeyReject: () => void,
   onQrCodeScan: (data: string) => void,
   scanEnabled: boolean,
   showToWalletModal: boolean,
@@ -50,7 +48,7 @@ const FLASH_TEXT = s.strings.fragment_send_flash
 
 export default class Scan extends Component<Props> {
   render () {
-    const { addressModalDoneButtonPressed, onLegacyAddessAccept, onLegacyAddressReject, onPrivateKeyAccept, onPrivateKeyReject } = this.props
+    const { addressModalDoneButtonPressed, onLegacyAddessAccept } = this.props
 
     return (
       <SafeAreaView>
@@ -91,7 +89,7 @@ export default class Scan extends Component<Props> {
           {this.props.showToWalletModal && <WalletListModal topDisplacement={Constants.SCAN_WALLET_DIALOG_TOP} type={Constants.FROM} />}
         </View>
 
-        <LegacyAddressModal onAccept={onLegacyAddessAccept} onReject={onLegacyAddressReject} />
+        <LegacyAddressModal onAccept={onLegacyAddessAccept} />
         <PrivateKeyModal />
       </SafeAreaView>
     )

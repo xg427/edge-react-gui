@@ -9,18 +9,13 @@ import { PrimaryModal } from './PrimaryModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
   isVisible: state.ui.scenes.scan.privateKeyModal.primaryModal.isVisible,
-  publicAddress: state.ui.scenes.scan.privateKeyModal.publicAddress
+  parsedUri: state.ui.scenes.scan.parsedUri
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onReject: () => {
+  onBackButtonPress: () => {
     dispatch(deactivated())
   },
-  onModalShow: () => {},
-  onModalHide: () => {},
-  backButtonPressed: () => {
-    dispatch(deactivated())
-  },
-  backdropPressed: () => {
+  onBackdropPress: () => {
     dispatch(deactivated())
   }
 })

@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { Text } from 'react-native'
 import { sprintf } from 'sprintf-js'
+import type { EdgeParsedUri } from 'edge-core-js'
 
 import { InteractiveModal, PrimaryButton, SecondaryButton } from '../../../../components/Modals'
 import { Icon } from '../../../../components/Icon/Icon.ui'
@@ -14,15 +15,14 @@ export type Props = {
   onBackButtonPress: () => void,
   onBackdropPress: () => void,
   onReject: () => void,
-  onModalHide: () => void,
-  publicAddress: string | null
+  parsedUri: EdgeParsedUri | null
 }
 export class PrimaryModal extends Component<Props> {
   render () {
-    const { onBackButtonPress, onBackdropPress, isVisible, onAccept, onReject, onModalHide, publicAddress } = this.props
+    const { onBackButtonPress, onBackdropPress, isVisible, onAccept, onReject, parsedUri } = this.props
 
     return (
-      <InteractiveModal isVisible={isVisible} onBackdropPress={onBackdropPress} onBackButtonPress={onBackButtonPress} onModalHide={onModalHide}>
+      <InteractiveModal isVisible={isVisible} onBackdropPress={onBackdropPress} onBackButtonPress={onBackButtonPress}>
         <InteractiveModal.Icon>
           <Icon style={{}} type={'ionIcons'} name="ios-key" size={30} />
         </InteractiveModal.Icon>
@@ -37,7 +37,7 @@ export class PrimaryModal extends Component<Props> {
             <Text>{' with public address: '}</Text>
           </InteractiveModal.Description>
           <InteractiveModal.Description ellipsizeMode={'middle'} numberOfLines={1}>
-            <Text>{publicAddress}</Text>
+            <Text>{parsedUri && parsedUri.publicAddress}</Text>
           </InteractiveModal.Description>
         </InteractiveModal.Body>
 

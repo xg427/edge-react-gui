@@ -9,19 +9,17 @@ import { SecondaryModal } from './SecondaryModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
   error: state.ui.scenes.scan.privateKeyModal.error,
-  isThinking: state.ui.scenes.scan.privateKeyModal.isThinking,
-  parsedUri: state.ui.scenes.scan.privateKeyModal.parsedUri
+  isSweeping: state.ui.scenes.scan.privateKeyModal.isSweeping,
+  isVisible: state.ui.scenes.scan.privateKeyModal.secondaryModal.isVisible
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onModalShow: () => {},
-  onModalHide: () => {},
-  backButtonPressed: () => {
+  onBackButtonPress: () => {
     dispatch(deactivated())
   },
-  backdropPressed: () => {
+  onBackdropPress: () => {
     dispatch(deactivated())
   },
-  expired: () => {
+  onExpire: () => {
     dispatch(deactivated())
   }
 })
