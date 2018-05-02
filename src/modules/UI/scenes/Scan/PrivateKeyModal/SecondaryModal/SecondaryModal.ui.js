@@ -27,7 +27,7 @@ export class SecondaryModal extends Component<Props> {
         </NonInteractiveModal.Icon>
 
         {isSweeping ? (
-          <ActivityIndicator />
+          <ActivityIndicator size={'large'} />
         ) : (
           <NonInteractiveModal.Message>
             <Text>{error ? error.message : s.strings.private_key_modal_importing_private_key}</Text>

@@ -12,10 +12,10 @@ type Props = {
 }
 export class PrivateKeyModal extends Component<Props> {
   render () {
-    const { onPrivateKeyAccept, onPrivateKeyReject } = this.props
+    const { onPrivateKeyAccept } = this.props
     return (
       <View>
-        <PrimaryModal onAccept={onPrivateKeyAccept} onReject={onPrivateKeyReject} />
+        <PrimaryModal onAccept={onPrivateKeyAccept} />
         <SecondaryModal />
       </View>
     )

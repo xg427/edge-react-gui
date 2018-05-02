@@ -11,6 +11,9 @@ export const mapStateToProps = (state: State) => ({
   isVisible: state.ui.scenes.scan.privateKeyModal.primaryModal.isVisible
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onReject: () => {
+    dispatch(deactivated())
+  },
   onBackButtonPress: () => {
     dispatch(deactivated())
   },

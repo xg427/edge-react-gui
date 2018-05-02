@@ -9,13 +9,10 @@ import { toggleScanToWalletListModal } from '../../components/WalletListModal/ac
 import {
   toggleAddressModal,
   toggleEnableTorch,
-  qrCodeScanned,
-  legacyAddressModalContinueButtonPressed,
-  legacyAddressModalCancelButtonPressed,
+  onQrCodeScan,
+  onLegacyAddressAccept,
   addressModalDoneButtonPressed,
-  addressModalCancelButtonPressed,
-  privateKeyModalImportFundsButtonPressed,
-  privateKeyModalCancelButtonPressed
+  addressModalCancelButtonPressed
 } from './action'
 
 const mapStateToProps = (state: State) => ({
@@ -26,16 +23,13 @@ const mapStateToProps = (state: State) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  qrCodeScanned: data => dispatch(qrCodeScanned(data)),
+  onQrCodeScan: data => dispatch(onQrCodeScan(data)),
   toggleEnableTorch: () => dispatch(toggleEnableTorch()),
   toggleAddressModal: () => dispatch(toggleAddressModal()),
   toggleScanToWalletListModal: () => dispatch(toggleScanToWalletListModal()),
-  legacyAddressModalContinueButtonPressed: () => dispatch(legacyAddressModalContinueButtonPressed()),
-  legacyAddressModalCancelButtonPressed: () => dispatch(legacyAddressModalCancelButtonPressed()),
+  onLegacyAddressAccept: () => dispatch(onLegacyAddressAccept()),
   addressModalDoneButtonPressed: data => dispatch(addressModalDoneButtonPressed(data)),
-  addressModalCancelButtonPressed: () => dispatch(addressModalCancelButtonPressed()),
-  privateKeyModalImportFundsButtonPressed: () => dispatch(privateKeyModalImportFundsButtonPressed()),
-  privateKeyModalCancelButtonPressed: () => dispatch(privateKeyModalCancelButtonPressed())
+  addressModalCancelButtonPressed: () => dispatch(addressModalCancelButtonPressed())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scan)

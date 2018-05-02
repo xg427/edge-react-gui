@@ -9,12 +9,12 @@ import { activated as secondaryModalActivated, deactivated as secondaryModalDeac
 export const PREFIX = 'PRIVATE_KEY_MODAL/'
 
 export const activated = () => (dispatch: Dispatch) => {
-  dispatch(primaryModalActivated())
+  setTimeout(() => dispatch(primaryModalActivated()), 500)
 }
 
 export const deactivated = () => (dispatch: Dispatch) => {
   dispatch(primaryModalDeactivated())
-  dispatch(secondaryModalDeactivated())
+  setTimeout(() => dispatch(secondaryModalDeactivated()), 500)
 }
 
 export const SWEEP_PRIVATE_KEY_START = PREFIX + 'SWEEP_PRIVATE_KEY_START'
@@ -37,7 +37,7 @@ export const sweepPrivateKeyFail = (error: Error) => ({
 // PRIVATE KEY
 export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState) => {
   dispatch(primaryModalDeactivated())
-  dispatch(secondaryModalActivated())
+  setTimeout(() => dispatch(secondaryModalActivated()), 500)
   // dispatch(privateKeyModalDeactivated())
   // dispatch(enableScan())
 
@@ -54,15 +54,13 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
 
   dispatch(sweepPrivateKeyStart())
   // $FlowFixMe
-  Promise.resolve(spendInfo)
+  edgeWallet
+    .sweepPrivateKeys(spendInfo)
     // $FlowFixMe
-    .then(spendInfo => {
-      return edgeWallet.sweepPrivateKey(spendInfo)
-    })
     // $FlowFixMe
-    .then(edgeWallet.signTx)
-    .then(edgeWallet.broadcastTx)
-    .then(edgeWallet.saveTx)
+    // .then(edgeWallet.signTx)
+    // .then(edgeWallet.broadcastTx)
+    // .then(edgeWallet.saveTx)
     .then(
       edgeTransaction => {
         dispatch(sweepPrivateKeySuccess())
@@ -71,10 +69,4 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
       },
       error => dispatch(sweepPrivateKeyFail(error))
     )
-}
-
-export const onPrivateKeyReject = () => (dispatch: Dispatch) => {
-  dispatch(primaryModalDeactivated())
-  // dispatch(privateKeyModalDeactivated())
-  // dispatch(enableScan())
 }
