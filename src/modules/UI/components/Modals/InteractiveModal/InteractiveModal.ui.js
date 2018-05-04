@@ -131,7 +131,7 @@ export class Footer extends Component<FooterProps> {
   }
 }
 
-// Item /////////////////////////////////////////////////////////////////////////////
+// ITEM /////////////////////////////////////////////////////////////////////////////
 type ItemProps = {
   children: Node,
   style?: StyleSheet.Styles
@@ -146,7 +146,7 @@ export class Item extends Component<ItemProps> {
   }
 }
 
-// Row /////////////////////////////////////////////////////////////////////////////
+// ROW /////////////////////////////////////////////////////////////////////////////
 type RowProps = {
   children: Node,
   style?: StyleSheet.Styles
@@ -177,7 +177,7 @@ export class InteractiveModal extends Component<Props> {
   static Row = Row
 
   render () {
-    const { isVisible } = this.props
+    const { isVisible, style, ...props } = this.props
     const children = React.Children.toArray(this.props.children)
     const icon = children.find(child => child.type === InteractiveModal.Icon)
     const title = children.find(child => child.type === InteractiveModal.Title)
@@ -185,7 +185,7 @@ export class InteractiveModal extends Component<Props> {
     const footer = children.find(child => child.type === InteractiveModal.Footer)
 
     return (
-      <Modal useNativeDriver hideModalContentWhileAnimating avoidKeyboard isVisible={isVisible} {...this.props} style={[styles.modal, this.props.style]}>
+      <Modal useNativeDriver avoidKeyboard isVisible={isVisible} {...props} style={[styles.modal, style]}>
         {icon}
         <Container>
           <Icon.AndroidHackSpacer />

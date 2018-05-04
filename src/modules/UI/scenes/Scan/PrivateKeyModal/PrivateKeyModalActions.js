@@ -53,20 +53,20 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
   }
 
   dispatch(sweepPrivateKeyStart())
-  // $FlowFixMe
+
   edgeWallet
     .sweepPrivateKeys(spendInfo)
-    // $FlowFixMe
-    // $FlowFixMe
-    // .then(edgeWallet.signTx)
-    // .then(edgeWallet.broadcastTx)
-    // .then(edgeWallet.saveTx)
     .then(
       edgeTransaction => {
         dispatch(sweepPrivateKeySuccess())
         // dispatch(updateParsedURI(parsedUri))
         // Actions.sendConfirmation('fromScan')
       },
-      error => dispatch(sweepPrivateKeyFail(error))
+      error => {
+        dispatch(sweepPrivateKeyFail(error))
+      }
     )
+    .catch(error => {
+      console.log(error)
+    })
 }

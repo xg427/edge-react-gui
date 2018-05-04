@@ -73,6 +73,7 @@
     "console-browserify": "^1.1.0",
     "constants-browserify": "0.0.1",
     "core-js": "2.5.2",
+    "dateformat": "^3.0.3",
     "dns.js": "^1.0.1",
     "domain-browser": "^1.1.7",
     "edge-core-js": "0.7.0",
@@ -80,8 +81,8 @@
     "edge-currency-ethereum": "0.10.1",
     "edge-exchange-plugins": "^0.2.0",
     "edge-login-ui-rn": "^0.2.1",
-    "jsc-android": "216113.0.3",
     "https-browserify": "0.0.1",
+    "jsc-android": "216113.0.3",
     "lodash": "^4.17.2",
     "native-base": "^2.2.1",
     "os-browserify": "^0.1.2",
@@ -171,8 +172,15 @@
     "updot": "^1.1.6"
   },
   "flow-coverage-report": {
-    "includeGlob": ["src/**/*.js", "*.js"],
-    "type": ["text", "html", "json"]
+    "includeGlob": [
+      "src/**/*.js",
+      "*.js"
+    ],
+    "type": [
+      "text",
+      "html",
+      "json"
+    ]
   },
   "importSort": {
     ".js, .es": {
@@ -182,8 +190,12 @@
   },
   "jest": {
     "preset": "react-native",
-    "transformIgnorePatterns": ["node_modules/mobx-react"],
-    "setupFiles": ["./testSetup.js"]
+    "transformIgnorePatterns": [
+      "node_modules/mobx-react"
+    ],
+    "setupFiles": [
+      "./testSetup.js"
+    ]
   },
   "prettier": {
     "printWidth": 160
@@ -214,6 +226,8 @@
     "zlib": "browserify-zlib"
   },
   "rnpm": {
-    "assets": ["./src/assets/fonts"]
+    "assets": [
+      "./src/assets/fonts"
+    ]
   }
 }

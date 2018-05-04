@@ -85,6 +85,36 @@ export class Message extends Component<MessageProps> {
   }
 }
 
+// ITEM /////////////////////////////////////////////////////////////////////////////
+type ItemProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+export class Item extends Component<ItemProps> {
+  render () {
+    return (
+      <View style={[styles.item, this.props.style]} {...this.props}>
+        {this.props.children}
+      </View>
+    )
+  }
+}
+
+// ROW /////////////////////////////////////////////////////////////////////////////
+type RowProps = {
+  children: Node,
+  style?: StyleSheet.Styles
+}
+export class Row extends Component<RowProps> {
+  render () {
+    return (
+      <View style={[styles.row, this.props.style]} {...this.props}>
+        {this.props.children}
+      </View>
+    )
+  }
+}
+
 // NON_INTERACTIVE_MODAL /////////////////////////////////////////////////////////////////////////////
 export type Props = {
   children: Node,
@@ -101,6 +131,8 @@ export class NonInteractiveModal extends Component<Props> {
   static Footer = Footer
   static Icon = Icon
   static Message = Message
+  static Item = Item
+  static Row = Row
 
   static defaultProps = {
     durationInSeconds: 8,
@@ -114,16 +146,24 @@ export class NonInteractiveModal extends Component<Props> {
   timer: number
 
   render () {
-    const { isVisible } = this.props
+    const { isVisible, style, ...props } = this.props
     const children = React.Children.toArray(this.props.children)
     const icon = children.find(child => child.type === NonInteractiveModal.Icon)
-    const message = children.find(child => child.type === NonInteractiveModal.Message)
+    const footer = children.find(child => child.type === NonInteractiveModal.Footer)
 
     return (
-      <Modal useNativeDriver hideModalContentWhileAnimating {...this.props} isVisible={isVisible} onModalShow={this.onModalShow} onModalHide={this.onModalHide}>
+      <Modal
+        useNativeDriver
+        hideModalContentWhileAnimating
+        {...props}
+        isVisible={isVisible}
+        style={[styles.modal, style]}
+        onModalShow={this.onModalShow}
+        onModalHide={this.onModalHide}
+      >
         <Container style={styles.container}>
           <Header>{icon}</Header>
-          <Footer>{message}</Footer>
+          <Footer>{footer}</Footer>
         </Container>
       </Modal>
     )

@@ -44,6 +44,13 @@ export const rawStyles = {
     color: THEME.COLORS.GRAY_1,
     fontFamily: THEME.FONTS.DEFAULT,
     fontSize: 18
+  },
+  item: {
+    flex: 1,
+    padding: 6
+  },
+  row: {
+    flexDirection: 'row'
   }
 }
 
