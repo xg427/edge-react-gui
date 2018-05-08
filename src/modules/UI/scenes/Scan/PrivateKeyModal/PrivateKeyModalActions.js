@@ -3,7 +3,7 @@
 import type { EdgeSpendInfo } from 'edge-core-js'
 import { Actions } from 'react-native-router-flux'
 
-import { updateParsedURI } from '../../SendConfirmation/action.js'
+import { updateTransaction } from '../../SendConfirmation/action.js'
 
 import type { Dispatch, GetState } from '../../../../ReduxTypes.js'
 import { activated as primaryModalActivated, deactivated as primaryModalDeactivated } from './PrimaryModal/PrimaryModalActions.js'
@@ -60,11 +60,12 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
   edgeWallet.sweepPrivateKeys(spendInfo).then(
     edgeTransaction => {
       dispatch(sweepPrivateKeySuccess())
-      dispatch(updateParsedURI(parsedUri))
-      Actions.sendConfirmation('fromScan')
+      dispatch(updateTransaction(edgeTransaction, parsedUri))
+      Actions.sendConfirmation(edgeTransaction)
     },
     error => {
       dispatch(sweepPrivateKeyFail(error))
+      setTimeout(() => dispatch(secondaryModalActivated()), 500)
     }
   )
 }
