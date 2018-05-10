@@ -69,3 +69,7 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
     }
   )
 }
+
+export const onPrivateKeyReject = () => (dispatch: Dispatch, getState: GetState) => {
+  dispatch(primaryModalDeactivated())
+}
