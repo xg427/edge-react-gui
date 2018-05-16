@@ -35,8 +35,8 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
   const isoFiatCurrencyCode = guiWallet.isoFiatCurrencyCode
   const exchangeDenomination = settingsGetExchangeDenomination(state, currencyCode)
   // $FlowFixMe
-  const balanceInCryptoDisplay = convertNativeToExchange(exchangeDenomination.multiplier)(balanceInCrypto)
-  const balanceInFiat = currencyConverter.convertCurrency(currencyCode, isoFiatCurrencyCode, balanceInCryptoDisplay)
+  const balanceInCryptoExchange = convertNativeToExchange(exchangeDenomination.multiplier)(balanceInCrypto)
+  const balanceInFiat = currencyConverter.convertCurrency(currencyCode, isoFiatCurrencyCode, balanceInCryptoExchange)
 
   if (guiWallet) {
     const isoFiatCurrencyCode = guiWallet.isoFiatCurrencyCode
@@ -60,28 +60,28 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
   }
 
   const out = {
-    nativeAmount,
-    errorMsg,
-    fiatPerCrypto,
+    balanceInCrypto,
+    balanceInFiat,
     currencyCode,
-    pending,
-    secondaryeExchangeCurrencyCode,
-    resetSlider,
+    currencyConverter,
+    errorMsg,
     fiatCurrencyCode: guiWallet.fiatCurrencyCode,
-    parentDisplayDenomination: getDisplayDenomination(state, guiWallet.currencyCode),
-    parentExchangeDenomination: getExchangeDenomination(state, guiWallet.currencyCode),
-    primaryDisplayDenomination: getDisplayDenomination(state, currencyCode),
-    primaryExchangeDenomination: getExchangeDenomination(state, currencyCode),
+    fiatPerCrypto,
     forceUpdateGuiCounter: getForceUpdateGuiCounter(state),
-    publicAddress: getPublicAddress(state),
     keyboardIsVisible: getKeyboardIsVisible(state),
     label: getLabel(state),
-    parentNetworkFee: getParentNetworkFee(state),
+    nativeAmount,
     networkFee: getNetworkFee(state),
-    sliderDisabled: !transaction || !!error || !!pending,
-    currencyConverter,
-    balanceInCrypto,
-    balanceInFiat
+    parentDisplayDenomination: getDisplayDenomination(state, guiWallet.currencyCode),
+    parentExchangeDenomination: getExchangeDenomination(state, guiWallet.currencyCode),
+    parentNetworkFee: getParentNetworkFee(state),
+    pending,
+    primaryDisplayDenomination: getDisplayDenomination(state, currencyCode),
+    primaryExchangeDenomination: getExchangeDenomination(state, currencyCode),
+    publicAddress: getPublicAddress(state),
+    resetSlider,
+    secondaryeExchangeCurrencyCode,
+    sliderDisabled: !transaction || !!error || !!pending
   }
   return out
 }
