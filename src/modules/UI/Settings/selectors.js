@@ -82,6 +82,7 @@ export const getDisplayDenomination = (state: State, currencyCode: string): Edge
 export const getExchangeDenomination = (state: State, currencyCode: string) => {
   const denominations = getDenominations(state, currencyCode)
   const exchangeDenomination = denominations.find(denomination => denomination.name === currencyCode)
+  if (!exchangeDenomination) { throw Error('Exchange Denomination not found') }
   return exchangeDenomination
 }
 

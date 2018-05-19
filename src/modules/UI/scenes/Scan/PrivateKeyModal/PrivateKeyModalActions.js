@@ -1,13 +1,14 @@
 // @flow
 
-import type { EdgeSpendInfo } from 'edge-core-js'
-import { Actions } from 'react-native-router-flux'
-
-import { updateTransaction } from '../../SendConfirmation/action.js'
+import type { EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
 
 import type { Dispatch, GetState } from '../../../../ReduxTypes.js'
 import { activated as primaryModalActivated, deactivated as primaryModalDeactivated } from './PrimaryModal/PrimaryModalActions.js'
 import { activated as secondaryModalActivated, deactivated as secondaryModalDeactivated } from './SecondaryModal/SecondaryModalActions.js'
+
+import { getCurrencyConverter } from '../../../../Core/selectors.js'
+import { convertNativeToExchange } from '../../../../utils.js'
+import { getExchangeDenomination, getDefaultFiat } from '../../../Settings/selectors.js'
 
 export const PREFIX = 'PRIVATE_KEY_MODAL/'
 
@@ -58,12 +59,13 @@ export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState)
   dispatch(sweepPrivateKeyStart())
 
   edgeWallet.sweepPrivateKeys(spendInfo).then(
-    edgeTransaction => {
-      dispatch(sweepPrivateKeySuccess())
-      dispatch(updateTransaction(edgeTransaction, parsedUri))
-      Actions.sendConfirmation(edgeTransaction)
+    (edgeTransaction: EdgeTransaction) => {
+      Promise.resolve(edgeTransaction)
+        .then(() => edgeWallet.signTx(edgeTransaction))
+        .then(() => edgeWallet.broadcastTx(edgeTransaction))
+        .then(() => dispatch(sweepPrivateKeySuccess()))
     },
-    error => {
+    (error: Error) => {
       dispatch(sweepPrivateKeyFail(error))
       setTimeout(() => dispatch(secondaryModalActivated()), 500)
     }
