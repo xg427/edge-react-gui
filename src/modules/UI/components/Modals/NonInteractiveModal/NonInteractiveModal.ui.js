@@ -118,6 +118,7 @@ export class Row extends Component<RowProps> {
 // NON_INTERACTIVE_MODAL /////////////////////////////////////////////////////////////////////////////
 export type Props = {
   children: Node,
+  style?: StyleSheet.Styles,
   durationInSeconds: number,
   isVisible: boolean,
   onBackButtonPress?: () => void,

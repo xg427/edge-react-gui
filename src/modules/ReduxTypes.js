@@ -76,7 +76,7 @@ export type State = {
             isVisible: boolean
           },
           error: Error | null,
-          isThinking: boolean
+          isSweeping: boolean
         }
       },
       sendConfirmation: {

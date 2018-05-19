@@ -6,10 +6,6 @@ import type { Dispatch, GetState } from '../../../../ReduxTypes.js'
 import { activated as primaryModalActivated, deactivated as primaryModalDeactivated } from './PrimaryModal/PrimaryModalActions.js'
 import { activated as secondaryModalActivated, deactivated as secondaryModalDeactivated } from './SecondaryModal/SecondaryModalActions.js'
 
-import { getCurrencyConverter } from '../../../../Core/selectors.js'
-import { convertNativeToExchange } from '../../../../utils.js'
-import { getExchangeDenomination, getDefaultFiat } from '../../../Settings/selectors.js'
-
 export const PREFIX = 'PRIVATE_KEY_MODAL/'
 
 export const activated = () => (dispatch: Dispatch) => {
