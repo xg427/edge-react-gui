@@ -34,38 +34,41 @@ export const sweepPrivateKeyFail = (error: Error) => ({
   data: { error }
 })
 
-// PRIVATE KEY
+export const SWEEP_PRIVATE_KEY_RESET = PREFIX + 'SWEEP_PRIVATE_KEY_RESET'
+export const sweepPrivateKeyReset = () => ({
+  type: SWEEP_PRIVATE_KEY_RESET,
+  data: {}
+})
+
 export const onPrivateKeyAccept = () => (dispatch: Dispatch, getState: GetState) => {
   dispatch(primaryModalDeactivated())
-  setTimeout(() => dispatch(secondaryModalActivated()), 500)
-  // dispatch(privateKeyModalDeactivated())
-  // dispatch(enableScan())
+  setTimeout(() => {
+    dispatch(sweepPrivateKeyStart())
+    dispatch(secondaryModalActivated())
 
-  const state = getState()
-  const parsedUri = state.ui.scenes.scan.parsedUri
-  if (!parsedUri) return
-  const selectedWalletId = state.ui.wallets.selectedWalletId
-  const edgeWallet = state.core.wallets.byId[selectedWalletId]
+    const state = getState()
+    const parsedUri = state.ui.scenes.scan.parsedUri
+    if (!parsedUri) return
+    const selectedWalletId = state.ui.wallets.selectedWalletId
+    const edgeWallet = state.core.wallets.byId[selectedWalletId]
 
-  const spendInfo: EdgeSpendInfo = {
-    privateKeys: parsedUri.privateKeys,
-    spendTargets: []
-  }
-
-  dispatch(sweepPrivateKeyStart())
-
-  edgeWallet.sweepPrivateKeys(spendInfo).then(
-    (edgeTransaction: EdgeTransaction) => {
-      Promise.resolve(edgeTransaction)
-        .then(() => edgeWallet.signTx(edgeTransaction))
-        .then(() => edgeWallet.broadcastTx(edgeTransaction))
-        .then(() => dispatch(sweepPrivateKeySuccess()))
-    },
-    (error: Error) => {
-      dispatch(sweepPrivateKeyFail(error))
-      setTimeout(() => dispatch(secondaryModalActivated()), 500)
+    const spendInfo: EdgeSpendInfo = {
+      privateKeys: parsedUri.privateKeys,
+      spendTargets: []
     }
-  )
+
+    edgeWallet.sweepPrivateKeys(spendInfo).then(
+      (edgeTransaction: EdgeTransaction) => {
+        Promise.resolve(edgeTransaction)
+          .then(() => edgeWallet.signTx(edgeTransaction))
+          .then(() => edgeWallet.broadcastTx(edgeTransaction))
+          .then(() => dispatch(sweepPrivateKeySuccess()))
+      },
+      (error: Error) => {
+        dispatch(sweepPrivateKeyFail(error))
+      }
+    )
+  }, 1000)
 }
 
 export const onPrivateKeyReject = () => (dispatch: Dispatch, getState: GetState) => {

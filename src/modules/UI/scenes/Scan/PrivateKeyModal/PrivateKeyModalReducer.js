@@ -5,7 +5,7 @@ import { combineReducers } from 'redux'
 import type { Action } from '../../../../ReduxTypes.js'
 import { primaryModal } from './PrimaryModal/PrimaryModalReducer.js'
 import { secondaryModal } from './SecondaryModal/SecondaryModalReducer.js'
-import { SWEEP_PRIVATE_KEY_START, SWEEP_PRIVATE_KEY_SUCCESS, SWEEP_PRIVATE_KEY_FAIL } from './PrivateKeyModalActions.js'
+import { SWEEP_PRIVATE_KEY_START, SWEEP_PRIVATE_KEY_SUCCESS, SWEEP_PRIVATE_KEY_FAIL, SWEEP_PRIVATE_KEY_RESET } from './PrivateKeyModalActions.js'
 
 const initialIsSweepingState = false
 type IsSweepingState = boolean
@@ -17,6 +17,9 @@ export const isSweeping = (state: IsSweepingState = initialIsSweepingState, acti
     case SWEEP_PRIVATE_KEY_FAIL:
     case SWEEP_PRIVATE_KEY_SUCCESS: {
       return false
+    }
+    case SWEEP_PRIVATE_KEY_RESET: {
+      return initialIsSweepingState
     }
     default:
       return state
@@ -30,6 +33,9 @@ export const error = (state: ErrorState = initialErrorState, action: Action) => 
     case SWEEP_PRIVATE_KEY_FAIL: {
       // $FlowFixMe
       return action.data.error
+    }
+    case SWEEP_PRIVATE_KEY_RESET: {
+      return initialErrorState
     }
     default:
       return state

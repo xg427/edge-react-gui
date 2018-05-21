@@ -8,15 +8,16 @@ import { SecondaryModalConnector as SecondaryModal } from './SecondaryModal/Seco
 
 type Props = {
   onPrivateKeyAccept: () => void,
-  onPrivateKeyReject: () => void
+  onPrivateKeyReject: () => void,
+  reset: () => void
 }
 export class PrivateKeyModal extends Component<Props> {
   render () {
-    const { onPrivateKeyAccept } = this.props
+    const { onPrivateKeyAccept, reset } = this.props
     return (
       <View>
         <PrimaryModal onAccept={onPrivateKeyAccept} />
-        <SecondaryModal />
+        <SecondaryModal onModalHide={reset} />
       </View>
     )
   }

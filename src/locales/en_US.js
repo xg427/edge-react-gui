@@ -263,6 +263,7 @@ const strings = {
   private_key_modal_send_to_public_address: 'Send Funds to Public Address',
   private_key_modal_import: 'Import',
   private_key_modal_cancel: 'Cancel',
+  private_key_modal_success: 'Private key successfully swept',
   private_key_modal_importing_private_key: 'Importing Private Key'
 }
 

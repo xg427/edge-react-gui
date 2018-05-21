@@ -26,8 +26,10 @@ export const rawStyles = {
     justifyContent: 'center'
   },
   footer: {
-    padding: 20,
-    paddingHorizontal: 40
+    padding: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   icon: {
     backgroundColor: THEME.COLORS.TRANSPARENT,

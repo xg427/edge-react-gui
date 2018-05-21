@@ -13,31 +13,45 @@ export type Props = {
   isVisible: boolean,
   isSweeping: boolean,
   onBackButtonPress: () => void,
-  onBackdropPress: () => void
+  onBackdropPress: () => void,
+  onModalHide: () => void
 }
 export class SecondaryModal extends Component<Props> {
   render () {
-    const { error, isVisible, onBackButtonPress, onBackdropPress } = this.props
+    const { error, isSweeping, isVisible, onBackButtonPress, onBackdropPress, onModalHide } = this.props
 
     return (
-      <NonInteractiveModal isVisible={isVisible} onBackButtonPress={onBackButtonPress} onBackdropPress={onBackdropPress}>
+      <NonInteractiveModal isVisible={isVisible} onBackButtonPress={onBackButtonPress} onBackdropPress={onBackdropPress} onModalHide={onModalHide}>
         <NonInteractiveModal.Icon>
           <Icon style={{}} type={'ionIcons'} name={'ios-key'} size={30} />
         </NonInteractiveModal.Icon>
 
         <NonInteractiveModal.Footer>
-          {error ? (
-            <NonInteractiveModal.Message>
-              <Text>{error.message}</Text>
-            </NonInteractiveModal.Message>
-          ) : (
-            <View>
-              <NonInteractiveModal.Message>
-                <Text>{s.strings.private_key_modal_importing_private_key}</Text>
+          {
+            error
+              ? <NonInteractiveModal.Message>
+                <Text>{error.message}</Text>
               </NonInteractiveModal.Message>
-              <ActivityIndicator size={'large'} style={{ padding: 10 }} />
-            </View>
-          )}
+              : null
+          }
+
+          {
+            isSweeping
+              ? <View>
+                <NonInteractiveModal.Message>
+                  <Text>{s.strings.private_key_modal_importing_private_key}</Text>
+                </NonInteractiveModal.Message>
+                <ActivityIndicator size={'large'} style={{ padding: 10 }} />
+              </View>
+              : null
+          }
+
+          { !isSweeping && !error
+            ? <NonInteractiveModal.Message>
+              <Text>{s.strings.private_key_modal_success}</Text>
+            </NonInteractiveModal.Message>
+            : null
+          }
         </NonInteractiveModal.Footer>
       </NonInteractiveModal>
     )
