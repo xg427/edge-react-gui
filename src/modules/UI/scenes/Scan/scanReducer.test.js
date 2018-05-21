@@ -14,6 +14,16 @@ test('initialState', () => {
     legacyAddressModal: {
       isVisible: false
     },
+    privateKeyModal: {
+      primaryModal: {
+        isVisible: false
+      },
+      secondaryModal: {
+        isVisible: false
+      },
+      error: null,
+      isSweeping: false
+    },
     parsedUri: null
   }
   const actual = scanReducer(undefined, {})

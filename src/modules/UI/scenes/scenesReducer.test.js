@@ -44,6 +44,16 @@ test('initialState', () => {
       legacyAddressModal: {
         isVisible: false
       },
+      privateKeyModal: {
+        error: null,
+        isSweeping: false,
+        primaryModal: {
+          isVisible: false
+        },
+        secondaryModal: {
+          isVisible: false
+        }
+      },
       parsedUri: null
     },
     sendConfirmation: {

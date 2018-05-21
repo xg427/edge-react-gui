@@ -23,7 +23,7 @@ const makeAccountCallbacks = (dispatch: Dispatch): EdgeAccountCallbacks => {
     onAddressesChecked (walletId: string, transactionCount: number) {
       console.log(`${walletId} - onAddressesChecked with progress ratio: ${transactionCount}`)
       if (transactionCount > 0) {
-        // dispatch(updateWalletLoadingProgress(walletId, transactionCount))
+        dispatch(updateWalletLoadingProgress(walletId, transactionCount))
       }
     },
 
