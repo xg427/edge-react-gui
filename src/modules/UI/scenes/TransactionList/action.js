@@ -30,7 +30,8 @@ export const START_TRANSACTIONS_LOADING = PREFIX + 'START_TRANSACTIONS_LOADING'
 export const END_TRANSACTIONS_LOADING = PREFIX + 'END_TRANSACTIONS_LOADING'
 
 export const CHANGED_TRANSACTIONS = PREFIX + 'CHANGED_TRANSACTIONS'
-export const SUBSEQUENT_TRANSACTION_BATCH_NUMBER = 30
+// transaction batches is before filtering out tokens
+export const SUBSEQUENT_TRANSACTION_BATCH_NUMBER = 40
 export const INITIAL_TRANSACTION_BATCH_NUMBER = 10
 
 export const fetchMoreTransactions = (walletId: string, currencyCode: string) => (dispatch: Dispatch, getState: GetState) => {
@@ -38,6 +39,7 @@ export const fetchMoreTransactions = (walletId: string, currencyCode: string) =>
   const { currentWalletId, currentCurrencyCode, numTransactions } = state.ui.scenes.transactionList
   let { currentEndIndex, transactions } = state.ui.scenes.transactionList
 
+  // id it's a new wallet then reset the numbers
   if ((currentWalletId !== '' && currentWalletId !== walletId) ||
     (currentCurrencyCode !== '' && currentCurrencyCode !== currencyCode)) {
     currentEndIndex = 0
@@ -58,10 +60,11 @@ export const fetchMoreTransactions = (walletId: string, currencyCode: string) =>
   }
 
   if (
-    newEndIndex !== currentEndIndex ||
+    newEndIndex !== currentEndIndex || // if it's not already at the end of the list of transactions
     (currentWalletId !== '' && currentWalletId !== walletId) ||
     (currentCurrencyCode !== '' && currentCurrencyCode !== currencyCode)
   ) {
+    // then go ahead and try to get more transactions
     getAndMergeTransactions(state, dispatch, walletId, currencyCode, {
       startEntries: newEndIndex - newStartIndex + 1,
       startIndex: newStartIndex
@@ -100,7 +103,28 @@ const getAndMergeTransactions = (state: State, dispatch: Dispatch, walletId: str
       // and fast forward the counter
       key = transactionsWithKeys.length
     }
-    const numTransactions = WALLET_API.getNumTransactions(wallet, currencyCode)
+    // numTransactions will give number of *all* transactions of native coin plus enabled tokens
+    // const numTransactions = WALLET_API.getNumTransactions(wallet, currencyCode)
+    let numTransactions = 0
+    // if the number of transactions for this wallet has already been calculated (not perfect)
+    if (state.ui.scenes.transactionList.numTransactions > 0) {
+      // then don't change the numTransactions
+      numTransactions = state.ui.scenes.transactionList.numTransactions
+    } else { // if it hasn't been calculated yet
+      // then calculate the number of transactions
+      const guiWallet = UI_SELECTORS.getWallet(state, walletId)
+      if (guiWallet.enabledTokens) {
+        const allEnabledCurrencies = [...guiWallet.enabledTokens, currencyCode]
+        for (const token of allEnabledCurrencies) {
+          if (token) {
+            numTransactions = numTransactions + WALLET_API.getNumTransactions(wallet, token)
+          }
+        }
+      } else {
+        numTransactions = WALLET_API.getNumTransactions(wallet, currencyCode)
+      }
+    }
+
     WALLET_API.getTransactions(wallet, currencyCode, options)
       .then(transactions => {
         for (const tx of transactions) {
