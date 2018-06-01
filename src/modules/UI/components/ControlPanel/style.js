@@ -23,6 +23,14 @@ export default {
     flex: 1,
     alignItems: 'stretch'
   },
+  backArrowContainer: {
+    height: 48,
+    paddingLeft: 20,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: 'transparent'
+  },
   bitcoin: {
     container: {
       backgroundColor: THEME.COLORS.ACCENT_GREEN,

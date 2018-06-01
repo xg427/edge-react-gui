@@ -1,9 +1,11 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Image, TouchableHighlight, View } from 'react-native'
+import { Image, TouchableHighlight, View, TouchableWithoutFeedback } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 import MDIcon from 'react-native-vector-icons/MaterialIcons'
-
+import { ARROW_FORWARD } from '../../../../constants/IconConstants.js'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 import person from '../../../../assets/images/sidenav/accounts.png'
 import { emptyGuiDenomination } from '../../../../types'
 import type { GuiDenomination } from '../../../../types'
@@ -64,10 +66,17 @@ export default class ControlPanel extends Component<Props> {
     }
 
     const arrowIcon = this.props.usersView ? 'keyboard-arrow-up' : 'keyboard-arrow-down'
+    const sliderIconPrefix = global.OS === 'ios' ? 'ios' : 'md'
+    const sliderArrowIcon = sliderIconPrefix + '-' + ARROW_FORWARD
 
     return (
       <SafeAreaView>
         <Gradient reverse style={styles.container}>
+          <View style={styles.backArrowContainer}>
+            <TouchableWithoutFeedback >
+              <Ionicon name={sliderArrowIcon} size={38} color='white' onPress={Actions.drawerClose}/>
+            </TouchableWithoutFeedback>
+          </View>
           <View style={styles.bitcoin.container}>
             {this.renderCryptoIcon(currencyLogo)}
             <ExchangeRate

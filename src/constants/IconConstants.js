@@ -26,6 +26,7 @@ export const CLOSE_ICON = 'close'
 export const UNLOCKED_ICON = 'ios-unlock-outline'
 export const LOCKED_ICON = 'ios-lock-outline'
 export const EYE_ICON = 'eye'
+export const ARROW_FORWARD = 'arrow-round-forward'
 
 // Material
 export const MATERIAL_ICONS = 'material'
