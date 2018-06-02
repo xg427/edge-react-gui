@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Image, TouchableHighlight, View, TouchableWithoutFeedback } from 'react-native'
+import { Image, TouchableHighlight, View, TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import MDIcon from 'react-native-vector-icons/MaterialIcons'
 import { ARROW_FORWARD } from '../../../../constants/IconConstants.js'
@@ -73,9 +73,9 @@ export default class ControlPanel extends Component<Props> {
       <SafeAreaView>
         <Gradient reverse style={styles.container}>
           <View style={styles.backArrowContainer}>
-            <TouchableWithoutFeedback >
+            <TouchableOpacity >
               <Ionicon name={sliderArrowIcon} size={38} color='white' onPress={Actions.drawerClose}/>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
           <View style={styles.bitcoin.container}>
             {this.renderCryptoIcon(currencyLogo)}
