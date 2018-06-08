@@ -32,7 +32,7 @@ console.log('***********************')
 global.clog = console.log
 
 const IGNORED_WARNINGS = [
-  // 'slowlog',
+  'slowlog',
   'Setting a timer for a long period of time'
 ]
 // $FlowExpectedError

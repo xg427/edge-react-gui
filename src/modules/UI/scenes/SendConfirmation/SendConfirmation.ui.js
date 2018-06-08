@@ -2,7 +2,7 @@
 
 import slowlog from 'react-native-slowlog'
 import { bns } from 'biggystring'
-import type { EdgeDenomination } from 'edge-core-js'
+import type { EdgeDenomination, EdgeParsedUri } from 'edge-core-js'
 import React, { Component } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { sprintf } from 'sprintf-js'
@@ -19,6 +19,8 @@ import Gradient from '../../components/Gradient/Gradient.ui'
 import Recipient from '../../components/Recipient/index.js'
 import SafeAreaView from '../../components/SafeAreaView'
 import ABSlider from '../../components/Slider/index.js'
+import { UniqueIdentifier } from './components/UniqueIdentifier/UniqueIdentifier.ui.js'
+import { UniqueIdentifierModal } from './components/UniqueIdentifierModal/UniqueIdentifierModal.ui.js'
 import styles from './styles.js'
 
 const DIVIDE_PRECISION = 18
@@ -45,14 +47,16 @@ export type SendConfirmationStateProps = {
   sliderDisabled: boolean,
   resetSlider: boolean,
   forceUpdateGuiCounter: number,
-  currencyConverter: CurrencyConverter
+  currencyConverter: CurrencyConverter,
+  uniqueIdentifier?: string
 }
 
 export type SendConfirmationDispatchProps = {
   updateSpendPending: boolean => any,
   signBroadcastAndSave: () => any,
   reset: () => any,
-  updateAmount: (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string) => any
+  updateAmount: (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string) => any,
+  uniqueIdentifierUpdated: (uniqueIdentifier: string) => any
 }
 
 type routerParam = {
@@ -61,19 +65,20 @@ type routerParam = {
 
 type Props = SendConfirmationStateProps & SendConfirmationDispatchProps & routerParam
 
-type State = {
+type State = {|
   secondaryDisplayDenomination: GuiDenomination,
   nativeAmount: string,
   overridePrimaryExchangeAmount: string,
   forceUpdateGuiCounter: number,
-  keyboardVisible: boolean
-}
+  keyboardVisible: boolean,
+  uniqueIdentifierModalIsActive: boolean
+|}
 
 export class SendConfirmation extends Component<Props, State> {
   constructor (props: Props) {
     super(props)
     slowlog(this, /.*/, global.slowlogOptions)
-    const newState: State = {
+    this.state = {
       secondaryDisplayDenomination: {
         name: '',
         multiplier: '1',
@@ -82,9 +87,9 @@ export class SendConfirmation extends Component<Props, State> {
       overridePrimaryExchangeAmount: '',
       keyboardVisible: false,
       forceUpdateGuiCounter: 0,
-      nativeAmount: props.nativeAmount
+      nativeAmount: props.nativeAmount,
+      uniqueIdentifierModalIsActive: false
     }
-    this.state = newState
   }
 
   componentWillMount () {
@@ -196,10 +201,7 @@ export class SendConfirmation extends Component<Props, State> {
               {this.props.errorMsg ? (
                 <Text style={[styles.error, styles.errorText]}>{this.props.errorMsg}</Text>
               ) : (
-                <ExchangeRate
-                  secondaryDisplayAmount={this.props.fiatPerCrypto}
-                  primaryInfo={primaryInfo}
-                  secondaryInfo={secondaryInfo} />
+                <ExchangeRate secondaryDisplayAmount={this.props.fiatPerCrypto} primaryInfo={primaryInfo} secondaryInfo={secondaryInfo} />
               )}
             </View>
             <View style={[styles.main, border('yellow')]}>
@@ -216,6 +218,14 @@ export class SendConfirmation extends Component<Props, State> {
                 <Text style={[styles.feeAreaText]}>{networkFeeSyntax()}</Text>
               </View>
               <Recipient label={this.props.label} link={''} publicAddress={this.props.publicAddress} style={styles.recipient} />
+
+              {this.props.uniqueIdentifier && (
+                <UniqueIdentifier>
+                  <UniqueIdentifier.Text>
+                    <Text>{uniqueIdentifierText(this.props.currencyCode, this.props.uniqueIdentifier)}</Text>
+                  </UniqueIdentifier.Text>
+                </UniqueIdentifier>
+              )}
             </View>
             <View style={[styles.pendingSymbolArea]}>
               {this.props.pending && <ActivityIndicator style={[{ flex: 1, alignSelf: 'center' }]} size={'small'} />}
@@ -231,11 +241,38 @@ export class SendConfirmation extends Component<Props, State> {
             </View>
           </View>
         </Gradient>
+
+        {true && (
+          // {this.props.uniqueIdentifier && (
+          <UniqueIdentifierModal
+            isActive={this.state.uniqueIdentifierModalIsActive}
+            onConfirm={this.onConfirmUniqueIdentifier}
+            onCancel={this.onCancelUniqueIdentifier}
+            currencyCode={this.props.currencyCode}
+            value={this.props.uniqueIdentifier || ''}
+          />
+        )}
       </SafeAreaView>
     )
+  }
+
+  onConfirmUniqueIdentifier = (uniqueIdentifier: string) => {
+    this.setState({ uniqueIdentifierModalIsActive: false }, this.props.uniqueIdentifierUpdated(uniqueIdentifier))
+  }
+
+  onCancelUniqueIdentifier = () => {
+    this.setState({ uniqueIdentifierModalIsActive: false })
   }
 
   onExchangeAmountChanged = ({ nativeAmount, exchangeAmount }: ExchangedFlipInputAmounts) => {
     this.props.updateAmount(nativeAmount, exchangeAmount, this.props.fiatPerCrypto.toString())
   }
+}
+
+const uniqueIdentifierText = (currencyCode: string, uniqueIdentifier: string): string => {
+  return currencyCode === 'XRP'
+    ? sprintf(s.strings.unique_identifier_display_text, s.strings.unique_identifier_destination_tag, uniqueIdentifier)
+    : currencyCode === 'XMR'
+      ? sprintf(s.strings.unique_identifier_display_text, s.strings.unique_identifier_payment_id, uniqueIdentifier)
+      : sprintf(s.strings.unique_identifier_display_text, s.strings.unique_identifier, uniqueIdentifier)
 }
