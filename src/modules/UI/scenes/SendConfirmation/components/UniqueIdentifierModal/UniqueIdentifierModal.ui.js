@@ -11,21 +11,17 @@ import s from '../../../../../../locales/strings'
 export type Props = {
   isActive: boolean,
   onConfirm: (uniqueIdentifier: string) => any,
-  onBackButtonPress?: () => any,
-  onBackdropPress?: () => any,
+  onBackButtonPress: () => any,
+  onBackdropPress: () => any,
+  onModalHide: () => any,
   onCancel: () => any,
   currencyCode: string,
-  value: string
+  uniqueIdentifier: string,
+  uniqueIdentifierChanged: (uniqueIdentifier: string) => void
 }
-export type State = { uniqueIdentifier: string }
-export class UniqueIdentifierModal extends Component<Props, State> {
-  state = {
-    uniqueIdentifier: ''
-  }
-
+export class UniqueIdentifierModal extends Component<Props> {
   render () {
-    const { isActive, onConfirm, onCancel, currencyCode } = this.props
-    const { onBackdropPress = onCancel, onBackButtonPress = onCancel } = this.props
+    const { currencyCode, isActive, onBackButtonPress, onBackdropPress, onCancel, onModalHide, uniqueIdentifier, uniqueIdentifierChanged } = this.props
     const type = getUniqueIdentifierType(currencyCode)
     const description = getUniqueIdentifierDescription(type)
     const title = type
@@ -34,10 +30,9 @@ export class UniqueIdentifierModal extends Component<Props, State> {
     const cancel = s.strings.unique_identifier_modal_cancel
     const icon = { type: 'ionIcons', name: 'ios-key' }
     const keyboardType = 'numeric'
-    const { uniqueIdentifier } = this.state
 
     return (
-      <InteractiveModal isActive={isActive} onBackdropPress={onBackdropPress} onBackButtonPress={onBackButtonPress}>
+      <InteractiveModal isActive={isActive} onBackdropPress={onBackdropPress} onBackButtonPress={onBackButtonPress} onModalHide={onModalHide}>
         <InteractiveModal.Icon>
           <Icon style={{}} type={icon.type} name={icon.name} size={30} />
         </InteractiveModal.Icon>
@@ -59,11 +54,11 @@ export class UniqueIdentifierModal extends Component<Props, State> {
             <InteractiveModal.Item>
               <TextInput
                 autoFocus
-                onChangeText={uniqueIdentifier => this.setState({ uniqueIdentifier })}
+                onChangeText={uniqueIdentifierChanged}
                 keyboardType={keyboardType}
                 value={uniqueIdentifier}
                 label={label}
-                onSubmit={onConfirm}
+                onSubmit={this.onConfirm}
               />
             </InteractiveModal.Item>
           </InteractiveModal.Row>
@@ -72,7 +67,7 @@ export class UniqueIdentifierModal extends Component<Props, State> {
         <InteractiveModal.Footer>
           <InteractiveModal.Row>
             <InteractiveModal.Item>
-              <PrimaryButton onPress={() => onConfirm(this.state.uniqueIdentifier)}>
+              <PrimaryButton onPress={() => this.onConfirm()}>
                 <PrimaryButton.Text>
                   <Text>{confirm}</Text>
                 </PrimaryButton.Text>
@@ -80,7 +75,7 @@ export class UniqueIdentifierModal extends Component<Props, State> {
             </InteractiveModal.Item>
 
             <InteractiveModal.Item>
-              <SecondaryButton onPress={onCancel}>
+              <SecondaryButton onPress={() => onCancel()}>
                 <SecondaryButton.Text>
                   <Text>{cancel}</Text>
                 </SecondaryButton.Text>
@@ -90,6 +85,11 @@ export class UniqueIdentifierModal extends Component<Props, State> {
         </InteractiveModal.Footer>
       </InteractiveModal>
     )
+  }
+
+  onConfirm () {
+    const { uniqueIdentifier } = this.props
+    this.props.onConfirm(uniqueIdentifier)
   }
 }
 

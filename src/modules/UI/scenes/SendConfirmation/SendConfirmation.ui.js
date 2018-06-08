@@ -2,7 +2,7 @@
 
 import slowlog from 'react-native-slowlog'
 import { bns } from 'biggystring'
-import type { EdgeDenomination, EdgeParsedUri } from 'edge-core-js'
+import type { EdgeDenomination } from 'edge-core-js'
 import React, { Component } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { sprintf } from 'sprintf-js'
@@ -20,7 +20,7 @@ import Recipient from '../../components/Recipient/index.js'
 import SafeAreaView from '../../components/SafeAreaView'
 import ABSlider from '../../components/Slider/index.js'
 import { UniqueIdentifier } from './components/UniqueIdentifier/UniqueIdentifier.ui.js'
-import { UniqueIdentifierModal } from './components/UniqueIdentifierModal/UniqueIdentifierModal.ui.js'
+import { UniqueIdentifierModalConnect as UniqueIdentifierModal } from './components/UniqueIdentifierModal/UniqueIdentifierModalConnector.js'
 import styles from './styles.js'
 
 const DIVIDE_PRECISION = 18
@@ -70,8 +70,7 @@ type State = {|
   nativeAmount: string,
   overridePrimaryExchangeAmount: string,
   forceUpdateGuiCounter: number,
-  keyboardVisible: boolean,
-  uniqueIdentifierModalIsActive: boolean
+  keyboardVisible: boolean
 |}
 
 export class SendConfirmation extends Component<Props, State> {
@@ -87,8 +86,7 @@ export class SendConfirmation extends Component<Props, State> {
       overridePrimaryExchangeAmount: '',
       keyboardVisible: false,
       forceUpdateGuiCounter: 0,
-      nativeAmount: props.nativeAmount,
-      uniqueIdentifierModalIsActive: false
+      nativeAmount: props.nativeAmount
     }
   }
 
@@ -242,26 +240,11 @@ export class SendConfirmation extends Component<Props, State> {
           </View>
         </Gradient>
 
-        {true && (
-          // {this.props.uniqueIdentifier && (
-          <UniqueIdentifierModal
-            isActive={this.state.uniqueIdentifierModalIsActive}
-            onConfirm={this.onConfirmUniqueIdentifier}
-            onCancel={this.onCancelUniqueIdentifier}
-            currencyCode={this.props.currencyCode}
-            value={this.props.uniqueIdentifier || ''}
-          />
+        {(this.props.currencyCode === 'XRP' || this.props.currencyCode === 'XMR') && (
+          <UniqueIdentifierModal onConfirm={this.props.uniqueIdentifierUpdated} currencyCode={this.props.currencyCode} />
         )}
       </SafeAreaView>
     )
-  }
-
-  onConfirmUniqueIdentifier = (uniqueIdentifier: string) => {
-    this.setState({ uniqueIdentifierModalIsActive: false }, this.props.uniqueIdentifierUpdated(uniqueIdentifier))
-  }
-
-  onCancelUniqueIdentifier = () => {
-    this.setState({ uniqueIdentifierModalIsActive: false })
   }
 
   onExchangeAmountChanged = ({ nativeAmount, exchangeAmount }: ExchangedFlipInputAmounts) => {
