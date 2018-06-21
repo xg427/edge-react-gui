@@ -1,12 +1,20 @@
 // @flow
 
 import { bns } from 'biggystring'
-import type { EdgeMetadata, EdgeParsedUri, EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
+import type { EdgeMetadata, EdgeParsedUri, EdgeSpendInfo, EdgeTransaction, EdgePaymentProtocolInfo } from 'edge-core-js'
 import { Actions } from 'react-native-router-flux'
 
 import { OPEN_AB_ALERT } from '../../../../constants/indexConstants'
 import { getWallet } from '../../../Core/selectors.js'
-import { broadcastTransaction, getMaxSpendable, makeSpend, saveTransaction, signTransaction } from '../../../Core/Wallets/api.js'
+import {
+  broadcastTransaction,
+  getMaxSpendable,
+  makeSpend,
+  saveTransaction,
+  signTransaction,
+  getPaymentProtocolInfo,
+  makeSpendInfo
+} from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes'
 import { openABAlert } from '../../components/ABAlert/action'
 import { getSelectedWalletId } from '../../selectors.js'
@@ -19,6 +27,7 @@ export const UPDATE_LABEL = PREFIX + 'UPDATE_LABEL'
 export const UPDATE_IS_KEYBOARD_VISIBLE = PREFIX + 'UPDATE_IS_KEYBOARD_VISIBLE'
 export const UPDATE_SPEND_PENDING = PREFIX + 'UPDATE_SPEND_PENDING'
 export const RESET = PREFIX + 'RESET'
+export const UPDATE_PAYMENT_PROTOCOL_TRANSACTION = PREFIX + 'UPDATE_PAYMENT_PROTOCOL_TRANSACTION'
 export const UPDATE_TRANSACTION = PREFIX + 'UPDATE_TRANSACTION'
 
 export const updateAmount = (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string) => (dispatch: Dispatch, getState: GetState) => {
@@ -58,6 +67,32 @@ export const uniqueIdentifierUpdated = (uniqueIdentifier: string) => (dispatch: 
       dispatch(updateTransaction(null, newParsedUri))
     })
 }
+
+export const paymentProtocolReceived = (parsedUri: EdgeParsedUri) => async (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const walletId = getSelectedWalletId(state)
+  const edgeWallet = getWallet(state, walletId)
+
+  // $FlowFixMe
+  const paymentProtocolURL = parsedUri.paymentProtocolURL
+  const paymentProtocolInfo = await getPaymentProtocolInfo(edgeWallet, paymentProtocolURL)
+  const spendInfo = await makeSpendInfo(edgeWallet, paymentProtocolInfo)
+
+  try {
+    const edgeTransaction = await makeSpend(edgeWallet, spendInfo)
+    dispatch(updatePaymentProtocolTransaction(edgeTransaction, parsedUri, spendInfo, paymentProtocolInfo))
+    Actions.sendConfirmation('fromScan')
+  } catch (error) {
+    dispatch(makeSpendFailed(error, spendInfo))
+    Actions.sendConfirmation('fromScan')
+  }
+}
+
+export const MAKE_SPEND_FAILED = PREFIX + 'MAKE_SPEND_FAILED'
+export const makeSpendFailed = (error: Error, spendInfo: EdgeSpendInfo) => ({
+  type: MAKE_SPEND_FAILED,
+  data: { error, spendInfo }
+})
 
 export const createTX = (parsedUri: GuiMakeSpendInfo | EdgeParsedUri, forceUpdateGui?: boolean = true) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -126,6 +161,21 @@ export const updateLabel = (label: string) => ({
 export const reset = () => ({
   type: RESET,
   data: {}
+})
+
+export const updatePaymentProtocolTransaction = (
+  transaction: EdgeTransaction,
+  parsedUri: EdgeParsedUri,
+  spendInfo: EdgeSpendInfo,
+  paymentProtocolInfo: EdgePaymentProtocolInfo
+) => ({
+  type: UPDATE_PAYMENT_PROTOCOL_TRANSACTION,
+  data: {
+    transaction,
+    parsedUri,
+    spendInfo,
+    paymentProtocolInfo
+  }
 })
 
 export const updateTransaction = (transaction: ?EdgeTransaction, parsedUri: ?EdgeParsedUri, forceUpdateGui: ?boolean, error: ?Error) => ({
