@@ -37,12 +37,15 @@ export const sendConfirmation = (state: SendConfirmationState = initialState, ac
       }
     }
     case ACTION.UPDATE_PAYMENT_PROTOCOL_TRANSACTION: {
-      const { transaction, parsedUri } = data
+      if (!action.data) return state
+      const { transaction, parsedUri, spendInfo, paymentProtocolInfo } = data
 
       return {
         ...state,
         transaction,
         parsedUri,
+        spendInfo,
+        paymentProtocolInfo,
         isEditable: false
       }
     }
@@ -52,6 +55,8 @@ export const sendConfirmation = (state: SendConfirmationState = initialState, ac
         ...state,
         error: action.data.error,
         parsedUri: action.data.spendInfo,
+        spendInfo: action.data.spendInfo,
+        paymentProtocolInfo: action.data.paymentProtocolInfo,
         isEditable: false
       }
     }

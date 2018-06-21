@@ -6,6 +6,8 @@ import { STANDARD_FEE } from '../../../../constants/indexConstants'
 import type { State } from '../../../ReduxTypes'
 import { getSceneState, getSelectedCurrencyCode } from '../../selectors.js'
 
+import type { EdgePaymentProtocolInfo } from '../../../Core/Wallets/api.js'
+
 export type GuiMakeSpendInfo = {
   currencyCode?: string,
   networkFeeOption?: string,
@@ -22,6 +24,8 @@ export type SendConfirmationState = {
   forceUpdateGuiCounter: number,
   transaction: EdgeTransaction | null,
   parsedUri: GuiMakeSpendInfo | EdgeParsedUri,
+  spendInfo: EdgeSpendInfo | null,
+  paymentProtocolInfo: EdgePaymentProtocolInfo | null,
   error: Error | null,
   isEditable: boolean
 }
@@ -45,6 +49,8 @@ export const initialState = {
       miscJson: ''
     }
   },
+  spendInfo: null,
+  paymentProtocolInfo: null,
   error: null,
   isEditable: true
 }

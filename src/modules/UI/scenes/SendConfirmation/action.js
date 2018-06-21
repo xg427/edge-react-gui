@@ -78,20 +78,22 @@ export const paymentProtocolReceived = (parsedUri: EdgeParsedUri) => async (disp
   const paymentProtocolInfo = await getPaymentProtocolInfo(edgeWallet, paymentProtocolURL)
   const spendInfo = await makeSpendInfo(edgeWallet, paymentProtocolInfo)
 
-  try {
-    const edgeTransaction = await makeSpend(edgeWallet, spendInfo)
-    dispatch(updatePaymentProtocolTransaction(edgeTransaction, parsedUri, spendInfo, paymentProtocolInfo))
-    Actions.sendConfirmation('fromScan')
-  } catch (error) {
-    dispatch(makeSpendFailed(error, spendInfo))
-    Actions.sendConfirmation('fromScan')
-  }
+  makeSpend(edgeWallet, spendInfo).then(
+    edgeTransaction => {
+      dispatch(updatePaymentProtocolTransaction(edgeTransaction, parsedUri, spendInfo, paymentProtocolInfo))
+      Actions.sendConfirmation('fromScan')
+    },
+    error => {
+      dispatch(makeSpendFailed(error, spendInfo, paymentProtocolInfo))
+      Actions.sendConfirmation('fromScan')
+    }
+  )
 }
 
 export const MAKE_SPEND_FAILED = PREFIX + 'MAKE_SPEND_FAILED'
-export const makeSpendFailed = (error: Error, spendInfo: EdgeSpendInfo) => ({
+export const makeSpendFailed = (error: Error, spendInfo: EdgeSpendInfo, paymentProtocolInfo: EdgePaymentProtocolInfo) => ({
   type: MAKE_SPEND_FAILED,
-  data: { error, spendInfo }
+  data: { error, spendInfo, paymentProtocolInfo }
 })
 
 export const createTX = (parsedUri: GuiMakeSpendInfo | EdgeParsedUri, forceUpdateGui?: boolean = true) => (dispatch: Dispatch, getState: GetState) => {

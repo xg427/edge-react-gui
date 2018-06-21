@@ -54,14 +54,14 @@ export const getReceiveAddress = (wallet: EdgeCurrencyWallet, currencyCode: stri
   return wallet.getReceiveAddress ? wallet.getReceiveAddress({ currencyCode }) : Promise.resolve(dummyEdgeReceiveAddress)
 }
 
-export const makeSpendInfo = (wallet: EdgeCurrencyWallet, paymentProtocolInfo: EdgePaymentProtocolInfo): EdgeSpendInfo => {
-  return {
+export const makeSpendInfo = (wallet: EdgeCurrencyWallet, paymentProtocolInfo: EdgePaymentProtocolInfo): Promise<EdgeSpendInfo> => {
+  return Promise.resolve({
     networkFeeOption: 'high',
     metadata: {
       name: paymentProtocolInfo.merchant || paymentProtocolInfo.domain
     },
     spendTargets: paymentProtocolInfo.spendTarget
-  }
+  })
 }
 
 export type EdgePaymentProtocolInfo = {
