@@ -9,7 +9,7 @@ import type { Dispatch, GetState } from '../../../ReduxTypes.js'
 import * as WALLET_API from '../../../Core/Wallets/api.js'
 import { isEdgeLogin, denominationToDecimalPlaces, noOp } from '../../../utils.js'
 import { loginWithEdge } from '../../../../actions/EdgeLoginActions.js'
-import { updateParsedURI, paymentProtocolReceived } from '../SendConfirmation/action.js'
+import { updateParsedURI, paymentProtocolUriReceived } from '../SendConfirmation/action.js'
 import s from '../../../../locales/strings.js'
 
 import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
@@ -108,9 +108,9 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
         return dispatch(privateKeyModalActivated())
       }
 
-      if (isPaymentProtocolURL(parsedUri)) {
+      if (isPaymentProtocolUri(parsedUri)) {
         // BIP70 URI
-        return dispatch(paymentProtocolReceived(parsedUri))
+        return dispatch(paymentProtocolUriReceived(parsedUri))
       }
 
       // PUBLIC ADDRESS URI
@@ -177,6 +177,6 @@ export const isPrivateKeyUri = (parsedUri: EdgeParsedUri): boolean => {
   return !!parsedUri.privateKeys && parsedUri.privateKeys.length >= 1
 }
 
-export const isPaymentProtocolURL = (parsedUri: EdgeParsedUri): boolean => {
+export const isPaymentProtocolUri = (parsedUri: EdgeParsedUri): boolean => {
   return !!parsedUri.paymentProtocolURL && !parsedUri.publicAddress
 }

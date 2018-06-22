@@ -1,12 +1,10 @@
 // @flow
 
-import type { AbcSpendTarget, EdgeMetadata, EdgeParsedUri, EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
+import type { AbcSpendTarget, EdgeMetadata, EdgeParsedUri, EdgeSpendInfo, EdgeTransaction, EdgePaymentProtocolInfo } from 'edge-core-js'
 
 import { STANDARD_FEE } from '../../../../constants/indexConstants'
 import type { State } from '../../../ReduxTypes'
 import { getSceneState, getSelectedCurrencyCode } from '../../selectors.js'
-
-import type { EdgePaymentProtocolInfo } from '../../../Core/Wallets/api.js'
 
 export type GuiMakeSpendInfo = {
   currencyCode?: string,
@@ -19,22 +17,29 @@ export type GuiMakeSpendInfo = {
 }
 
 export type SendConfirmationState = {
-  pending: boolean,
   isKeyboardVisible: boolean,
   forceUpdateGuiCounter: number,
-  transaction: EdgeTransaction | null,
-  parsedUri: GuiMakeSpendInfo | EdgeParsedUri,
+  destination: string,
+
+  parsedUri: GuiMakeSpendInfo | EdgeParsedUri | null,
   spendInfo: EdgeSpendInfo | null,
+
   paymentProtocolInfo: EdgePaymentProtocolInfo | null,
-  error: Error | null,
-  isEditable: boolean
+  paymentProtocolSpendInfo: EdgeSpendInfo | null,
+
+  isEditable: boolean,
+
+  pending: boolean,
+  transaction: EdgeTransaction | null,
+  error: Error | null
 }
 
 export const initialState = {
-  pending: false,
   isKeyboardVisible: false,
   forceUpdateGuiCounter: 0,
-  transaction: null,
+  destination: '',
+  nativeAmount: '0',
+
   parsedUri: {
     networkFeeOption: (STANDARD_FEE: string),
     customNetworkFee: {},
@@ -50,9 +55,15 @@ export const initialState = {
     }
   },
   spendInfo: null,
+
   paymentProtocolInfo: null,
-  error: null,
-  isEditable: true
+  paymentProtocolSpendInfo: null,
+
+  isEditable: true,
+
+  pending: false,
+  transaction: null,
+  error: null
 }
 
 export const getScene = (state: State): any => getSceneState(state, 'sendConfirmation')

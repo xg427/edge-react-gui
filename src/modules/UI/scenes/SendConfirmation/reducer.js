@@ -1,6 +1,7 @@
 // @flow
 
 import { isEqual } from 'lodash'
+import { add } from 'biggystring'
 
 import type { Action } from '../../../ReduxTypes.js'
 import * as ACTION from './action'
@@ -11,7 +12,7 @@ export const sendConfirmation = (state: SendConfirmationState = initialState, ac
   const { type, data = {} } = action
   switch (type) {
     case ACTION.UPDATE_TRANSACTION: {
-      const { transaction, parsedUri, forceUpdateGui, error } = data
+      const { transaction, transaction: { nativeAmount }, parsedUri, forceUpdateGui, error } = data
       let forceUpdateGuiCounter = state.forceUpdateGuiCounter
       if (forceUpdateGui) {
         forceUpdateGuiCounter++
@@ -30,6 +31,8 @@ export const sendConfirmation = (state: SendConfirmationState = initialState, ac
         transaction,
         forceUpdateGuiCounter,
         error,
+        nativeAmount,
+        destination: parsedUri.publicAddress,
         parsedUri: {
           ...state.parsedUri,
           ...others
@@ -38,26 +41,33 @@ export const sendConfirmation = (state: SendConfirmationState = initialState, ac
     }
     case ACTION.UPDATE_PAYMENT_PROTOCOL_TRANSACTION: {
       if (!action.data) return state
-      const { transaction, parsedUri, spendInfo, paymentProtocolInfo } = data
+      const { transaction } = data
 
       return {
         ...state,
         transaction,
-        parsedUri,
-        spendInfo,
-        paymentProtocolInfo,
         isEditable: false
       }
     }
-    case ACTION.MAKE_SPEND_FAILED: {
+    case ACTION.MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED: {
       if (!action.data) return state
+      const { error } = data
+
       return {
         ...state,
-        error: action.data.error,
-        parsedUri: action.data.spendInfo,
-        spendInfo: action.data.spendInfo,
-        paymentProtocolInfo: action.data.paymentProtocolInfo,
-        isEditable: false
+        error
+      }
+    }
+    case ACTION.NEW_SPEND_INFO: {
+      if (!action.data) return state
+      const { spendInfo, spendInfo: { spendTargets, metadata: { name: destination } } } = data
+      const nativeAmount = spendTargets.reduce((sum, { nativeAmount }) => add(sum, nativeAmount), '0')
+
+      return {
+        ...state,
+        destination,
+        spendInfo,
+        nativeAmount
       }
     }
     case ACTION.UPDATE_IS_KEYBOARD_VISIBLE: {

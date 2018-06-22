@@ -7,8 +7,8 @@ import type {
   EdgeParsedUri,
   EdgeReceiveAddress,
   EdgeSpendInfo,
-  EdgeSpendTarget,
-  EdgeTransaction
+  EdgeTransaction,
+  EdgePaymentProtocolInfo
 } from 'edge-core-js'
 import _ from 'lodash'
 const ENABLED_TOKENS_FILENAME = 'EnabledTokens.json'
@@ -54,48 +54,34 @@ export const getReceiveAddress = (wallet: EdgeCurrencyWallet, currencyCode: stri
   return wallet.getReceiveAddress ? wallet.getReceiveAddress({ currencyCode }) : Promise.resolve(dummyEdgeReceiveAddress)
 }
 
-export const makeSpendInfo = (wallet: EdgeCurrencyWallet, paymentProtocolInfo: EdgePaymentProtocolInfo): Promise<EdgeSpendInfo> => {
+export const makeSpendInfo = (paymentProtocolInfo: EdgePaymentProtocolInfo): Promise<EdgeSpendInfo> => {
   return Promise.resolve({
     networkFeeOption: 'high',
     metadata: {
-      name: paymentProtocolInfo.merchant || paymentProtocolInfo.domain
+      name: paymentProtocolInfo.merchant || paymentProtocolInfo.domain,
+      notes: paymentProtocolInfo.memo
     },
-    spendTargets: paymentProtocolInfo.spendTarget
+    spendTargets: paymentProtocolInfo.spendTargets
   })
 }
 
-export type EdgePaymentProtocolInfo = {
-  domain: string,
-  nativeAmount: string,
-  memo?: string,
-  merchant?: string,
-  spendTarget: Array<EdgeSpendTarget>
-}
-
 const edgePaymentProtocolInfo: EdgePaymentProtocolInfo = {
-  currencyCode: 'BTC',
   domain: 'https://merchant.com/pay.php?h%3D2a8628fc2fbe',
   memo: 'Invoice: 1.0 lb Havarti Cheese',
   merchant: "Sprouts Farmers' Market",
-  spendTarget: [
+  nativeAmount: '10000',
+  spendTargets: [
     {
       currencyCode: 'BTC',
       publicAddress: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
-      nativeAmount: '1'
+      nativeAmount: '10000'
     }
   ]
 }
 
-export const getPaymentProtocolInfo = (wallet: EdgeCurrencyWallet, paymentProtocolUri: string): Promise<EdgePaymentProtocolInfo> => {
-  return Promise.resolve()
-    .then(() => {
-      // $FlowFixMe
-      return wallet.getPaymentProtocolInfo(paymentProtocolUri)
-    })
-    .catch((error: Error) => {
-      console.log(error)
-      return edgePaymentProtocolInfo
-    })
+export const getPaymentProtocolInfo = (wallet: EdgeCurrencyWallet, paymentProtocolUrl: string): Promise<EdgePaymentProtocolInfo> => {
+  return Promise.resolve(edgePaymentProtocolInfo)
+  // return wallet.getPaymentProtocolInfo ? wallet.getPaymentProtocolInfo(paymentProtocolUrl) : Promise.resolve(edgePaymentProtocolInfo) // Promise.reject(new Error(`getPaymentProtocolInfo not implmented on wallets of type ${wallet.type}`))
 }
 
 export const makeSpend = (wallet: EdgeCurrencyWallet, spendInfo: EdgeSpendInfo): Promise<EdgeTransaction> => {
