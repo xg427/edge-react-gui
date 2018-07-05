@@ -34,28 +34,22 @@ export const initialState = {
   sendLogsStatus: Constants.REQUEST_STATUS.PENDING
 }
 
+type CurrencySetting = {
+  denomination: string,
+  isCustomNodesEnabled: boolean,
+  customNodesList: Array<string>
+}
+
 type SettingsState = {
-  BCH: {
-    denomination: string
-  },
-  BTC: {
-    denomination: string
-  },
-  DASH: {
-    denomination: string
-  },
-  FTC: {
-    denomination: string
-  },
-  ETH: {
-    denomination: string
-  },
-  LTC: {
-    denomination: string
-  },
-  UFO: {
-    denomination: string
-  },
+  BCH: CurrencySetting,
+  BTC: CurrencySetting,
+  DASH: CurrencySetting,
+  FTC: CurrencySetting,
+  ETH: CurrencySetting,
+  LTC: CurrencySetting,
+  UFO: CurrencySetting,
+  XMR: CurrencySetting,
+  XRP: CurrencySetting,
   REP: {
     denomination: string
   },
