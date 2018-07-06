@@ -206,7 +206,9 @@ export type State = {
         currencyCode: string,
         denominations: Array<EdgeDenomination>,
         symbolImage: string,
-        symbolImageDarkMono: string
+        symbolImageDarkMono: string,
+        customNodesList?: Array<string>,
+        isCustomNodesEnabled?: boolean
       },
       plugins: {
         arrayPlugins: Array<EdgeCurrencyPlugin>,
