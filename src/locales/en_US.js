@@ -324,7 +324,19 @@ const strings = {
   unique_identifier_modal_description: 'Please enter the %s number to be sent to the recipient of this transaction',
   unique_identifier_modal_confirm: 'Confirm',
   unique_identifier_modal_cancel: 'Cancel',
-  unique_identifier_display_text: '%1$s: %2$s'
+  unique_identifier_display_text: '%1$s: %2$s',
+
+  spending_limits: 'Spending Limits'
+
+  // spending_limits_daily_title: 'Daily Spending Limit',
+  // spending_limits_daily_subtitle: '(Requires password above daily limit)',
+  // spending_limits_denomination: 'm฿',
+  // spending_limits_hint_text: '0',
+  // spending_limits_incorrect_password: 'Incorrect Password',
+  // spending_limits_pin_title: 'Require PIN above amount',
+  // spending_limits_save: 'Save',
+  // spending_limits_warning:
+  //   '** Warning **\\n\\nSetting a password spending limit may prevent you from accessing funds if your password is forgotten. Please make sure you have setup password recovery',
 }
 
 export default strings
