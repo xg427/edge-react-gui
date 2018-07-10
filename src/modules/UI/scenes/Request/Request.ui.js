@@ -162,17 +162,11 @@ export class Request extends Component<Props, State> {
     return (
       <SafeAreaView>
         <Gradient style={styles.view}>
-          <XRPMinimumModal
-            visibilityBoolean={this.state.isXRPMinimumModalVisible}
-            onExit={this.onCloseXRPMinimumModal}
-          />
+          <XRPMinimumModal visibilityBoolean={this.state.isXRPMinimumModalVisible} onExit={this.onCloseXRPMinimumModal} />
           <Gradient style={styles.gradient} />
 
           <View style={styles.exchangeRateContainer}>
-            <ExchangeRate
-              primaryInfo={primaryCurrencyInfo}
-              secondaryInfo={secondaryCurrencyInfo}
-              secondaryDisplayAmount={exchangeSecondaryToPrimaryRatio} />
+            <ExchangeRate primaryInfo={primaryCurrencyInfo} secondaryInfo={secondaryCurrencyInfo} secondaryDisplayAmount={exchangeSecondaryToPrimaryRatio} />
           </View>
 
           <View style={styles.main}>
