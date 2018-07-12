@@ -45,7 +45,12 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
     resetSlider = true
   }
   errorMsg = error ? error.message : ''
-
+  if (state.ui.scenes.sendConfirmation.parsedUri && state.ui.scenes.sendConfirmation.parsedUri.nativeAmount === '0') {
+    if (errorMsg === 'ErrorNoAmountSpecified') {
+      error = null
+      errorMsg = null
+    }
+  }
   const networkFee = transaction ? transaction.networkFee : null
   const parentNetworkFee = transaction && transaction.parentNetworkFee ? transaction.parentNetworkFee : null
 
