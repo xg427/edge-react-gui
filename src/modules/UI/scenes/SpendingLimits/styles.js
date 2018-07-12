@@ -5,27 +5,24 @@ import { StyleSheet } from 'react-native'
 import THEME from '../../../../theme/variables/airbitz'
 
 const debug = {
-  // borderColor: 'red',
-  // borderWidth: 1
+  borderColor: 'red',
+  borderWidth: 1
 }
 export const rawStyles = {
-  item: {
-    ...debug,
-    paddingHorizontal: 24,
-    paddingVertical: 12
-  },
+  scene: {},
   gradient: {
     height: THEME.HEADER
   },
-  passwordInput: {
-    ...debug
+  item: {
+    paddingHorizontal: 24,
+    paddingVertical: 12
   },
-  spendingLimit: {
-    ...debug
-  },
+  passwordInput: {},
+  spendingLimit: {},
   dailySpendingLimit: {},
   transactionSpendingLimit: {},
-  submitButton: {}
+  submitButton: {},
+  debug
 }
 export const styles = StyleSheet.create(rawStyles)
 export default styles
