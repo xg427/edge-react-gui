@@ -11,6 +11,7 @@ import type { Action } from '../../ReduxTypes'
 import * as ADD_TOKEN_ACTION from '../scenes/AddToken/action.js'
 import * as WALLET_ACTION from '../Wallets/action'
 import * as ACTION from './action.js'
+import { spendingLimits } from './spendingLimits/spendingLimits.js'
 
 export const initialState = {
   ...SYNCED_ACCOUNT_DEFAULTS,
@@ -142,7 +143,7 @@ const currencyPLuginUtil = (state, payloadData) => {
   }
 }
 
-export const settings = (state: SettingsState = initialState, action: Action) => {
+export const settingsLegacy = (state: SettingsState = initialState, action: Action) => {
   const { type, data = {} } = action
 
   switch (type) {
@@ -505,4 +506,14 @@ export const settings = (state: SettingsState = initialState, action: Action) =>
     default:
       return state
   }
+}
+
+export const settings = (state: SettingsState = initialState, action: Action) => {
+  const legacy = settingsLegacy(state, action)
+  const result = {
+    ...legacy,
+    spendingLimits: spendingLimits(state.spendingLimits, action)
+  }
+
+  return result
 }

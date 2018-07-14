@@ -48,14 +48,8 @@ export const LOCAL_ACCOUNT_DEFAULTS = {
   isAccountBalanceVisible: true,
   spendingLimits: {
     transaction: {
-      amount: 0,
-      isEnabled: false
-    },
-    daily: {
-      amount: 0,
-      currentAmount: 0,
-      startedAt: 0,
-      isEnabled: false
+      amount: 100,
+      isEnabled: true
     }
   }
 }
