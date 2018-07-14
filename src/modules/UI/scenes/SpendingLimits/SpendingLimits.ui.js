@@ -9,6 +9,7 @@ import { PasswordInput } from '../../components/Modals/components/PasswordInput.
 import { TextInput } from '../../components/Modals/components/TextInput.ui.js'
 import { PrimaryButton } from '../../components/Modals/components/PrimaryButton.ui.js'
 import styles from './styles.js'
+import type { SpendingLimitsType } from '../../Settings/spendingLimits/spendingLimits.js'
 
 import THEME from '../../../../theme/variables/airbitz.js'
 
@@ -35,16 +36,17 @@ export type Props = {
     amount: number,
     isEnabled: boolean
   },
-  currencySymbol: string
+  currencySymbol: string,
+  updateSpendingLimits: SpendingLimitsType => mixed
 }
 export type State = {
   password: string,
-  dailyAmount: string,
-  dailyIsEnabled: string,
-  transactionAmount: string,
-  transactionIsEnabled: string
+  dailyAmount: number,
+  dailyIsEnabled: boolean,
+  transactionAmount: number,
+  transactionIsEnabled: boolean
 }
-export class SpendingLimits extends Component<Props> {
+export class SpendingLimits extends Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
@@ -155,11 +157,11 @@ export class SpendingLimits extends Component<Props> {
   }
 
   onDailyAmountChanged = (dailyAmount: Boolean) => {
-    this.setState({ dailyAmount })
+    this.setState({ dailyAmount: parseFloat(dailyAmount) })
   }
 
   onTransactionAmountChanged = (transactionAmount: Boolean) => {
-    this.setState({ transactionAmount })
+    this.setState({ transactionAmount: parseFloat(transactionAmount) })
   }
 
   onPasswordChanged = (password: string) => {
@@ -170,11 +172,11 @@ export class SpendingLimits extends Component<Props> {
     const { password, transactionIsEnabled, transactionAmount, dailyIsEnabled, dailyAmount } = this.state
     const { onSubmit } = this.props
 
-    // onSubmit({
-    //   transactionIsEnabled,
-    //   transactionAmount,
-    //   dailyIsEnabled,
-    //   dailyAmount
-    // })
+    onSubmit({
+      transaction: {
+        isEnabled: transactionIsEnabled,
+        amount: parseFloat(transactionAmount)
+      }
+    })
   }
 }

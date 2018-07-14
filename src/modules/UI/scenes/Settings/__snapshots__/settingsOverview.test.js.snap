@@ -84,7 +84,6 @@ exports[`MyComponent should render Locked SettingsOverview 1`] = `
     </Gradient>
     <RowRoute
       disabled={false}
-      leftText={undefined}
       right={
         <Icon
           name="ios-lock-outline"
@@ -266,9 +265,10 @@ exports[`MyComponent should render Locked SettingsOverview 1`] = `
             accessible={true}
             allowFontScaling={true}
             ellipsizeMode="tail"
-          />
+          >
+            
+          </Text>
         }
-        routeFunction={undefined}
       />
       <RowSwitch
         leftText="PIN Re-login"
@@ -278,44 +278,30 @@ exports[`MyComponent should render Locked SettingsOverview 1`] = `
       <RowRoute
         disabled={false}
         leftText="Bitcoin"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="BitcoinCash"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Ethereum"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Litecoin"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Dash"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Feathercoin"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Ufo"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
@@ -531,7 +517,6 @@ exports[`MyComponent should render UnLocked SettingsOverview 1`] = `
     </Gradient>
     <RowRoute
       disabled={false}
-      leftText={undefined}
       right={
         <Icon
           name="ios-unlock-outline"
@@ -713,9 +698,10 @@ exports[`MyComponent should render UnLocked SettingsOverview 1`] = `
             accessible={true}
             allowFontScaling={true}
             ellipsizeMode="tail"
-          />
+          >
+            
+          </Text>
         }
-        routeFunction={undefined}
       />
       <RowSwitch
         leftText="PIN Re-login"
@@ -725,44 +711,30 @@ exports[`MyComponent should render UnLocked SettingsOverview 1`] = `
       <RowRoute
         disabled={false}
         leftText="Bitcoin"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="BitcoinCash"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Ethereum"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Litecoin"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Dash"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Feathercoin"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
         leftText="Ufo"
-        right={undefined}
-        routeFunction={undefined}
       />
       <RowRoute
         disabled={false}
