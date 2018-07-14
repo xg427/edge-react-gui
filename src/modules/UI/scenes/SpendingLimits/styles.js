@@ -13,10 +13,7 @@ export const rawStyles = {
   gradient: {
     height: THEME.HEADER
   },
-  item: {
-    paddingHorizontal: 24,
-    paddingVertical: 12
-  },
+  item: {},
   passwordInput: {},
   spendingLimit: {},
   dailySpendingLimit: {},
