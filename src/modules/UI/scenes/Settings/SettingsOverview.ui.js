@@ -221,13 +221,6 @@ export default class SettingsOverview extends Component<Props, State> {
             right={<SimpleIcon style={styles.settingsRowRightArrow} name="arrow-right" />}
           />
 
-          <RowRoute
-            leftText={s.strings.spending_limits}
-            disabled={this.props.isLocked}
-            routeFunction={this._onPressSpendingLimits}
-            right={<SimpleIcon style={styles.settingsRowRightArrow} name="arrow-right" />}
-          />
-
           <Gradient style={[styles.unlockRow]}>
             <View style={[styles.accountBoxHeaderTextWrap, b('yellow')]}>
               <View style={styles.leftArea}>
@@ -238,6 +231,13 @@ export default class SettingsOverview extends Component<Props, State> {
           </Gradient>
 
           <View>
+            <RowRoute
+              leftText={s.strings.spending_limits}
+              disabled={this.props.isLocked}
+              routeFunction={this._onPressSpendingLimits}
+              right={<SimpleIcon style={styles.settingsRowRightArrow} name="arrow-right" />}
+            />
+
             <RowModal onPress={this.showAutoLogoutModal} leftText={s.strings.settings_title_auto_logoff} rightText={autoLogoutRightText} />
 
             <RowRoute

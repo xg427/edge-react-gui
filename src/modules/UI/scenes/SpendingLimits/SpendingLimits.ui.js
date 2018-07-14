@@ -21,158 +21,160 @@ const TRANSACTION_SPENDING_LIMIT_PLACEHOLDER = s.strings.spending_limits_tx_titl
 const TRANSACTION_SPENDING_LIMIT_DESCRIPTION = s.strings.spending_limits_tx_description
 const SAVE_TEXT = s.strings.save
 
-export type Props = {}
+const debug = {
+  borderColor: 'red',
+  borderWidth: 1
+}
+
+export type Props = {
+  dailySpendingLimit: {
+    amount: number,
+    isEnabled: boolean
+  },
+  transactionSpendingLimit: {
+    amount: number,
+    isEnabled: boolean
+  },
+  currencySymbol: string
+}
+export type State = {
+  password: string,
+  dailyAmount: string,
+  dailyIsEnabled: string,
+  transactionAmount: string,
+  transactionIsEnabled: string
+}
 export class SpendingLimits extends Component<Props> {
+  constructor (props) {
+    super(props)
+    this.state = {
+      password: '',
+      dailyAmount: props.dailySpendingLimit.amount.toString(),
+      dailyIsEnabled: props.dailySpendingLimit.isEnabled,
+      transactionAmount: props.transactionSpendingLimit.amount.toString(),
+      transactionIsEnabled: props.transactionSpendingLimit.isEnabled,
+      currencySymbol: props.currencySymbol
+    }
+  }
+
   render () {
-    const behavior = 'padding'
+    const { currencySymbol } = this.props
+    const { dailyAmount, dailyIsEnabled, transactionAmount, transactionIsEnabled } = this.state
+    const { onDailyIsEnabledChanged, onDailyAmountChanged, onTransactionIsEnabledChanged, onTransactionAmountChanged, onPasswordChanged, onSubmit } = this
+
     return (
       <SafeAreaView style={[{ flex: 1 }]}>
         <Gradient style={[styles.gradient]} />
 
-        <KeyboardAwareScrollView>
-          <Scene>
-            <Scene.Padding style={[{ flex: 1, padding: 24 }]}>
+        <Scene>
+          <KeyboardAwareScrollView>
+            <Scene.Padding style={[{ paddingHorizontal: 24 }]}>
               <Scene.Header>
-                <PasswordInput label={ENTER_YOUR_PASSWORD} value={'123123123'} />
+                <Scene.Row>
+                  <PasswordInput containerStyle={[{ flex: 1 }]} label={ENTER_YOUR_PASSWORD} onChangeText={onPasswordChanged} />
+                </Scene.Row>
               </Scene.Header>
 
-              <Scene.Padding style={[{ paddingVertical: 4, backgroundColor: 'yellow' }]} />
+              <Scene.Padding style={[{ paddingVertical: 4 }]} />
 
-              <Scene.Body>
-                <Scene.Body.Row>
-                  <Scene.Body.Item style={{ flex: 1 }}>
-                    <Scene.Body.Text style={[{ fontSize: 14, color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
-                      {DAILY_SPENDING_LIMIT_TITLE}
-                    </Scene.Body.Text>
+              <Scene.Body style={[]}>
+                <Scene.Row>
+                  <Scene.Item>
+                    <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>{DAILY_SPENDING_LIMIT_TITLE}</Scene.Body.Text>
                     <Scene.Body.Text style={[{ fontSize: 12, color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
                       {DAILY_SPENDING_LIMIT_DESCRIPTION}
                     </Scene.Body.Text>
-                  </Scene.Body.Item>
+                  </Scene.Item>
 
-                  <Switch onValueChange={() => {}} value={1} />
-                </Scene.Body.Row>
+                  <Switch onValueChange={onDailyIsEnabledChanged} value={dailyIsEnabled} />
+                </Scene.Row>
 
-                <View style={styles.debug}>
-                  <TextInput labelHeight={22} label={DAILY_SPENDING_LIMIT_PLACEHOLDER} suffix={'$'} autoCorrect={false} keyboardType={'numeric'} />
-                </View>
+                <Scene.Row>
+                  <TextInput
+                    disabled={!dailyIsEnabled}
+                    value={dailyAmount}
+                    onChangeText={onDailyAmountChanged}
+                    containerStyle={[{ flex: 1 }]}
+                    label={DAILY_SPENDING_LIMIT_PLACEHOLDER}
+                    suffix={currencySymbol}
+                    autoCorrect={false}
+                    keyboardType={'numeric'}
+                  />
+                </Scene.Row>
 
-                <Scene.Padding style={[{ paddingVertical: 14, backgroundColor: 'yellow' }]} />
+                <Scene.Padding style={[{ paddingVertical: 14 }]} />
 
-                <Scene.Body.Row>
-                  <Scene.Body.Item style={{ flex: 1 }}>
-                    <Scene.Body.Text style={[{ fontSize: 14, color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
+                <Scene.Row>
+                  <Scene.Item>
+                    <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
                       {TRANSACTION_SPENDING_LIMIT_TITLE}
                     </Scene.Body.Text>
 
-                    <Scene.Body.Text style={[{ fontSize: 12, color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
+                    <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
                       {TRANSACTION_SPENDING_LIMIT_DESCRIPTION}
                     </Scene.Body.Text>
-                  </Scene.Body.Item>
+                  </Scene.Item>
 
-                  <Switch onValueChange={() => {}} value={1} />
-                </Scene.Body.Row>
+                  <Switch onValueChange={onTransactionIsEnabledChanged} value={transactionIsEnabled} />
+                </Scene.Row>
 
-                <TextInput labelHeight={22} label={TRANSACTION_SPENDING_LIMIT_PLACEHOLDER} suffix={'$'} autoCorrect={false} keyboardType={'numeric'} />
+                <Scene.Row>
+                  <TextInput
+                    disabled={!transactionIsEnabled}
+                    value={transactionAmount}
+                    onChangeText={onTransactionAmountChanged}
+                    containerStyle={[{ flex: 1 }]}
+                    label={TRANSACTION_SPENDING_LIMIT_PLACEHOLDER}
+                    suffix={currencySymbol}
+                    autoCorrect={false}
+                    keyboardType={'numeric'}
+                  />
+                </Scene.Row>
               </Scene.Body>
 
-              <Scene.Padding style={[{ paddingVertical: 4, backgroundColor: 'yellow' }]} />
+              <Scene.Padding style={[{ paddingVertical: 4 }]} />
 
               <Scene.Footer>
-                <Scene.Footer.Row style={{ justifyContent: 'space-between' }}>
-                  <Scene.Footer.Item style={{ flex: 1, paddingRight: 2 }}>
-                    <PrimaryButton style={[{ maxWidth: 250 }]} onPress={() => {}}>
-                      <PrimaryButton.Text style={{}}>{SAVE_TEXT}</PrimaryButton.Text>
-                    </PrimaryButton>
-                  </Scene.Footer.Item>
-
-                  <Scene.Footer.Item style={{ flex: 1, paddingLeft: 2 }}>
-                    <PrimaryButton onPress={() => {}}>
-                      <PrimaryButton.Text>{SAVE_TEXT}</PrimaryButton.Text>
-                    </PrimaryButton>
-                  </Scene.Footer.Item>
-                </Scene.Footer.Row>
+                <PrimaryButton onPress={onSubmit}>
+                  <PrimaryButton.Text>{SAVE_TEXT}</PrimaryButton.Text>
+                </PrimaryButton>
               </Scene.Footer>
             </Scene.Padding>
-          </Scene>
-        </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        </Scene>
       </SafeAreaView>
     )
   }
-}
 
-// return (
-//   <SafeAreaView style={[{ flex: 1 }]}>
-//     <Gradient style={[styles.gradient]} />
-//
-//     <Scene style={[styles.scene, {}]}>
-//       <Scene.Padding style={[{ flex: 1, padding: 24, justifyContent: 'space-around' }]}>
-//         <Scene.Header style={styles.debug}>
-//           <Scene.Body.Item>
-//             <PasswordInput label={ENTER_YOUR_PASSWORD} value={'123123123'} />
-//           </Scene.Body.Item>
-//         </Scene.Header>
-//
-//         {/* <Scene.Padding style={[{ paddingVertical: 14 }, { backgroundColor: 'green' }]} /> */}
-//
-//         <Scene.Body style={styles.debug}>
-//           <Scene.Body.Row>
-//             <Scene.Body.Item style={{ flex: 1 }}>
-//               <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>{DAILY_SPENDING_LIMIT_TITLE}</Scene.Body.Text>
-//               <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
-//                 {DAILY_SPENDING_LIMIT_DESCRIPTION}
-//               </Scene.Body.Text>
-//             </Scene.Body.Item>
-//
-//             <Scene.Body.Item>
-//               <Switch onValueChange={() => {}} value={1} />
-//             </Scene.Body.Item>
-//           </Scene.Body.Row>
-//
-//           <Scene.Body.Item>
-//             <TextInput label={DAILY_SPENDING_LIMIT_PLACEHOLDER} suffix={'$'} autoCorrect={false} keyboardType={'numeric'} />
-//           </Scene.Body.Item>
-//
-//           <Scene.Padding style={[{ paddingVertical: 14 }]} />
-//
-//           <Scene.Body.Row>
-//             <Scene.Body.Item style={{ flex: 1 }}>
-//               <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
-//                 {TRANSACTION_SPENDING_LIMIT_TITLE}
-//               </Scene.Body.Text>
-//               <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>
-//                 {TRANSACTION_SPENDING_LIMIT_DESCRIPTION}
-//               </Scene.Body.Text>
-//             </Scene.Body.Item>
-//
-//             <Scene.Body.Item>
-//               <Switch onValueChange={() => {}} value={1} />
-//             </Scene.Body.Item>
-//           </Scene.Body.Row>
-//
-//           <Scene.Body.Item>
-//             <TextInput label={TRANSACTION_SPENDING_LIMIT_PLACEHOLDER} suffix={'$'} autoCorrect={false} keyboardType={'numeric'} />
-//           </Scene.Body.Item>
-//         </Scene.Body>
-//
-//         {/* <Scene.Padding style={[{ paddingVertical: 14 }]} /> */}
-//
-//         <Scene.Footer style={{}}>
-//           <Scene.Footer.Row style={{ justifyContent: 'space-between' }}>
-//             <Scene.Footer.Item style={{ flex: 1, paddingRight: 2 }}>
-//               <PrimaryButton style={[{ maxWidth: 250 }]} onPress={() => {}}>
-//                 <PrimaryButton.Text style={{}}>{SAVE_TEXT}</PrimaryButton.Text>
-//               </PrimaryButton>
-//             </Scene.Footer.Item>
-//
-//             <Scene.Footer.Item style={{ flex: 1, paddingLeft: 2 }}>
-//               <PrimaryButton style={[]} onPress={() => {}}>
-//                 <PrimaryButton.Text>{SAVE_TEXT}</PrimaryButton.Text>
-//               </PrimaryButton>
-//             </Scene.Footer.Item>
-//           </Scene.Footer.Row>
-//         </Scene.Footer>
-//       </Scene.Padding>
-//     </Scene>
-//   </SafeAreaView>
-// )
-// }
+  onTransactionIsEnabledChanged = (transactionIsEnabled: Boolean) => {
+    this.setState({ transactionIsEnabled })
+  }
+
+  onDailyIsEnabledChanged = (dailyIsEnabled: Boolean) => {
+    this.setState({ dailyIsEnabled })
+  }
+
+  onDailyAmountChanged = (dailyAmount: Boolean) => {
+    this.setState({ dailyAmount })
+  }
+
+  onTransactionAmountChanged = (transactionAmount: Boolean) => {
+    this.setState({ transactionAmount })
+  }
+
+  onPasswordChanged = (password: string) => {
+    this.setState({ password })
+  }
+
+  onSubmit = () => {
+    const { password, transactionIsEnabled, transactionAmount, dailyIsEnabled, dailyAmount } = this.state
+    const { onSubmit } = this.props
+
+    // onSubmit({
+    //   transactionIsEnabled,
+    //   transactionAmount,
+    //   dailyIsEnabled,
+    //   dailyAmount
+    // })
+  }
+}
