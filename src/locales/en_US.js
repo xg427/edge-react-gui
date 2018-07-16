@@ -297,6 +297,8 @@ const strings = {
   password_check_skip: 'Please create a new account and transfer your funds if you forgot your password.',
 
   password: 'Password',
+  pin: 'PIN',
+  enter_4_digit_pin: 'Enter 4 Digit PIN',
   // export scene
   string_export_qbo: 'Export Quickbooks QBO',
   string_export_qbo_abbrev: 'Email QBO',

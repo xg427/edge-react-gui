@@ -1,6 +1,6 @@
 // @flow
 
-import type { AbcSpendTarget, EdgeMetadata, EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
+import type { EdgeSpendTarget, EdgeMetadata, EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
 
 import { STANDARD_FEE } from '../../../../constants/indexConstants'
 import type { State } from '../../../ReduxTypes'
@@ -13,12 +13,11 @@ export type GuiMakeSpendInfo = {
   nativeAmount?: string,
   networkFeeOption?: string,
   publicAddress?: string,
-  spendTargets?: Array<AbcSpendTarget>,
+  spendTargets?: Array<EdgeSpendTarget>,
   uniqueIdentifier?: string
 }
 
 export type SendConfirmationState = {
-  isKeyboardVisible: boolean,
   forceUpdateGuiCounter: number,
   destination: string,
 
@@ -35,7 +34,6 @@ export type SendConfirmationState = {
 }
 
 export const initialState = {
-  isKeyboardVisible: false,
   forceUpdateGuiCounter: 0,
 
   parsedUri: {
@@ -78,7 +76,6 @@ export const initialState = {
 export const getScene = (state: State): any => getSceneState(state, 'sendConfirmation')
 export const getPending = (state: State): boolean => getScene(state).pending
 export const getError = (state: State): Error => getScene(state).error
-export const getKeyboardIsVisible = (state: State): boolean => getScene(state).keyboardIsVisible
 
 export const getTransaction = (state: State): EdgeTransaction => getScene(state).transaction || initialState.transaction
 export const getParsedUri = (state: State): GuiMakeSpendInfo => getScene(state).parsedUri || initialState.parsedUri

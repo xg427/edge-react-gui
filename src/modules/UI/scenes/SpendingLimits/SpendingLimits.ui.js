@@ -9,7 +9,7 @@ import { PasswordInput } from '../../components/Modals/components/PasswordInput.
 import { TextInput } from '../../components/Modals/components/TextInput.ui.js'
 import { PrimaryButton } from '../../components/Modals/components/PrimaryButton.ui.js'
 import styles from './styles.js'
-import type { SpendingLimitsType } from '../../Settings/spendingLimits/spendingLimits.js'
+import type { SpendingLimits as SpendingLimitsType } from '../../Settings/spendingLimits/spendingLimits.js'
 
 import THEME from '../../../../theme/variables/airbitz.js'
 
@@ -37,7 +37,7 @@ export type Props = {
     isEnabled: boolean
   },
   currencySymbol: string,
-  updateSpendingLimits: SpendingLimitsType => mixed
+  onSubmit: SpendingLimitsType => mixed
 }
 export type State = {
   password: string,
@@ -47,13 +47,13 @@ export type State = {
   transactionIsEnabled: boolean
 }
 export class SpendingLimits extends Component<Props, State> {
-  constructor (props) {
+  constructor (props: Props) {
     super(props)
     this.state = {
       password: '',
-      dailyAmount: props.dailySpendingLimit.amount.toString(),
-      dailyIsEnabled: props.dailySpendingLimit.isEnabled,
-      transactionAmount: props.transactionSpendingLimit.amount.toString(),
+      // dailyAmount: props.dailySpendingLimit.amount,
+      // dailyIsEnabled: props.dailySpendingLimit.isEnabled,
+      transactionAmount: props.transactionSpendingLimit.amount,
       transactionIsEnabled: props.transactionSpendingLimit.isEnabled,
       currencySymbol: props.currencySymbol
     }
@@ -72,14 +72,12 @@ export class SpendingLimits extends Component<Props, State> {
           <KeyboardAwareScrollView>
             <Scene.Padding style={[{ paddingHorizontal: 24 }]}>
               <Scene.Header>
-                <Scene.Row>
-                  <PasswordInput containerStyle={[{ flex: 1 }]} label={ENTER_YOUR_PASSWORD} onChangeText={onPasswordChanged} />
-                </Scene.Row>
+                <PasswordInput containerStyle={[{ flex: 1 }]} label={ENTER_YOUR_PASSWORD} onChangeText={onPasswordChanged} />
               </Scene.Header>
 
-              <Scene.Padding style={[{ paddingVertical: 4 }]} />
+              <Scene.Padding style={[{ paddingVertical: 14 }]} />
 
-              <Scene.Body style={[]}>
+              <Scene.Body>
                 <Scene.Row>
                   <Scene.Item>
                     <Scene.Body.Text style={[{ color: THEME.COLORS.PRIMARY, fontFamily: THEME.FONTS.DEFAULT }]}>{DAILY_SPENDING_LIMIT_TITLE}</Scene.Body.Text>
@@ -94,8 +92,8 @@ export class SpendingLimits extends Component<Props, State> {
                 <Scene.Row>
                   <TextInput
                     disabled={!dailyIsEnabled}
-                    value={dailyAmount.toString()}
-                    onChangeText={onDailyAmountChanged}
+                    // value={dailyAmount.toString()}
+                    // onChangeText={onDailyAmountChanged}
                     containerStyle={[{ flex: 1 }]}
                     label={DAILY_SPENDING_LIMIT_PLACEHOLDER}
                     suffix={currencySymbol}
@@ -134,7 +132,7 @@ export class SpendingLimits extends Component<Props, State> {
                 </Scene.Row>
               </Scene.Body>
 
-              <Scene.Padding style={[{ paddingVertical: 4 }]} />
+              <Scene.Padding style={[{ paddingVertical: 14 }]} />
 
               <Scene.Footer>
                 <PrimaryButton onPress={onSubmit}>
@@ -153,11 +151,11 @@ export class SpendingLimits extends Component<Props, State> {
   }
 
   onDailyIsEnabledChanged = (dailyIsEnabled: Boolean) => {
-    this.setState({ dailyIsEnabled })
+    // this.setState({ dailyIsEnabled })
   }
 
   onDailyAmountChanged = (dailyAmount: string) => {
-    this.setState({ dailyAmount: parseFloat(dailyAmount) || 0 })
+    // this.setState({ dailyAmount: parseFloat(dailyAmount) || 0 })
   }
 
   onTransactionAmountChanged = (transactionAmount: string) => {

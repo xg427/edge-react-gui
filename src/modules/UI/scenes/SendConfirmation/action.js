@@ -21,11 +21,15 @@ import { openABAlert } from '../../components/ABAlert/action'
 import { getSelectedWalletId } from '../../selectors.js'
 import { getSpendInfo, getTransaction } from './selectors'
 import type { GuiMakeSpendInfo } from './selectors'
+import { getAccount } from '../../../Core/selectors.js'
+import { checkPin } from '../../../Core/Account/api.js'
+import { getExchangeDenomination } from '../../selectors.js'
 
 import s from '../../../../locales/strings.js'
 
-const PREFIX = 'UI/SendConfimation/'
+type EdgePaymentProtocolUri = EdgeParsedUri & { paymentProtocolURL: string }
 
+const PREFIX = 'UI/SendConfimation/'
 export const UPDATE_IS_KEYBOARD_VISIBLE = PREFIX + 'UPDATE_IS_KEYBOARD_VISIBLE'
 export const UPDATE_SPEND_PENDING = PREFIX + 'UPDATE_SPEND_PENDING'
 export const RESET = PREFIX + 'RESET'
@@ -38,8 +42,6 @@ export const updateAmount = (nativeAmount: string, exchangeAmount: string, fiatP
   const metadata: EdgeMetadata = { amountFiat }
   dispatch(createTX({ nativeAmount, metadata }, false))
 }
-
-type EdgePaymentProtocolUri = EdgeParsedUri & { paymentProtocolURL: string }
 
 export const paymentProtocolUriReceived = ({ paymentProtocolURL }: EdgePaymentProtocolUri) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -72,18 +74,6 @@ export const paymentProtocolUriReceived = ({ paymentProtocolURL }: EdgePaymentPr
     })
 }
 
-export const MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED = PREFIX + 'MAKE_SPEND_FAILED'
-export const makeSpendFailed = (error: Error) => ({
-  type: MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED,
-  data: { error }
-})
-
-export const NEW_SPEND_INFO = PREFIX + 'NEW_SPEND_INFO'
-export const newSpendInfo = (spendInfo: EdgeSpendInfo) => ({
-  type: NEW_SPEND_INFO,
-  data: { spendInfo }
-})
-
 export const createTX = (parsedUri: GuiMakeSpendInfo | EdgeParsedUri, forceUpdateGui?: boolean = true) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const walletId = getSelectedWalletId(state)
@@ -92,8 +82,12 @@ export const createTX = (parsedUri: GuiMakeSpendInfo | EdgeParsedUri, forceUpdat
   const spendInfo = getSpendInfo(state, parsedUriClone)
 
   makeSpend(edgeWallet, spendInfo)
-    .then(edgeTransaction => dispatch(updateTransaction(edgeTransaction, parsedUriClone, forceUpdateGui, null)))
-    .catch(e => dispatch(updateTransaction(null, parsedUriClone, forceUpdateGui, e)))
+    .then(edgeTransaction => {
+      dispatch(updateTransaction(edgeTransaction, parsedUriClone, forceUpdateGui, null))
+    })
+    .catch(e => {
+      dispatch(updateTransaction(null, parsedUriClone, forceUpdateGui, e))
+    })
 }
 
 export const updateMaxSpend = () => (dispatch: Dispatch, getState: GetState) => {
@@ -101,19 +95,26 @@ export const updateMaxSpend = () => (dispatch: Dispatch, getState: GetState) => 
   const walletId = getSelectedWalletId(state)
   const edgeWallet = getWallet(state, walletId)
   const spendInfo = getSpendInfo(state)
+  dispatch(newSpendInfo(spendInfo))
+  dispatch(confirmSpendingLimits())
 
   getMaxSpendable(edgeWallet, spendInfo)
-    .then(nativeAmount => dispatch(createTX({ nativeAmount }, true)))
-    .catch(e => console.log(e))
+    .then(nativeAmount => {
+      dispatch(createTX({ nativeAmount }, true))
+    })
+    .catch(e => {
+      console.log(e)
+    })
 }
 
 export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: GetState) => {
+  dispatch(updateSpendPending(true))
   const state = getState()
   const selectedWalletId = getSelectedWalletId(state)
   const wallet = getWallet(state, selectedWalletId)
   const edgeUnsignedTransaction = getTransaction(state)
   let edgeSignedTransaction = edgeUnsignedTransaction
-  dispatch(updateSpendPending(true))
+
   try {
     edgeSignedTransaction = await signTransaction(wallet, edgeUnsignedTransaction)
     edgeSignedTransaction = await broadcastTransaction(wallet, edgeSignedTransaction)
@@ -148,9 +149,16 @@ export const updatePaymentProtocolTransaction = (transaction: EdgeTransaction) =
   data: { transaction }
 })
 
-export const updateTransaction = (transaction: ?EdgeTransaction, parsedUri: ?EdgeParsedUri, forceUpdateGui: ?boolean, error: ?Error) => ({
+export const updateTransaction = (
+  transaction: ?EdgeTransaction,
+  parsedUri: ?EdgeParsedUri,
+  forceUpdateGui: ?boolean,
+  error: ?Error,
+  pinIsEnabled: boolean,
+  pinAmount: number
+) => ({
   type: UPDATE_TRANSACTION,
-  data: { transaction, parsedUri, forceUpdateGui, error }
+  data: { transaction, parsedUri, forceUpdateGui, error, pinIsEnabled, pinAmount }
 })
 
 export const updateSpendPending = (pending: boolean) => ({
@@ -158,4 +166,44 @@ export const updateSpendPending = (pending: boolean) => ({
   data: { pending }
 })
 
+export const INCORRECT_PIN = PREFIX + 'INCORRECT_PIN'
+export const incorrectPin = () => ({
+  type: INCORRECT_PIN,
+  data: {}
+})
+
+export const MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED = PREFIX + 'MAKE_SPEND_FAILED'
+export const makeSpendFailed = (error: Error) => ({
+  type: MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED,
+  data: { error }
+})
+
+export const NEW_SPEND_INFO = PREFIX + 'NEW_SPEND_INFO'
+export const newSpendInfo = (spendInfo: EdgeSpendInfo) => ({
+  type: NEW_SPEND_INFO,
+  data: { spendInfo }
+})
+
+export const PIN_CHANGED = PREFIX + 'PIN_CHANGED'
+export const pinChanged = (pin: string) => ({
+  type: PIN_CHANGED,
+  data: { pin }
+})
+
 export { createTX as updateMiningFees, createTX as updateParsedURI, createTX as uniqueIdentifierUpdated }
+
+const confirmSpendingLimits = () => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const account = getAccount(state)
+  const { convertCurrency } = getCurrencyConverter(state)
+  const { isEnabled: pinIsEnabled, amount: pinAmount } = state.ui.settings.spendingLimits.transaction
+  const spendInfo = state.ui.sendConfirmation.spendInfo
+  const { nativeAmount, currencyCode } = spendInfo
+  const isoFiatCurrencyCode = state.ui.settings.defaultIsoFiat
+  const nativeToExchangeRatio = getExchangeDenomination(state, currencyCode)
+  const exchangeAmount = convertNativeToExchange(nativeToExchangeRatio)(nativeAmount)
+  const fiatAmount = convertCurrency(account, currencyCode, isoFiatCurrencyCode, exchangeAmount)
+  const pinIsRequired = fiatAmount >= pinAmount
+
+  return pinIsRequired
+}

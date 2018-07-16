@@ -6,7 +6,10 @@ import type { EdgeDenomination } from 'edge-core-js'
 import React, { Component } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { sprintf } from 'sprintf-js'
+import { Scene } from 'edge-components'
 
+import { PasswordInput } from '../../components/Modals/components/PasswordInput.ui.js'
+import { PinInput } from '../../components/PinInput/PinInput.ui.js'
 import { intl } from '../../../../locales/intl'
 import s from '../../../../locales/strings.js'
 import type { CurrencyConverter, GuiCurrencyInfo, GuiDenomination } from '../../../../types'
@@ -32,7 +35,6 @@ export type SendConfirmationStateProps = {
   parentNetworkFee: string | null,
   networkFee: string | null,
   pending: boolean,
-  keyboardIsVisible: boolean,
   balanceInCrypto: string,
   balanceInFiat: string,
   parentDisplayDenomination: EdgeDenomination,
@@ -48,7 +50,9 @@ export type SendConfirmationStateProps = {
   currencyConverter: CurrencyConverter,
   uniqueIdentifier?: string,
   destination: string,
-  isEditable: boolean
+  isEditable: boolean,
+  pinIsRequired: boolean,
+  pin: string
 }
 
 export type SendConfirmationDispatchProps = {
@@ -56,7 +60,8 @@ export type SendConfirmationDispatchProps = {
   signBroadcastAndSave: () => any,
   reset: () => any,
   updateAmount: (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string) => any,
-  uniqueIdentifierUpdated: (uniqueIdentifier: string) => any
+  uniqueIdentifierUpdated: (uniqueIdentifier: string) => any,
+  onChangePin: (pin: string) => mixed
 }
 
 type routerParam = {
@@ -117,6 +122,8 @@ export class SendConfirmation extends Component<Props, State> {
   }
 
   render () {
+    const { pinIsRequired, pin, onChangePin } = this.props
+
     const primaryInfo: GuiCurrencyInfo = {
       displayCurrencyCode: this.props.currencyCode,
       displayDenomination: this.props.primaryDisplayDenomination,
@@ -182,6 +189,28 @@ export class SendConfirmation extends Component<Props, State> {
                 <View style={[styles.feeArea]}>
                   <Text style={[styles.feeAreaText]}>{this.networkFeeSyntax()}</Text>
                 </View>
+              )}
+
+              {pinIsRequired && (
+                <Scene.Row style={{ paddingHorizontal: 24 }}>
+                  <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                    <Text style={{ backgroundColor: 'transparent', color: 'white' }}>{s.strings.enter_4_digit_pin}</Text>
+                  </View>
+
+                  <View style={{ width: 20 }} />
+
+                  <View style={{ width: 60 }}>
+                    <PinInput
+                      fontSize={20}
+                      baseColor={'white'}
+                      textColor={'white'}
+                      tintColor={'white'}
+                      onChangePin={onChangePin}
+                      style={{ justifyContent: 'center' }}
+                      value={pin}
+                    />
+                  </View>
+                </Scene.Row>
               )}
 
               {!!destination && (

@@ -10,14 +10,8 @@ import { getFiatSymbol } from '../../../utils.js'
 
 export const mapStateToProps = (state: State) => ({
   currencySymbol: getFiatSymbol(state.ui.settings.defaultFiat),
-  transactionSpendingLimit: {
-    isEnabled: true,
-    amount: 123
-  },
-  dailySpendingLimit: {
-    isEnabled: false,
-    amount: 34
-  }
+  transactionSpendingLimit: state.ui.settings.spendingLimits.transaction
+  // dailySpendingLimit: state.ui.settings.spendingLimits.daily
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSubmit: (spendingLimits: SpendingLimitsType) => dispatch(updateSpendingLimits(spendingLimits))

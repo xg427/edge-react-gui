@@ -3,6 +3,8 @@
 import { combineReducers } from 'redux'
 import { pathOr } from 'ramda'
 
+import type { Action } from '../../../ReduxTypes.js'
+
 // ACTIONS
 import { ACCOUNT_INIT_COMPLETE } from '../../../../constants/indexConstants.js'
 
@@ -62,11 +64,12 @@ export const amount = (state: number = 100, action: Action) => {
   }
 }
 
-export const transaction = (state = initialState.transaction, action: Action) => ({
+export type TransactionState = { isEnabled: boolean, amount: number }
+export const transaction = (state: TransactionState = initialState.transaction, action: Action) => ({
   isEnabled: isEnabled(state.isEnabled, action),
   amount: amount(state.amount, action)
 })
 
-export const spendingLimits = (state = initialState, action: Action) => ({
+export const spendingLimits = (state: SpendingLimits = initialState, action: Action) => ({
   transaction: transaction(state.transaction, action)
 })

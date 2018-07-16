@@ -7,8 +7,8 @@ import type { Dispatch, State } from '../../../ReduxTypes'
 import { convertNativeToExchange } from '../../../utils'
 import { getExchangeDenomination, getSelectedCurrencyCode, getSelectedWallet } from '../../selectors.js'
 import { getDisplayDenomination, getExchangeDenomination as settingsGetExchangeDenomination } from '../../Settings/selectors.js'
-import { reset, signBroadcastAndSave, updateAmount, updateSpendPending, uniqueIdentifierUpdated } from './action.js'
-import { getError, getForceUpdateGuiCounter, getKeyboardIsVisible, getPending, getPublicAddress, getTransaction } from './selectors'
+import { reset, signBroadcastAndSave, updateAmount, updateSpendPending, uniqueIdentifierUpdated, pinChanged } from './action.js'
+import { getError, getForceUpdateGuiCounter, getPending, getPublicAddress, getTransaction } from './selectors'
 import { SendConfirmation } from './SendConfirmation.ui'
 import type { SendConfirmationDispatchProps, SendConfirmationStateProps } from './SendConfirmation.ui'
 import { convertCurrency } from '../../../Core/Account/api.js'
@@ -58,6 +58,7 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
   const primaryExchangeAmount = convertNativeToExchange(primaryExchangeDenomination.multiplier)(nativeAmount)
   const fiatAmount = convertCurrency(account, transaction.currencyCode, defaultIsoFiat, parseFloat(primaryExchangeAmount))
   const pinIsRequired = fiatAmount >= spendingLimits.transaction.amount
+  const pin = state.ui.scenes.sendConfirmation.pin
 
   const out = {
     balanceInCrypto,
@@ -70,7 +71,6 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
     fiatPerCrypto,
     forceUpdateGuiCounter: getForceUpdateGuiCounter(state),
     isEditable: sceneState.isEditable,
-    keyboardIsVisible: getKeyboardIsVisible(state),
     nativeAmount,
     networkFee,
     parentDisplayDenomination: getDisplayDenomination(state, guiWallet.currencyCode),
@@ -84,7 +84,8 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
     secondaryExchangeCurrencyCode,
     sliderDisabled: !transaction || !!error || !!pending,
     uniqueIdentifier,
-    pinIsRequired: false,
+    pinIsRequired,
+    pin,
     spendingLimits
   }
   return out
@@ -97,7 +98,8 @@ const mapDispatchToProps = (dispatch: Dispatch): SendConfirmationDispatchProps =
   uniqueIdentifierUpdated: uniqueIdentifier => dispatch(uniqueIdentifierUpdated({ uniqueIdentifier })),
   reset: () => dispatch(reset()),
   updateSpendPending: (pending: boolean): any => dispatch(updateSpendPending(pending)),
-  signBroadcastAndSave: (): any => dispatch(signBroadcastAndSave())
+  signBroadcastAndSave: (): any => dispatch(signBroadcastAndSave()),
+  onChangePin: (pin: string) => dispatch(pinChanged(pin))
 })
 
 export default connect(

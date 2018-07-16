@@ -7,7 +7,6 @@ import { sendConfirmation as sendConfirmationReducer } from './reducer.js'
 test('initialState', () => {
   const expected = {
     pending: false,
-    isKeyboardVisible: false,
     forceUpdateGuiCounter: 0,
     spendInfo: null,
     nativeAmount: '0',

@@ -58,7 +58,6 @@ test('initialState', () => {
     },
     sendConfirmation: {
       pending: false,
-      isKeyboardVisible: false,
       forceUpdateGuiCounter: 0,
       spendInfo: null,
       destination: '',
