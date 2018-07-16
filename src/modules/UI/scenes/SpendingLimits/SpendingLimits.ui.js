@@ -94,7 +94,7 @@ export class SpendingLimits extends Component<Props, State> {
                 <Scene.Row>
                   <TextInput
                     disabled={!dailyIsEnabled}
-                    value={dailyAmount}
+                    value={dailyAmount.toString()}
                     onChangeText={onDailyAmountChanged}
                     containerStyle={[{ flex: 1 }]}
                     label={DAILY_SPENDING_LIMIT_PLACEHOLDER}
@@ -123,7 +123,7 @@ export class SpendingLimits extends Component<Props, State> {
                 <Scene.Row>
                   <TextInput
                     disabled={!transactionIsEnabled}
-                    value={transactionAmount}
+                    value={transactionAmount.toString()}
                     onChangeText={onTransactionAmountChanged}
                     containerStyle={[{ flex: 1 }]}
                     label={TRANSACTION_SPENDING_LIMIT_PLACEHOLDER}
@@ -156,12 +156,12 @@ export class SpendingLimits extends Component<Props, State> {
     this.setState({ dailyIsEnabled })
   }
 
-  onDailyAmountChanged = (dailyAmount: Boolean) => {
-    this.setState({ dailyAmount: parseFloat(dailyAmount) })
+  onDailyAmountChanged = (dailyAmount: string) => {
+    this.setState({ dailyAmount: parseFloat(dailyAmount) || 0 })
   }
 
-  onTransactionAmountChanged = (transactionAmount: Boolean) => {
-    this.setState({ transactionAmount: parseFloat(transactionAmount) })
+  onTransactionAmountChanged = (transactionAmount: string) => {
+    this.setState({ transactionAmount: parseFloat(transactionAmount) || 0 })
   }
 
   onPasswordChanged = (password: string) => {

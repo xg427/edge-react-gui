@@ -179,6 +179,7 @@ export type State = {
     settings: {
       autoLogoutTimeInSeconds: number,
       defaultFiat: string,
+      defaultIsoFiat: string,
       merchantMode: boolean,
       customTokens: Array<any>,
       bluetoothMode: boolean,
@@ -205,6 +206,12 @@ export type State = {
         arrayPlugins: Array<EdgeCurrencyPlugin>,
         supportedWalletTypes: Array<string>,
         [pluginName: string]: EdgeCurrencyPlugin
+      },
+      spendingLimits: {
+        transaction: {
+          isEnabled: boolean,
+          amount: number
+        }
       }
     }
   },

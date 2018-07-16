@@ -64,6 +64,7 @@ export const initializeAccount = (account: EdgeAccount, touchIdInfo: Object) => 
     otpMode: false,
     customTokens: '',
     defaultFiat: '',
+    defaultIsoFiat: '',
     merchantMode: '',
     denominationKeys: [],
     customTokensSettings: [],

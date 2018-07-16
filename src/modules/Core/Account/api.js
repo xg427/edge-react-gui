@@ -67,3 +67,7 @@ export const updateArchivedWalletsOrderRequest = (account: EdgeAccount, archived
 export const checkPassword = (account: EdgeAccount, password: string) => {
   return account.checkPassword(password)
 }
+
+export const convertCurrency = (account: EdgeAccount, fromCurrencyCode: string, toCurrencyCode: string, amount: number = 1) => {
+  return account.exchangeCache.convertCurrency(fromCurrencyCode, toCurrencyCode, amount)
+}

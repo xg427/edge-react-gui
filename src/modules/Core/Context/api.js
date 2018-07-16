@@ -19,8 +19,5 @@ export const getExchangeSwapRate = (context: EdgeContext, sourceCurrencyCode: st
 }
 
 export const getExchangeSwapInfo = (context: EdgeContext, sourceCurrencyCode: string, targetCurrencyCode: string) => {
-  // $FlowExpectedError
   return context.getExchangeSwapInfo(sourceCurrencyCode, targetCurrencyCode)
 }
-
-// TODO Allen: Function that returns exchange rate.

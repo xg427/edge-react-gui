@@ -126,7 +126,7 @@ export default class SettingsOverview extends Component<Props, State> {
   }
 
   _onPressSpendingLimits = () => {
-    return this.props.isLocked ? this.unlockSettingsAlert() : Actions[Constants.SPENDING_LIMITS]()
+    return Actions[Constants.SPENDING_LIMITS]()
   }
 
   _onPressOpenLogoffTime = () => {}
@@ -221,13 +221,6 @@ export default class SettingsOverview extends Component<Props, State> {
             right={<SimpleIcon style={styles.settingsRowRightArrow} name="arrow-right" />}
           />
 
-          <RowRoute
-            leftText={s.strings.spending_limits}
-            disabled={this.props.isLocked}
-            routeFunction={this._onPressSpendingLimits}
-            right={<SimpleIcon style={styles.settingsRowRightArrow} name="arrow-right" />}
-          />
-
           <Gradient style={[styles.unlockRow]}>
             <View style={[styles.accountBoxHeaderTextWrap, b('yellow')]}>
               <View style={styles.leftArea}>
@@ -238,6 +231,13 @@ export default class SettingsOverview extends Component<Props, State> {
           </Gradient>
 
           <View>
+            <RowRoute
+              disabled={false}
+              leftText={s.strings.spending_limits}
+              routeFunction={this._onPressSpendingLimits}
+              right={<SimpleIcon style={styles.settingsRowRightArrow} name="arrow-right" />}
+            />
+
             <RowModal onPress={this.showAutoLogoutModal} leftText={s.strings.settings_title_auto_logoff} rightText={autoLogoutRightText} />
 
             <RowRoute

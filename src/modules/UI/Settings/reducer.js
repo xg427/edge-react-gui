@@ -176,6 +176,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
         isTouchEnabled: touchIdInfo ? touchIdInfo.isTouchEnabled : false,
         isTouchSupported: touchIdInfo ? touchIdInfo.isTouchSupported : false,
         defaultFiat,
+        defaultIsoFiat: `iso:${defaultFiat}`,
         merchantMode,
         customTokens,
         bluetoothMode,

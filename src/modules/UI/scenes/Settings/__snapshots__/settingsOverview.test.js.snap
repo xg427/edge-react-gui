@@ -170,24 +170,6 @@ exports[`MyComponent should render Locked SettingsOverview 1`] = `
       }
       routeFunction={[Function]}
     />
-    <RowRoute
-      disabled={true}
-      leftText="Spending Limits"
-      right={
-        <Icon
-          allowFontScaling={false}
-          name="arrow-right"
-          size={12}
-          style={
-            Object {
-              "color": "#4A5157",
-              "fontSize": 18,
-            }
-          }
-        />
-      }
-      routeFunction={[Function]}
-    />
     <Gradient
       style={
         Array [
@@ -252,6 +234,24 @@ exports[`MyComponent should render Locked SettingsOverview 1`] = `
       </View>
     </Gradient>
     <View>
+      <RowRoute
+        disabled={false}
+        leftText="Spending Limits"
+        right={
+          <Icon
+            allowFontScaling={false}
+            name="arrow-right"
+            size={12}
+            style={
+              Object {
+                "color": "#4A5157",
+                "fontSize": 18,
+              }
+            }
+          />
+        }
+        routeFunction={[Function]}
+      />
       <RowModal
         leftText="Auto Log Off After"
         onPress={[Function]}
@@ -603,24 +603,6 @@ exports[`MyComponent should render UnLocked SettingsOverview 1`] = `
       }
       routeFunction={[Function]}
     />
-    <RowRoute
-      disabled={false}
-      leftText="Spending Limits"
-      right={
-        <Icon
-          allowFontScaling={false}
-          name="arrow-right"
-          size={12}
-          style={
-            Object {
-              "color": "#4A5157",
-              "fontSize": 18,
-            }
-          }
-        />
-      }
-      routeFunction={[Function]}
-    />
     <Gradient
       style={
         Array [
@@ -685,6 +667,24 @@ exports[`MyComponent should render UnLocked SettingsOverview 1`] = `
       </View>
     </Gradient>
     <View>
+      <RowRoute
+        disabled={false}
+        leftText="Spending Limits"
+        right={
+          <Icon
+            allowFontScaling={false}
+            name="arrow-right"
+            size={12}
+            style={
+              Object {
+                "color": "#4A5157",
+                "fontSize": 18,
+              }
+            }
+          />
+        }
+        routeFunction={[Function]}
+      />
       <RowModal
         leftText="Auto Log Off After"
         onPress={[Function]}

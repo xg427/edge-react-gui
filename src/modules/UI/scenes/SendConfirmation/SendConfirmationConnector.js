@@ -11,8 +11,11 @@ import { reset, signBroadcastAndSave, updateAmount, updateSpendPending, uniqueId
 import { getError, getForceUpdateGuiCounter, getKeyboardIsVisible, getPending, getPublicAddress, getTransaction } from './selectors'
 import { SendConfirmation } from './SendConfirmation.ui'
 import type { SendConfirmationDispatchProps, SendConfirmationStateProps } from './SendConfirmation.ui'
+import { convertCurrency } from '../../../Core/Account/api.js'
+import { getAccount } from '../../../Core/selectors.js'
 
 const mapStateToProps = (state: State): SendConfirmationStateProps => {
+  const account = getAccount(state)
   const sceneState = state.ui.scenes.sendConfirmation
   let fiatPerCrypto = 0
   let secondaryExchangeCurrencyCode = ''
@@ -24,18 +27,14 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
   const isoFiatCurrencyCode = guiWallet.isoFiatCurrencyCode
   const exchangeDenomination = settingsGetExchangeDenomination(state, currencyCode)
   const balanceInCryptoDisplay = convertNativeToExchange(exchangeDenomination.multiplier)(balanceInCrypto)
-  const balanceInFiat = currencyConverter.convertCurrency(currencyCode, isoFiatCurrencyCode, balanceInCryptoDisplay)
+  const balanceInFiat = convertCurrency(account, currencyCode, isoFiatCurrencyCode, parseFloat(balanceInCryptoDisplay))
 
-  if (guiWallet) {
-    const isoFiatCurrencyCode = guiWallet.isoFiatCurrencyCode
-    fiatPerCrypto = getExchangeRate(state, currencyCode, isoFiatCurrencyCode)
-    secondaryExchangeCurrencyCode = isoFiatCurrencyCode
-  }
+  fiatPerCrypto = getExchangeRate(state, currencyCode, isoFiatCurrencyCode)
+  secondaryExchangeCurrencyCode = isoFiatCurrencyCode
 
   const transaction = getTransaction(state)
   const pending = getPending(state)
   const nativeAmount = sceneState.nativeAmount
-  // const nativeAmount = getNativeAmount(state)
   let error = getError(state)
 
   let errorMsg = null
@@ -51,6 +50,14 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
 
   const uniqueIdentifier = sceneState.parsedUri.uniqueIdentifier
   const destination = sceneState.destination
+
+  const primaryExchangeDenomination = getExchangeDenomination(state, currencyCode)
+
+  const defaultIsoFiat = state.ui.settings.defaultIsoFiat
+  const spendingLimits = state.ui.settings.spendingLimits
+  const primaryExchangeAmount = convertNativeToExchange(primaryExchangeDenomination.multiplier)(nativeAmount)
+  const fiatAmount = convertCurrency(account, transaction.currencyCode, defaultIsoFiat, parseFloat(primaryExchangeAmount))
+  const pinIsRequired = fiatAmount >= spendingLimits.transaction.amount
 
   const out = {
     balanceInCrypto,
@@ -71,12 +78,14 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
     parentNetworkFee,
     pending,
     primaryDisplayDenomination: getDisplayDenomination(state, currencyCode),
-    primaryExchangeDenomination: getExchangeDenomination(state, currencyCode),
+    primaryExchangeDenomination,
     publicAddress: getPublicAddress(state),
     resetSlider,
     secondaryExchangeCurrencyCode,
     sliderDisabled: !transaction || !!error || !!pending,
-    uniqueIdentifier
+    uniqueIdentifier,
+    pinIsRequired: false,
+    spendingLimits
   }
   return out
 }
@@ -91,4 +100,7 @@ const mapDispatchToProps = (dispatch: Dispatch): SendConfirmationDispatchProps =
   signBroadcastAndSave: (): any => dispatch(signBroadcastAndSave())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendConfirmation)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendConfirmation)

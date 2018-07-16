@@ -32,10 +32,12 @@ export const isEnabled = (state: boolean = true, action: Action) => {
   switch (action.type) {
     case ACCOUNT_INIT_COMPLETE: {
       const result = pathOr(state, ['spendingLimits', 'transaction', 'isEnabled'], action)
+      console.log('QWEQWE', result)
       return result
     }
     case UPDATE: {
       const result = pathOr(state, ['data', 'spendingLimits', 'transaction', 'isEnabled'], action)
+      console.log('QWEQWE', result)
       return result
     }
     default:
@@ -47,10 +49,12 @@ export const amount = (state: number = 100, action: Action) => {
   switch (action.type) {
     case ACCOUNT_INIT_COMPLETE: {
       const result = pathOr(state, ['spendingLimits', 'transaction', 'amount'], action)
+      console.log('QWEQWE', result)
       return result
     }
     case UPDATE: {
       const result = pathOr(state, ['data', 'spendingLimits', 'transaction', 'amount'], action)
+      console.log('QWEQWE', result)
       return result
     }
     default:
@@ -58,11 +62,11 @@ export const amount = (state: number = 100, action: Action) => {
   }
 }
 
-export const transaction = (state, action) => ({
+export const transaction = (state = initialState.transaction, action: Action) => ({
   isEnabled: isEnabled(state.isEnabled, action),
   amount: amount(state.amount, action)
 })
 
-export const spendingLimits = (state, action) => ({
+export const spendingLimits = (state = initialState, action: Action) => ({
   transaction: transaction(state.transaction, action)
 })
