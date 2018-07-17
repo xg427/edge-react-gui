@@ -22,7 +22,7 @@ import { getSelectedWalletId } from '../../selectors.js'
 import { getSpendInfo, getTransaction } from './selectors'
 import type { GuiMakeSpendInfo } from './selectors'
 import { getAccount } from '../../../Core/selectors.js'
-import { checkPin } from '../../../Core/Account/api.js'
+import { checkPin, convertCurrency } from '../../../Core/Account/api.js'
 import { getExchangeDenomination } from '../../selectors.js'
 
 import s from '../../../../locales/strings.js'
@@ -95,16 +95,10 @@ export const updateMaxSpend = () => (dispatch: Dispatch, getState: GetState) => 
   const walletId = getSelectedWalletId(state)
   const edgeWallet = getWallet(state, walletId)
   const spendInfo = getSpendInfo(state)
-  dispatch(newSpendInfo(spendInfo))
-  dispatch(confirmSpendingLimits())
 
-  getMaxSpendable(edgeWallet, spendInfo)
-    .then(nativeAmount => {
-      dispatch(createTX({ nativeAmount }, true))
-    })
-    .catch(e => {
-      console.log(e)
-    })
+  Promise.resolve(spendInfo)
+    .then(spendInfo => getMaxSpendable(edgeWallet, spendInfo))
+    .then(nativeAmount => dispatch(newSpendInfo({ ...spendInfo, nativeAmount })), error => console.log(error))
 }
 
 export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: GetState) => {
@@ -184,6 +178,36 @@ export const newSpendInfo = (spendInfo: EdgeSpendInfo) => ({
   data: { spendInfo }
 })
 
+export type SpendOptions = { isEditable?: boolean, pinIsRequired?: boolean, passwordIsRequired?: boolean }
+export const newSpendRequest = (spendInfo: EdgeSpendInfo, options: SpendOptions) => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const edgeWallet = getSelectedWallet(state)
+  const spendRequirements = getSpendRequirements(state, spendInfo)
+
+  dispatch(newPendingSpend({ ...guiSpendRequest, ...spendRequirements }))
+
+  makeSpend(edgeWallet, spendInfo)
+    .then(edgeTransaction => {
+      dispatch(newTransaction(edgeTransaction))
+    })
+    .catch(error => {
+      dispatch(newTransactionError(error))
+    })
+}
+
+export const newPendingSpend = (
+  spendInfo: EdgeSpendInfo,
+  authInfo: AuthInfo,
+  options?: { isEditable: boolean, pinRequired: boolean, passwordRequired: boolean }
+) => ({
+  type: NEW_PENDING_SPEND,
+  data: {
+    spendInfo,
+    authInfo,
+    options
+  }
+})
+
 export const PIN_CHANGED = PREFIX + 'PIN_CHANGED'
 export const pinChanged = (pin: string) => ({
   type: PIN_CHANGED,
@@ -192,18 +216,15 @@ export const pinChanged = (pin: string) => ({
 
 export { createTX as updateMiningFees, createTX as updateParsedURI, createTX as uniqueIdentifierUpdated }
 
-const confirmSpendingLimits = () => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
+export const getSpendRequirements = (state: State, spendInfo: EdgeSpendInfo) => {
   const account = getAccount(state)
-  const { convertCurrency } = getCurrencyConverter(state)
   const { isEnabled: pinIsEnabled, amount: pinAmount } = state.ui.settings.spendingLimits.transaction
-  const spendInfo = state.ui.sendConfirmation.spendInfo
-  const { nativeAmount, currencyCode } = spendInfo
+  const { nativeAmount, currencyCode } = guiSpendRequest
   const isoFiatCurrencyCode = state.ui.settings.defaultIsoFiat
   const nativeToExchangeRatio = getExchangeDenomination(state, currencyCode)
   const exchangeAmount = convertNativeToExchange(nativeToExchangeRatio)(nativeAmount)
   const fiatAmount = convertCurrency(account, currencyCode, isoFiatCurrencyCode, exchangeAmount)
   const pinIsRequired = fiatAmount >= pinAmount
 
-  return pinIsRequired
+  return { isRequired: pinIsRequired }
 }
