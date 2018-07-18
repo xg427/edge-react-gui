@@ -210,7 +210,8 @@ export type State = {
       spendingLimits: {
         transaction: {
           isEnabled: boolean,
-          amount: number
+          amount: number,
+          method: 'pin'
         }
       }
     }

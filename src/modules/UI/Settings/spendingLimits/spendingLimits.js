@@ -19,8 +19,8 @@ export const update = (spendingLimits: SpendingLimits) => ({
 // REDUCERS
 export const initialState = {
   transaction: {
-    isEnabled: true,
-    amount: 100
+    isEnabled: false,
+    amount: 0
   }
 }
 export type SpendingLimits = {
