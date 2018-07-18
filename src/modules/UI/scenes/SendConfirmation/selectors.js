@@ -34,6 +34,8 @@ export type SendConfirmationState = {
   spendInfo: EdgeSpendInfo | null,
   spendOptions: SpendOptions | null,
 
+  pin: string,
+
   transaction: EdgeTransaction | null,
   transactionStatus: 'pending' | 'error' | null,
   error: Error | null
@@ -56,6 +58,9 @@ export const initialState = {
       miscJson: ''
     }
   },
+
+  pin: '',
+
   spendInfo: null,
   destination: '',
   nativeAmount: '0',
