@@ -18,7 +18,7 @@ export type GuiMakeSpendInfo = {
 }
 
 export type SpendOptions = {
-  isEditable: boolean,
+  lock: boolean,
   sign: boolean,
   broadcast: boolean,
   save: boolean
