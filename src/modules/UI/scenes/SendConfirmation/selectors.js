@@ -17,6 +17,13 @@ export type GuiMakeSpendInfo = {
   uniqueIdentifier?: string
 }
 
+export type SpendOptions = {
+  isEditable: boolean,
+  sign: boolean,
+  broadcast: boolean,
+  save: boolean
+}
+
 export type SendConfirmationState = {
   forceUpdateGuiCounter: number,
   destination: string,
@@ -25,11 +32,10 @@ export type SendConfirmationState = {
 
   parsedUri: GuiMakeSpendInfo,
   spendInfo: EdgeSpendInfo | null,
+  spendOptions: SpendOptions | null,
 
-  isEditable: boolean,
-
-  pending: boolean,
-  transaction: EdgeTransaction,
+  transaction: EdgeTransaction | null,
+  transactionStatus: 'pending' | 'error' | null,
   error: Error | null
 }
 

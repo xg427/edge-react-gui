@@ -64,23 +64,11 @@ export const updateArchivedWalletsOrderRequest = (account: EdgeAccount, archived
   return account.changeWalletStates(newKeyStates).then(() => account.archivedWalletIds)
 }
 
-export type Credentials = {
-  type: 'pin' | 'password',
-  value: string
-}
-
-export const requestAuthorization = (account: EdgeAccount, credentials: Credentials): Promise<boolean> => {
-  const { type, value } = credentials
-  if (type === 'pin') return account.checkPassword(value)
-  if (type === 'password') return account.checkPin(value)
-  throw new Error('Invalid authorization request')
-}
-
-export const checkPassword = (account: EdgeAccount, password: string) => {
+export const checkPassword = (account: EdgeAccount, password: string): Promise<boolean> => {
   return account.checkPassword(password)
 }
 
-export const checkPin = (account: EdgeAccount, pin: string) => {
+export const checkPin = (account: EdgeAccount, pin: string): Promise<boolean> => {
   return account.checkPin(pin)
 }
 

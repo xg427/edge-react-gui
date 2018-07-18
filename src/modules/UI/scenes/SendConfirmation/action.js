@@ -16,215 +16,294 @@ import {
   getPaymentProtocolInfo,
   makeSpendInfo
 } from '../../../Core/Wallets/api.js'
-import type { Dispatch, GetState } from '../../../ReduxTypes'
+import type { Dispatch, GetState, State } from '../../../ReduxTypes'
 import { openABAlert } from '../../components/ABAlert/action'
 import { getSelectedWalletId } from '../../selectors.js'
 import { getSpendInfo, getTransaction } from './selectors'
-import type { GuiMakeSpendInfo } from './selectors'
+import type { GuiMakeSpendInfo, SpendOptions } from './selectors'
 import { getAccount } from '../../../Core/selectors.js'
 import { checkPin, convertCurrency } from '../../../Core/Account/api.js'
 import { getExchangeDenomination } from '../../selectors.js'
+import { convertNativeToExchange } from '../../../utils.js'
 
 import s from '../../../../locales/strings.js'
 
 type EdgePaymentProtocolUri = EdgeParsedUri & { paymentProtocolURL: string }
 
-const PREFIX = 'UI/SendConfimation/'
-export const UPDATE_IS_KEYBOARD_VISIBLE = PREFIX + 'UPDATE_IS_KEYBOARD_VISIBLE'
-export const UPDATE_SPEND_PENDING = PREFIX + 'UPDATE_SPEND_PENDING'
-export const RESET = PREFIX + 'RESET'
-export const UPDATE_PAYMENT_PROTOCOL_TRANSACTION = PREFIX + 'UPDATE_PAYMENT_PROTOCOL_TRANSACTION'
-export const UPDATE_TRANSACTION = PREFIX + 'UPDATE_TRANSACTION'
-
-export const updateAmount = (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string) => (dispatch: Dispatch, getState: GetState) => {
-  const amountFiatString: string = bns.mul(exchangeAmount, fiatPerCrypto)
-  const amountFiat: number = parseFloat(amountFiatString)
-  const metadata: EdgeMetadata = { amountFiat }
-  dispatch(createTX({ nativeAmount, metadata }, false))
-}
-
-export const paymentProtocolUriReceived = ({ paymentProtocolURL }: EdgePaymentProtocolUri) => (dispatch: Dispatch, getState: GetState) => {
+export const maxSpendRequested = (spendInfo: EdgeSpendInfo, options: SpendOptions) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const walletId = getSelectedWalletId(state)
   const edgeWallet = getWallet(state, walletId)
-
-  Promise.resolve(paymentProtocolURL)
-    .then(paymentProtocolURL => getPaymentProtocolInfo(edgeWallet, paymentProtocolURL))
-    .then(makeSpendInfo)
-    .then(spendInfo => {
-      dispatch(newSpendInfo(spendInfo))
-
-      return makeSpend(edgeWallet, spendInfo).then(
-        edgeTransaction => {
-          dispatch(updatePaymentProtocolTransaction(edgeTransaction))
-          Actions.sendConfirmation('fromScan')
-        },
-        error => {
-          dispatch(makeSpendFailed(error))
-          Actions.sendConfirmation('fromScan')
-        }
-      )
-    })
-    .catch((error: Error) => {
-      console.log(error)
-      setTimeout(
-        () => Alert.alert(s.strings.scan_invalid_address_error_title, s.strings.scan_invalid_address_error_description, [{ text: s.strings.string_ok }]),
-        500
-      )
-    })
-}
-
-export const createTX = (parsedUri: GuiMakeSpendInfo | EdgeParsedUri, forceUpdateGui?: boolean = true) => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
-  const walletId = getSelectedWalletId(state)
-  const edgeWallet = getWallet(state, walletId)
-  const parsedUriClone = { ...parsedUri }
-  const spendInfo = getSpendInfo(state, parsedUriClone)
-
-  makeSpend(edgeWallet, spendInfo)
-    .then(edgeTransaction => {
-      dispatch(updateTransaction(edgeTransaction, parsedUriClone, forceUpdateGui, null))
-    })
-    .catch(e => {
-      dispatch(updateTransaction(null, parsedUriClone, forceUpdateGui, e))
-    })
-}
-
-export const updateMaxSpend = () => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
-  const walletId = getSelectedWalletId(state)
-  const edgeWallet = getWallet(state, walletId)
-  const spendInfo = getSpendInfo(state)
 
   Promise.resolve(spendInfo)
     .then(spendInfo => getMaxSpendable(edgeWallet, spendInfo))
-    .then(nativeAmount => dispatch(newSpendInfo({ ...spendInfo, nativeAmount })), error => console.log(error))
+    .then(nativeAmount => ({ ...spendInfo, nativeAmount }))
+    .then(spendInfo => {
+      const options = { isEditable: true, sign: false, broadcast: false, save: false }
+      dispatch(newSpendRequest(spendInfo, options))
+      return makeSpend(edgeWallet, spendInfo)
+    })
+    .then(edgeTransaction => dispatch(newTransaction(edgeTransaction)))
+    .catch(error => {
+      switch (error.name) {
+        case 'InsuffientFundsError':
+        case 'DustSpendError': {
+          dispatch(newSpendError(error))
+        }
+        default:
+          dispatch(unknownError(error))
+      }
+    })
 }
 
-export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: GetState) => {
-  dispatch(updateSpendPending(true))
+export const paymentProtocolSpendRequested = (spendInfo: EdgeSpendInfo, options: SpendOptions) => (dispatch: Dispatch, getState: GetState) => {
+  // const options = const options = { isEditable: false, sign: false, broadcast: false, save: false }
   const state = getState()
+  const walletId = getSelectedWalletId(state)
+  const edgeWallet = getWallet(state, walletId)
+
+  Promise.resolve(spendInfo)
+    .then(spendInfo => {
+      dispatch(newSpendRequest(spendInfo, options))
+      return makeSpend(edgeWallet, spendInfo)
+    })
+    .then(edgeTransaction => dispatch(newTransaction(edgeTransaction)))
+    .catch(error => {
+      switch (error.name) {
+        case 'NetworkError':
+        case 'InvalidPaymentRequest': {
+          dispatch(paymentProtocolError(error))
+        }
+        case 'InsuffientFundsError':
+        case 'DustSpendError': {
+          dispatch(spendError(error))
+        }
+        default:
+          dispatch(unknownError(error))
+      }
+    })
+}
+
+export const spendRequested = (spendInfo: EdgeSpendInfo, options: SpendOptions) => (dispatch: Dispatch, getState: GetState) => {
+  // const options = { isEditable: true, sign: true, broadcast: true, save: true }
+  const state = getState()
+  const walletId = getSelectedWalletId(state)
+  const edgeWallet = getWallet(state, walletId)
+
+  Promise.resolve(spendInfo)
+    .then(spendInfo => {
+      dispatch(newSpendRequest(spendInfo, options))
+      return makeSpend(edgeWallet, spendInfo)
+    })
+    .then(edgeTransaction => dispatch(newTransaction(edgeTransaction)))
+    .catch(error => {
+      switch (error.name) {
+        case 'InsuffientFundsError':
+        case 'DustSpendError': {
+          dispatch(newError(error))
+        }
+        default:
+          dispatch(unknownError(error))
+      }
+    })
+}
+
+// export const maxSpendRequested = (spendInfo: EdgeSpendInfo) => (dispatch: Dispatch, getState: GetState) => {
+//   const state = getState()
+//   const walletId = getSelectedWalletId(state)
+//   const edgeWallet = getWallet(state, walletId)
+//
+//   Promise.resolve(spendInfo)
+//     .then(spendInfo => getMaxSpendable(edgeWallet, spendInfo))
+//     .then(nativeAmount => ({ ...spendInfo, nativeAmount }))
+//     .then(spendInfo => {
+//       const spendRequirements = getSpendRequirements(state, spendInfo)
+//       const options = { isEditable: true, ...spendRequirements }
+//       dispatch(newSpendRequest(spendInfo, options))
+//       return makeSpend(edgeWallet, spendInfo)
+//     })
+//     .then(edgeTransaction => dispatch(newTransaction(edgeTransaction)))
+//     .catch(error => {
+//       switch (error.name) {
+//         case 'InsuffientFundsError':
+//         case 'DustSpendError': {
+//           dispatch(spendError(error))
+//         }
+//         default:
+//           dispatch(unknownError(error))
+//       }
+//     })
+// }
+
+// export const paymentProtocolSpendRequested = ({ paymentProtocolURL }: EdgePaymentProtocolUri) => (dispatch: Dispatch, getState: GetState) => {
+//   const state = getState()
+//   const walletId = getSelectedWalletId(state)
+//   const edgeWallet = getWallet(state, walletId)
+//
+//   Promise.resolve(paymentProtocolURL)
+//     .then(paymentProtocolURL => getPaymentProtocolInfo(edgeWallet, paymentProtocolURL))
+//     .then(paymentProtocolInfo => makeSpendInfo(paymentProtocolInfo))
+//     .then(spendInfo => {
+//       const spendRequirements = getSpendRequirements(state, spendInfo)
+//       const options = { isEditable: false, ...spendRequirements }
+//       dispatch(newSpendRequest(spendInfo, options))
+//       return makeSpend(edgeWallet, spendInfo)
+//     })
+//     .then(edgeTransaction => dispatch(newTransaction(edgeTransaction)))
+//     .catch(error => {
+//       switch (error.name) {
+//         case 'NetworkError':
+//         case 'InvalidPaymentRequest': {
+//           dispatch(paymentProtocolError(error))
+//         }
+//         case 'InsuffientFundsError':
+//         case 'DustSpendError': {
+//           dispatch(spendError(error))
+//         }
+//         default:
+//           dispatch(unknownError(error))
+//       }
+//     })
+// }
+
+// export const spendRequested = (spendInfo: EdgeSpendInfo) => (dispatch: Dispatch, getState: GetState) => {
+//   const state = getState()
+//   const walletId = getSelectedWalletId(state)
+//   const edgeWallet = getWallet(state, walletId)
+//
+//   Promise.resolve(spendInfo)
+//     .then(spendInfo => {
+//       const spendRequirements = getSpendRequirements(state, spendInfo)
+//       const options = { isEditable: true, ...spendRequirements }
+//       dispatch(newSpendRequest(spendInfo, options))
+//       return makeSpend(edgeWallet, spendInfo)
+//     })
+//     .then(edgeTransaction => dispatch(newTransaction(edgeTransaction)))
+//     .catch(error => {
+//       switch (error.name) {
+//         case 'InsuffientFundsError':
+//         case 'DustSpendError': {
+//           dispatch(newError(error))
+//         }
+//         default:
+//           dispatch(unknownError(error))
+//       }
+//     })
+// }
+
+export const signBroadcastAndSaveRequested = () => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const account = getAccount(state)
   const selectedWalletId = getSelectedWalletId(state)
   const wallet = getWallet(state, selectedWalletId)
-  const edgeUnsignedTransaction = getTransaction(state)
-  let edgeSignedTransaction = edgeUnsignedTransaction
+  const unsignedTransaction = getTransaction(state)
+  const spendInfo = state.ui.scenes.sendConfirmation.spendInfo
+  const pin = state.ui.scenes.sendConfirmation.pin
+  dispatch(spendStarted())
 
-  try {
-    edgeSignedTransaction = await signTransaction(wallet, edgeUnsignedTransaction)
-    edgeSignedTransaction = await broadcastTransaction(wallet, edgeSignedTransaction)
-    await saveTransaction(wallet, edgeSignedTransaction)
-    dispatch(updateSpendPending(false))
-    Actions.pop()
-    const successInfo = {
-      success: true,
-      title: 'Transaction Sent',
-      message: 'Your transaction has been successfully sent.'
+  authorize(state, spendInfo, pin).then(isauthorized => {
+    if (isauthorized) {
+      Promise.resolve(unsignedTransaction)
+        .then(transaction => signTransaction(wallet, transaction))
+        .then(transaction => broadcastTransaction(wallet, transaction))
+        .then(transaction => saveTransaction(wallet, transaction))
+        .then(() => dispatch(spendSucceeded()))
+        .then(() => Actions.pop())
+        .catch(error => {
+          switch (error.name) {
+            case 'BroadcastError': {
+              dispatch(spendFailed(error))
+            }
+            default:
+              dispatch(unknownError(error))
+          }
+        })
+    } else {
+      dispatch(spendFailed(new Error('Incorrect Pin')))
     }
-    dispatch(openABAlert(OPEN_AB_ALERT, successInfo))
-  } catch (e) {
-    dispatch(updateSpendPending(false))
-    const errorInfo = {
-      success: false,
-      title: 'Transaction Failure',
-      message: e.message
-    }
-    dispatch(updateTransaction(edgeSignedTransaction, null, true, new Error('broadcastError')))
-    dispatch(openABAlert(OPEN_AB_ALERT, errorInfo))
-  }
+  })
 }
 
+const PREFIX = 'UI/SendConfimation/'
+
+export const SPEND_STARTED = PREFIX + 'SPEND_STARTED'
+export const spendStarted = () => ({
+  type: SPEND_STARTED,
+  data: {}
+})
+
+export const SPEND_FAILED = PREFIX + 'SPEND_FAILED'
+export const spendFailed = (error: Error) => ({
+  type: SPEND_FAILED,
+  data: { error }
+})
+
+export const spendSucceeded = () => (dispatch: Dispatch) => {
+  const successInfo = {
+    success: true,
+    title: 'Transaction Sent',
+    message: 'Your transaction has been successfully sent.'
+  }
+  dispatch(openABAlert(OPEN_AB_ALERT, successInfo))
+}
+
+export const NEW_TRANSACTION = PREFIX + 'NEW_TRANSACTION'
+export const newTransaction = (transaction: EdgeTransaction) => ({
+  type: NEW_TRANSACTION,
+  data: { transaction }
+})
+
+export const NEW_SPEND_REQUEST = PREFIX + 'NEW_SPEND_REQUEST'
+export const newSpendRequest = (spendInfo: EdgeSpendInfo, options: SpendOptions) => ({
+  type: NEW_SPEND_REQUEST,
+  data: { spendInfo, options }
+})
+
+export const NEW_PIN = PREFIX + 'NEW_PIN'
+export const pin = (pin: string) => ({
+  type: NEW_PIN,
+  data: { pin }
+})
+
+export const NEW_ERROR = PREFIX + 'NEW_ERROR'
+export const newError = (error: Error) => ({
+  type: NEW_ERROR,
+  data: { error }
+})
+
+export const UNKNOWN_ERROR = PREFIX + 'UNKNOWN_ERROR'
+export const unknownError = (error: Error) => ({
+  type: UNKNOWN_ERROR,
+  data: { error }
+})
+
+export const RESET = PREFIX + 'RESET'
 export const reset = () => ({
   type: RESET,
   data: {}
 })
 
-export const updatePaymentProtocolTransaction = (transaction: EdgeTransaction) => ({
-  type: UPDATE_PAYMENT_PROTOCOL_TRANSACTION,
-  data: { transaction }
-})
-
-export const updateTransaction = (
-  transaction: ?EdgeTransaction,
-  parsedUri: ?EdgeParsedUri,
-  forceUpdateGui: ?boolean,
-  error: ?Error,
-  pinIsEnabled: boolean,
-  pinAmount: number
-) => ({
-  type: UPDATE_TRANSACTION,
-  data: { transaction, parsedUri, forceUpdateGui, error, pinIsEnabled, pinAmount }
-})
-
-export const updateSpendPending = (pending: boolean) => ({
-  type: UPDATE_SPEND_PENDING,
-  data: { pending }
-})
-
-export const INCORRECT_PIN = PREFIX + 'INCORRECT_PIN'
-export const incorrectPin = () => ({
-  type: INCORRECT_PIN,
-  data: {}
-})
-
-export const MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED = PREFIX + 'MAKE_SPEND_FAILED'
-export const makeSpendFailed = (error: Error) => ({
-  type: MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED,
-  data: { error }
-})
-
-export const NEW_SPEND_INFO = PREFIX + 'NEW_SPEND_INFO'
-export const newSpendInfo = (spendInfo: EdgeSpendInfo) => ({
-  type: NEW_SPEND_INFO,
-  data: { spendInfo }
-})
-
-export type SpendOptions = { isEditable?: boolean, pinIsRequired?: boolean, passwordIsRequired?: boolean }
-export const newSpendRequest = (spendInfo: EdgeSpendInfo, options: SpendOptions) => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
-  const edgeWallet = getSelectedWallet(state)
-  const spendRequirements = getSpendRequirements(state, spendInfo)
-
-  dispatch(newPendingSpend({ ...guiSpendRequest, ...spendRequirements }))
-
-  makeSpend(edgeWallet, spendInfo)
-    .then(edgeTransaction => {
-      dispatch(newTransaction(edgeTransaction))
-    })
-    .catch(error => {
-      dispatch(newTransactionError(error))
-    })
+const authorize = (state, spendInfo, pin): Promise<boolean> => {
+  const { pinIsRequired } = getSpendRequirements(state, spendInfo)
+  if (!pinIsRequired) {
+    return Promise.resolve(true)
+  } else {
+    const account = getAccount(state)
+    return checkPin(account, pin)
+  }
 }
 
-export const newPendingSpend = (
-  spendInfo: EdgeSpendInfo,
-  authInfo: AuthInfo,
-  options?: { isEditable: boolean, pinRequired: boolean, passwordRequired: boolean }
-) => ({
-  type: NEW_PENDING_SPEND,
-  data: {
-    spendInfo,
-    authInfo,
-    options
-  }
-})
-
-export const PIN_CHANGED = PREFIX + 'PIN_CHANGED'
-export const pinChanged = (pin: string) => ({
-  type: PIN_CHANGED,
-  data: { pin }
-})
-
-export { createTX as updateMiningFees, createTX as updateParsedURI, createTX as uniqueIdentifierUpdated }
-
-export const getSpendRequirements = (state: State, spendInfo: EdgeSpendInfo) => {
+export type SpendRequirements = { pinIsRequired: boolean }
+export const getSpendRequirements = (state: State, spendInfo: EdgeSpendInfo): SpendRequirements => {
+  const { nativeAmount, currencyCode } = spendInfo
+  if (!nativeAmount || !currencyCode) throw new Error('Invalid EdgeSpendInfo')
   const account = getAccount(state)
   const { isEnabled: pinIsEnabled, amount: pinAmount } = state.ui.settings.spendingLimits.transaction
-  const { nativeAmount, currencyCode } = guiSpendRequest
   const isoFiatCurrencyCode = state.ui.settings.defaultIsoFiat
-  const nativeToExchangeRatio = getExchangeDenomination(state, currencyCode)
+  const nativeToExchangeRatio = getExchangeDenomination(state, currencyCode).multiplier
   const exchangeAmount = convertNativeToExchange(nativeToExchangeRatio)(nativeAmount)
-  const fiatAmount = convertCurrency(account, currencyCode, isoFiatCurrencyCode, exchangeAmount)
+  const fiatAmount = convertCurrency(account, currencyCode, isoFiatCurrencyCode, parseFloat(exchangeAmount))
   const pinIsRequired = fiatAmount >= pinAmount
 
-  return { isRequired: pinIsRequired }
+  return { pinIsRequired: pinIsRequired }
 }
