@@ -45,15 +45,15 @@ export const maxSpendRequested = () => (dispatch: Dispatch, getState: GetState) 
   const spendInfo = state.ui.scenes.sendConfirmation.spendInfo
   if (!spendInfo) throw new Error('Invalid Max Spend Request')
 
-  getMaxSpendable(edgeWallet, spendInfo).then(nativeAmount => dispatch(newAmounts({ nativeAmount, fiatAmount: 0 })))
+  getMaxSpendable(edgeWallet, spendInfo).then(nativeAmount => dispatch(newNativeAmount(nativeAmount)))
 }
 
 export const paymentProtocolSpendRequested = (spendInfo: EdgeSpendInfo) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(spendRequested(spendInfo, { lock: true, sign: false, broadcast: false, save: false }))
 }
 
-export const amountsChanged = (amounts: { nativeAmount: string, fiatAmount: number }) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(newAmounts(amounts))
+export const nativeAmountChanged = (nativeAmount: string) => (dispatch: Dispatch, getState: GetState) => {
+  dispatch(newNativeAmount(nativeAmount))
   const state = getState()
   const spendInfo = getSpendInfo(state)
   dispatch(spendRequested(spendInfo))
@@ -134,10 +134,10 @@ export const spendSucceeded = (transaction: EdgeTransaction) => (dispatch: Dispa
 
 const PREFIX = 'UI/SendConfimation/'
 
-export const NEW_AMOUNTS = PREFIX + 'NEW_AMOUNTS'
-export const newAmounts = (amounts: { nativeAmount: string, fiatAmount: number }) => ({
-  type: NEW_AMOUNTS,
-  data: { amounts }
+export const NEW_NATIVE_AMOUNT = PREFIX + 'NEW_NATIVE_AMOUNT'
+export const newNativeAmount = (nativeAmount: string) => ({
+  type: NEW_NATIVE_AMOUNT,
+  data: { nativeAmount }
 })
 
 export const NEW_NETWORK_FEES = PREFIX + 'NEW_NETWORK_FEES'
