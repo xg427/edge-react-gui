@@ -1,6 +1,6 @@
 // @flow
 
-import type { EdgeSpendTarget, EdgeMetadata, EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
+import type { AbcSpendTarget, EdgeMetadata, EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
 
 import { STANDARD_FEE } from '../../../../constants/indexConstants'
 import type { State } from '../../../ReduxTypes'
@@ -13,18 +13,12 @@ export type GuiMakeSpendInfo = {
   nativeAmount?: string,
   networkFeeOption?: string,
   publicAddress?: string,
-  spendTargets?: Array<EdgeSpendTarget>,
+  spendTargets?: Array<AbcSpendTarget>,
   uniqueIdentifier?: string
 }
 
-export type SpendOptions = {
-  lock: boolean,
-  sign: boolean,
-  broadcast: boolean,
-  save: boolean
-}
-
 export type SendConfirmationState = {
+  isKeyboardVisible: boolean,
   forceUpdateGuiCounter: number,
   destination: string,
 
@@ -32,16 +26,16 @@ export type SendConfirmationState = {
 
   parsedUri: GuiMakeSpendInfo,
   spendInfo: EdgeSpendInfo | null,
-  spendOptions: SpendOptions | null,
 
-  pin: string,
+  isEditable: boolean,
 
-  transaction: EdgeTransaction | null,
-  transactionStatus: 'pending' | 'error' | null,
+  pending: boolean,
+  transaction: EdgeTransaction,
   error: Error | null
 }
 
 export const initialState = {
+  isKeyboardVisible: false,
   forceUpdateGuiCounter: 0,
 
   parsedUri: {
@@ -58,9 +52,6 @@ export const initialState = {
       miscJson: ''
     }
   },
-
-  pin: '',
-
   spendInfo: null,
   destination: '',
   nativeAmount: '0',
@@ -87,6 +78,7 @@ export const initialState = {
 export const getScene = (state: State): any => getSceneState(state, 'sendConfirmation')
 export const getPending = (state: State): boolean => getScene(state).pending
 export const getError = (state: State): Error => getScene(state).error
+export const getKeyboardIsVisible = (state: State): boolean => getScene(state).keyboardIsVisible
 
 export const getTransaction = (state: State): EdgeTransaction => getScene(state).transaction || initialState.transaction
 export const getParsedUri = (state: State): GuiMakeSpendInfo => getScene(state).parsedUri || initialState.parsedUri

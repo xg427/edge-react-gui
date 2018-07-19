@@ -115,7 +115,7 @@ export class SpendingLimits extends Component<Props, State> {
                     </Scene.Body.Text>
                   </Scene.Item>
 
-                  <Switch onValueChange={onTransactionIsEnabledChanged} value={transactionIsEnabled} />
+                  <Switch onValueChange={this.onTransactionIsEnabledChanged} value={transactionIsEnabled} />
                 </Scene.Row>
 
                 <Scene.Row>

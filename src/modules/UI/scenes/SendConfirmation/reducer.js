@@ -1,74 +1,81 @@
 // @flow
 
-import { isEqual } from 'lodash'
-
+import { combineReducers } from 'redux'
+import type { EdgeSpendInfo, EdgeTransaction } from 'edge-core-js'
+import { add } from 'biggystring'
 import type { Action } from '../../../ReduxTypes.js'
 import * as ACTION from './action'
-import { initialState } from './selectors'
-import type { SendConfirmationState } from './selectors'
 
-export const sendConfirmationLegacy = (state: SendConfirmationState = initialState, action: Action) => {
-  const { type, data = {} } = action
-  switch (type) {
-    case ACTION.UPDATE_TRANSACTION: {
-      const { transaction, parsedUri, forceUpdateGui, error } = data
-      let forceUpdateGuiCounter = state.forceUpdateGuiCounter
-      if (forceUpdateGui) {
-        forceUpdateGuiCounter++
-      }
-      if (!parsedUri) return { ...state, forceUpdateGuiCounter, transaction }
+export type SpendOptions = {
+  lock: boolean,
+  sign: boolean,
+  broadcast: boolean,
+  save: boolean
+}
 
-      const { metadata, customNetworkFee, ...others } = parsedUri
-      if (!isEqual(state.parsedUri.metadata, metadata)) {
-        state.parsedUri.metadata = { ...state.parsedUri.metadata, ...metadata }
-      }
+export type SendConfirmationState = {
+  destination: string,
+  error: Error | null,
+  nativeAmount: string,
+  pending: boolean,
+  pin: string,
+  spendInfo: EdgeSpendInfo | null,
+  spendOptions: SpendOptions | null,
+  transaction: EdgeTransaction | null
+}
 
-      if (customNetworkFee && !isEqual(state.parsedUri.customNetworkFee, customNetworkFee)) {
-        state.parsedUri.customNetworkFee = customNetworkFee
-      }
+export const initialState = {
+  destination: '',
+  error: null,
+  isEditable: true,
+  nativeAmount: '0',
+  pending: false,
+  pin: '',
+  spendInfo: null,
+  transaction: null
+}
 
-      const nativeAmount = parsedUri.nativeAmount || state.nativeAmount || '0'
-      const destination = parsedUri.publicAddress || state.destination
-
+export const spendInfo = (state: EdgeSpendInfo | null = null, action: Action) => {
+  switch (action.type) {
+    case ACTION.NEW_NATIVE_AMOUNT: {
+      const { nativeAmount } = action.data
+      const [first, ...rest] = state.spendTargets
       return {
         ...state,
-        transaction,
-        forceUpdateGuiCounter,
-        nativeAmount,
-        destination,
-        parsedUri: {
-          ...state.parsedUri,
-          ...others
-        }
+        spendTargets: [{ ...first, nativeAmount }, ...rest]
       }
     }
-
-    case ACTION.UPDATE_PAYMENT_PROTOCOL_TRANSACTION: {
-      if (!action.data) return state
-      const { transaction } = data
-
+    case ACTION.NEW_UNIQUE_IDENTIFIER: {
+      const { uniqueIdentifier } = action.data
+      const [first, ...rest] = state.spendTargets
       return {
         ...state,
-        transaction
+        spendTargets: [
+          {
+            ...first,
+            otherParams: {
+              ...first.otherParams,
+              uniqueIdentifier
+            }
+          },
+          ...rest
+        ]
       }
     }
-
-    case ACTION.NEW_SPEND_INFO: {
-      if (!action.data) return state
-      const { spendInfo: { nativeAmount, metadata: { name: destination } } } = data
-
+    case ACTION.NEW_NETWORK_FEES: {
+      const { customNetworkFee, networkFeeOption } = action.data
       return {
         ...state,
-        destination,
-        nativeAmount,
-        transaction: null
+        networkFeeOption,
+        customNetworkFee
       }
     }
-
+    case ACTION.NEW_SPEND_REQUEST: {
+      return action.data.spendInfo
+    }
     case ACTION.RESET: {
-      return initialState
+      return null
     }
-
     default:
       return state
   }
@@ -79,21 +86,8 @@ export const error = (state: Error | null = null, action: Action) => {
     case ACTION.NEW_ERROR: {
       return action.data.error
     }
-    case ACTION.NEW_SPEND_INFO:
+    case ACTION.NEW_SPEND_REQUEST:
     case ACTION.NEW_TRANSACTION:
-    case ACTION.RESET: {
-      return null
-    }
-    default:
-      return state
-  }
-}
-
-export const spendInfo = (state: EdgeSpendInfo | null = null, action: Action) => {
-  switch (action.type) {
-    case ACTION.NEW_SPEND_REQUEST: {
-      return action.data.spendInfo
-    }
     case ACTION.RESET: {
       return null
     }
@@ -117,11 +111,9 @@ export const isEditable = (state: boolean = true, action: Action) => {
 
 export const pending = (state: boolean = false, action: Action) => {
   switch (action.type) {
-    case ACTION.UPDATE_SPEND_PENDING: {
-      const { pending } = data
-      return pending
+    case ACTION.NEW_SPEND_REQUEST: {
+      return action.data.options.sign
     }
-    case ACTION.INCORRECT_PIN:
     case ACTION.RESET: {
       return false
     }
@@ -130,12 +122,12 @@ export const pending = (state: boolean = false, action: Action) => {
   }
 }
 
-export const pin = (state: string = '', action) => {
+export const pin = (state: string = '', action: Action) => {
   switch (action.type) {
-    case ACTION.PIN_CHANGED: {
+    case ACTION.NEW_PIN: {
       return action.data.pin
     }
-    case ACTION.INCORRECT_PIN:
+    case ACTION.NEW_ERROR:
     case ACTION.RESET: {
       return ''
     }
@@ -144,17 +136,10 @@ export const pin = (state: string = '', action) => {
   }
 }
 
-export const pinIsRequired = (state: boolean = false, action) => {
+export const authRequired = (state: 'pin' | 'none' = 'none', action: Action) => {
   switch (action.type) {
-    case ACTION.UPDATE_TRANSACTION: {
-      const { data: pinIsEnabled, pinAmount, fiatAmount } = action
-      return !!(pinIsEnabled && fiatAmount >= pinAmount)
-    }
-    case ACTION.UPDATE_PAYMENT_PROTOCOL_TRANSACTION: {
-      return state
-    }
-    case ACTION.NEW_SPEND_INFO: {
-      return state
+    case ACTION.NEW_SPEND_REQUEST: {
+      return action.data.options.authRequired
     }
     case ACTION.RESET: {
       return false
@@ -164,19 +149,60 @@ export const pinIsRequired = (state: boolean = false, action) => {
   }
 }
 
-export const sendConfirmation = (state: SendConfirmationState = initialState, action: Action) => {
-  const legacy = sendConfirmationLegacy(state, action)
-  const result = {
-    ...legacy,
-    error: error(state.error, action),
-    spendInfo: spendInfo(state.spendInfo, action),
-    isEditable: isEditable(state.isEditable, action),
-    pending: pending(state.pending, action),
-    pinIsRequired: pinIsRequired(state.pinIsRequired, action),
-    pin: pin(state.pin, action)
+export const transaction = (state: EdgeTransaction | null = null, action: Action) => {
+  switch (action.type) {
+    case ACTION.NEW_TRANSACTION: {
+      return action.data.transaction
+    }
+    case ACTION.NEW_SPEND_REQUEST:
+    case ACTION.RESET: {
+      return null
+    }
+    default:
+      return state
   }
-
-  return result
 }
+
+export const nativeAmount = (state: string = '0', action: Action) => {
+  switch (action.type) {
+    case ACTION.NEW_NATIVE_AMOUNT: {
+      return action.data.nativeAmount
+    }
+    case ACTION.NEW_SPEND_REQUEST: {
+      return action.data.spendInfo.spendTargets.reduce((sum, { nativeAmount }) => {
+        return add(sum, nativeAmount)
+      }, '0')
+    }
+    case ACTION.RESET: {
+      return ''
+    }
+    default:
+      return state
+  }
+}
+
+export const destination = (state: string = '', action: Action) => {
+  switch (action.type) {
+    case ACTION.NEW_SPEND_REQUEST: {
+      return action.data.spendInfo.metadata.name
+    }
+    case ACTION.RESET: {
+      return ''
+    }
+    default:
+      return state
+  }
+}
+
+export const sendConfirmation = combineReducers({
+  authRequired,
+  error,
+  isEditable,
+  nativeAmount,
+  pending,
+  pin,
+  spendInfo,
+  transaction
+})
 
 export default sendConfirmation

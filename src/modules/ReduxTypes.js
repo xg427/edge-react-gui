@@ -21,7 +21,7 @@ import type { RequestSceneState } from './UI/scenes/Request/reducer.js'
 
 import type { PasswordReminderModalState } from './UI/components/PasswordReminderModal/indexPasswordReminderModal.js'
 import type { PasswordReminderState } from '../reducers/passwordReminder/indexPasswordReminder.js'
-import type { SendConfirmationState } from './UI/scenes/SendConfirmation/selectors.js'
+import type { SendConfirmationState } from './UI/scenes/SendConfirmation/reducer.js'
 
 export type Action = { type: string, data?: any }
 

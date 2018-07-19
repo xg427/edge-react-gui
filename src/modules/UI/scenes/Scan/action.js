@@ -2,14 +2,14 @@
 
 import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import type { EdgeParsedUri, EdgeSpendInfo } from 'edge-core-js'
+import type { EdgeParsedUri, EdgeSpendInfo, EdgePaymentProtocolInfo } from 'edge-core-js'
 
 import * as Constants from '../../../../constants/indexConstants.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
-import * as WALLET_API from '../../../Core/Wallets/api.js'
+import { getPaymentProtocolInfo, parseUri } from '../../../Core/Wallets/api.js'
 import { isEdgeLogin, denominationToDecimalPlaces, noOp } from '../../../utils.js'
 import { loginWithEdge } from '../../../../actions/EdgeLoginActions.js'
-import { spendRequested, paymentProtocolUriReceived } from '../SendConfirmation/action.js'
+import { spendRequested, paymentProtocolSpendRequested } from '../SendConfirmation/action.js'
 import s from '../../../../locales/strings.js'
 
 import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
@@ -60,7 +60,7 @@ export const parseUriReset = () => ({
   type: PARSE_URI_RESET
 })
 
-export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetState) => {
+export const parseUriRequested = (data: string) => (dispatch: Dispatch, getState: GetState) => {
   if (!data) return
   const state = getState()
   const selectedWalletId = state.ui.wallets.selectedWalletId
@@ -73,7 +73,7 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
     return
   }
 
-  WALLET_API.parseUri(edgeWallet, data).then(
+  parseUri(edgeWallet, data).then(
     (parsedUri: EdgeParsedUri) => {
       dispatch(parseUriSucceeded(parsedUri))
 
@@ -110,8 +110,13 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
 
       if (isPaymentProtocolUri(parsedUri)) {
         // BIP70 URI
-        // $FlowFixMe
-        return dispatch(paymentProtocolUriReceived(parsedUri))
+        return Promise.resolve(parsedUri.paymentProtocolURL)
+          .then(paymentProtocolURL => getPaymentProtocolInfo(edgeWallet, paymentProtocolURL))
+          .then(paymentProtocolInfo => convertPaymentProtocolInfoToSpendInfo(paymentProtocolInfo))
+          .then(spendInfo => {
+            dispatch(paymentProtocolSpendRequested(spendInfo))
+            return Actions.sendConfirmation('fromScan')
+          })
       }
 
       // PUBLIC ADDRESS URI
@@ -139,11 +144,11 @@ export const qrCodeScanned = (data: string) => (dispatch: Dispatch, getState: Ge
   if (!isScanEnabled) return
 
   dispatch(disableScan())
-  dispatch(parseUri(data))
+  dispatch(parseUriRequested(data))
 }
 
 export const addressModalDoneButtonPressed = (data: string) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(parseUri(data))
+  dispatch(parseUriRequested(data))
 }
 
 export const addressModalCancelButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
@@ -187,6 +192,7 @@ export const isPaymentProtocolUri = (parsedUri: EdgeParsedUri): boolean => {
 export const convertParsedUriToSpendInfo = (parsedUri: EdgeParsedUri): EdgeSpendInfo => ({
   spendTargets: [
     {
+      publicAddress: parsedUri.publicAddress,
       currencyCode: parsedUri.currencyCode,
       nativeAmount: parsedUri.nativeAmount,
       otherParams: { uniqueIdentifier: parsedUri.uniqueIdentifier }
@@ -194,3 +200,31 @@ export const convertParsedUriToSpendInfo = (parsedUri: EdgeParsedUri): EdgeSpend
   ],
   metadata: parsedUri.metadata
 })
+
+const BITPAY = {
+  domain: 'bitpay.com',
+  merchantName: (memo: string) => {
+    // Example BitPay memo
+    // "Payment request for BitPay invoice DKffym7WxX6kzJ73yfYS7s for merchant Electronic Frontier Foundation"
+    // eslint-disable-next-line no-unused-vars
+    const [_, merchantName] = memo.split(' for merchant ')
+    return merchantName
+  }
+}
+
+export const convertPaymentProtocolInfoToSpendInfo = (paymentProtocolInfo: EdgePaymentProtocolInfo): Promise<EdgeSpendInfo> => {
+  const { domain, memo, merchant, nativeAmount, spendTargets } = paymentProtocolInfo
+
+  const name = domain === BITPAY.domain ? BITPAY.merchantName(memo) : merchant || domain
+  const notes = memo
+
+  return Promise.resolve({
+    networkFeeOption: 'standard',
+    metadata: {
+      name,
+      notes
+    },
+    nativeAmount,
+    spendTargets: spendTargets.map(target => (target.otherParams ? target : { ...target, otherParams: {} }))
+  })
+}

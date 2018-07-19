@@ -2,7 +2,6 @@
 
 import { combineReducers } from 'redux'
 import { pathOr } from 'ramda'
-
 import type { Action } from '../../../ReduxTypes.js'
 
 // ACTIONS
@@ -10,9 +9,9 @@ import { ACCOUNT_INIT_COMPLETE } from '../../../../constants/indexConstants.js'
 
 export const PREFIX = 'SPENDING_LIMITS/'
 
-export const UPDATE = PREFIX + 'UPDATE'
-export const update = (spendingLimits: SpendingLimits) => ({
-  type: UPDATE,
+export const NEW_SPENDING_LIMITS = PREFIX + 'NEW_SPENDING_LIMITS'
+export const newSpendingLimits = (spendingLimits: SpendingLimits) => ({
+  type: NEW_SPENDING_LIMITS,
   data: { spendingLimits }
 })
 
@@ -23,6 +22,7 @@ export const initialState = {
     amount: 0
   }
 }
+
 export type SpendingLimits = {
   transaction: {
     isEnabled: boolean,
@@ -33,14 +33,10 @@ export type SpendingLimits = {
 export const isEnabled = (state: boolean = true, action: Action) => {
   switch (action.type) {
     case ACCOUNT_INIT_COMPLETE: {
-      const result = pathOr(state, ['spendingLimits', 'transaction', 'isEnabled'], action)
-      console.log('QWEQWE', result)
-      return result
+      return pathOr(state, ['spendingLimits', 'transaction', 'isEnabled'], action)
     }
-    case UPDATE: {
-      const result = pathOr(state, ['data', 'spendingLimits', 'transaction', 'isEnabled'], action)
-      console.log('QWEQWE', result)
-      return result
+    case NEW_SPENDING_LIMITS: {
+      return action.data.spendingLimits.transaction.isEnabled || state
     }
     default:
       return state
@@ -50,26 +46,21 @@ export const isEnabled = (state: boolean = true, action: Action) => {
 export const amount = (state: number = 100, action: Action) => {
   switch (action.type) {
     case ACCOUNT_INIT_COMPLETE: {
-      const result = pathOr(state, ['spendingLimits', 'transaction', 'amount'], action)
-      console.log('QWEQWE', result)
-      return result
+      return pathOr(state, ['spendingLimits', 'transaction', 'amount'], action)
     }
-    case UPDATE: {
-      const result = pathOr(state, ['data', 'spendingLimits', 'transaction', 'amount'], action)
-      console.log('QWEQWE', result)
-      return result
+    case NEW_SPENDING_LIMITS: {
+      return action.data.spendingLimits.transaction.amount || state
     }
     default:
       return state
   }
 }
 
-export type TransactionState = { isEnabled: boolean, amount: number }
-export const transaction = (state: TransactionState = initialState.transaction, action: Action) => ({
-  isEnabled: isEnabled(state.isEnabled, action),
-  amount: amount(state.amount, action)
+export const transaction = combineReducers({
+  isEnabled,
+  amount
 })
 
-export const spendingLimits = (state: SpendingLimits = initialState, action: Action) => ({
-  transaction: transaction(state.transaction, action)
+export const spendingLimits = combineReducers({
+  transaction
 })

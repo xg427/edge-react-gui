@@ -1,7 +1,7 @@
 // @flow
 
 import { bns } from 'biggystring'
-import type { EdgeMetadata, EdgeParsedUri, EdgeTransaction, EdgeSpendInfo } from 'edge-core-js'
+import type { EdgeMetadata, EdgeTransaction, EdgeSpendInfo } from 'edge-core-js'
 import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
@@ -19,16 +19,19 @@ import {
 import type { Dispatch, GetState, State } from '../../../ReduxTypes'
 import { openABAlert } from '../../components/ABAlert/action'
 import { getSelectedWalletId } from '../../selectors.js'
-import { getSpendInfo, getTransaction } from './selectors'
-import type { GuiMakeSpendInfo, SpendOptions } from './selectors'
 import { getAccount } from '../../../Core/selectors.js'
 import { checkPin, convertCurrency } from '../../../Core/Account/api.js'
 import { getExchangeDenomination } from '../../selectors.js'
 import { convertNativeToExchange } from '../../../utils.js'
 
+import type { SpendOptions } from './reducer.js'
+
 import s from '../../../../locales/strings.js'
 
-type EdgePaymentProtocolUri = EdgeParsedUri & { paymentProtocolURL: string }
+export type NetworkFees = {
+  customNetworkFee: Object,
+  networkFeeOption: 'low' | 'standard' | 'high' | 'custom'
+}
 
 export const maxSpendRequested = () => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -47,22 +50,30 @@ export const paymentProtocolSpendRequested = (spendInfo: EdgeSpendInfo) => (disp
 export const nativeAmountChanged = (nativeAmount: string) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(newNativeAmount(nativeAmount))
   const state = getState()
-  const spendInfo = getSpendInfo(state)
+  const spendInfo = state.ui.scenes.sendConfirmation.spendInfo
   dispatch(spendRequested(spendInfo))
 }
 
-export const networkFeesChanged = (networkFees: Object) => (dispatch: Dispatch, getState: GetState) => {
+export const networkFeesChanged = (networkFees: NetworkFees) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(newNetworkFees(networkFees))
   const state = getState()
-  const spendInfo = getSpendInfo(state)
+  const spendInfo = state.ui.scenes.sendConfirmation.spendInfo
   dispatch(spendRequested(spendInfo))
 }
+
+export { networkFeesChanged as updateMiningFees }
 
 export const uniqueIdentifierChanged = (uniqueIdentifier: string) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(newUniqueIdentifier(uniqueIdentifier))
   const state = getState()
-  const spendInfo = getSpendInfo(state)
+  const spendInfo = state.ui.scenes.sendConfirmation.spendInfo
   dispatch(spendRequested(spendInfo))
+}
+
+export const signBroadcastAndSaveRequested = () => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const spendInfo = state.ui.scenes.sendConfirmation.spendInfo
+  dispatch(spendRequested(spendInfo, { lock: true, sign: true, broadcast: true, save: true }))
 }
 
 export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions = { lock: false, sign: false, broadcast: false, save: false }) => (
@@ -72,7 +83,7 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
   const state = getState()
   const walletId = getSelectedWalletId(state)
   const edgeWallet = getWallet(state, walletId)
-  const transaction = getTransaction(state)
+  const transaction = state.ui.scenes.sendConfirmation.transaction
   const pin = state.ui.scenes.sendConfirmation.pin
 
   Promise.resolve(spendInfo)
@@ -89,7 +100,7 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
       if (!options.sign) return transaction
 
       return authorize(state, spendInfo, pin).then(isAuthorized => {
-        if (!isAuthorized) throw new Error('Incorrect Pin')
+        if (!isAuthorized) throw new Error('IncorrectPinError')
         return signTransaction(edgeWallet, transaction).then(() => transaction)
       })
     })
@@ -105,14 +116,16 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
       if (options.sign) dispatch(spendSucceeded(transaction))
     })
     .catch(error => {
-      switch (error.name) {
+      switch (error.message) {
         case 'IncorrectPinError':
         case 'InsufficientFundsError':
+        case 'Insufficient funds':
+        case 'Invalid payment ID.':
         case 'DustSpendError': {
-          dispatch(newError(error))
+          return dispatch(newError(error))
         }
         default:
-          dispatch(unknownError(error))
+          return dispatch(unknownError(error))
       }
     })
 }
@@ -137,13 +150,7 @@ export const newNativeAmount = (nativeAmount: string) => ({
 })
 
 export const NEW_NETWORK_FEES = PREFIX + 'NEW_NETWORK_FEES'
-export const newNetworkFees = ({
-  customNetworkFee = {},
-  networkFeeOption = 'standard'
-}: {
-  customNetworkFee: Object,
-  networkFeeOption?: 'low' | 'standard' | 'high'
-}) => ({
+export const newNetworkFees = ({ customNetworkFee = {}, networkFeeOption = 'standard' }: NetworkFees) => ({
   type: NEW_NETWORK_FEES,
   data: { customNetworkFee, networkFeeOption }
 })
@@ -167,7 +174,7 @@ export const newSpendRequest = (spendInfo: EdgeSpendInfo, options: SpendOptions)
 })
 
 export const NEW_PIN = PREFIX + 'NEW_PIN'
-export const pin = (pin: string) => ({
+export const newPin = (pin: string) => ({
   type: NEW_PIN,
   data: { pin }
 })
