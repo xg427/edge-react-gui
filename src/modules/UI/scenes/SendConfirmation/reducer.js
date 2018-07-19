@@ -55,12 +55,7 @@ export const sendConfirmationLegacy = (state: SendConfirmationState = initialSta
 
     case ACTION.NEW_SPEND_INFO: {
       if (!action.data) return state
-      const {
-        spendInfo: {
-          nativeAmount,
-          metadata: { name: destination }
-        }
-      } = data
+      const { spendInfo: { nativeAmount, metadata: { name: destination } } } = data
 
       return {
         ...state,
@@ -81,10 +76,11 @@ export const sendConfirmationLegacy = (state: SendConfirmationState = initialSta
 
 export const error = (state: Error | null = null, action: Action) => {
   switch (action.type) {
-    case ACTION.MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED:
-    case ACTION.UPDATE_TRANSACTION: {
+    case ACTION.NEW_ERROR: {
       return action.data.error
     }
+    case ACTION.NEW_SPEND_INFO:
+    case ACTION.NEW_TRANSACTION:
     case ACTION.RESET: {
       return null
     }
@@ -95,7 +91,7 @@ export const error = (state: Error | null = null, action: Action) => {
 
 export const spendInfo = (state: EdgeSpendInfo | null = null, action: Action) => {
   switch (action.type) {
-    case ACTION.NEW_SPEND_INFO: {
+    case ACTION.NEW_SPEND_REQUEST: {
       return action.data.spendInfo
     }
     case ACTION.RESET: {
@@ -108,9 +104,8 @@ export const spendInfo = (state: EdgeSpendInfo | null = null, action: Action) =>
 
 export const isEditable = (state: boolean = true, action: Action) => {
   switch (action.type) {
-    case ACTION.UPDATE_PAYMENT_PROTOCOL_TRANSACTION:
-    case ACTION.MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED: {
-      return false
+    case ACTION.NEW_SPEND_REQUEST: {
+      return !action.data.options.locked
     }
     case ACTION.RESET: {
       true

@@ -77,8 +77,8 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
 
   Promise.resolve(spendInfo)
     .then(spendInfo => {
-      const spendRequirements = getSpendRequirements(state, spendInfo)
-      dispatch(newSpendRequest(spendInfo, { ...options, ...spendRequirements }))
+      const authRequired = getAuthRequired(state, spendInfo)
+      dispatch(newSpendRequest(spendInfo, { ...options, authRequired }))
       return options.sign ? transaction : makeSpend(edgeWallet, spendInfo)
     })
     .then(transaction => {
@@ -91,17 +91,23 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
       return authorize(state, spendInfo, pin).then(isAuthorized => {
         if (!isAuthorized) throw new Error('Incorrect Pin')
         return signTransaction(edgeWallet, transaction).then(() => transaction)
-      }
+      })
     })
-    .then(transaction => options.broadcast ? broadcastTransaction(edgeEallet, transaction) : transaction)
-    .then(transaction => options.save ? saveTransaction(edgeEallet, transaction) : transaction)
+    .then(transaction => {
+      if (!options.broadcast) return transaction
+      return broadcastTransaction(edgeWallet, transaction).then(() => transaction)
+    })
+    .then(transaction => {
+      if (!options.save) return transaction
+      return saveTransaction(edgeWallet, transaction).then(() => transaction)
+    })
     .then(transaction => {
       if (options.sign) dispatch(spendSucceeded(transaction))
     })
     .catch(error => {
       switch (error.name) {
         case 'IncorrectPinError':
-        case 'InsuffientFundsError':
+        case 'InsufficientFundsError':
         case 'DustSpendError': {
           dispatch(newError(error))
         }
@@ -185,30 +191,34 @@ export const reset = () => ({
 })
 
 const authorize = (state, spendInfo, pin): Promise<boolean> => {
-  const { isRequired, method } = getSpendRequirements(state, spendInfo)
-  if (!isRequired) {
-    return Promise.resolve(true)
-  } else {
-    const account = getAccount(state)
-    if (method === 'pin') return checkPin(account, pin)
+  const authRequired = getAuthRequired(state, spendInfo)
+  switch (authRequired) {
+    case 'pin': {
+      const account = getAccount(state)
+      return checkPin(account, pin)
+    }
+    case 'none': {
+      return Promise.resolve(true)
+    }
+    default:
+      return Promise.resolve(false)
   }
-  return Promise.resolve(false)
 }
 
-const authorize = (account, requirements, { pin, password }): Promise<boolean> => {
-  const { isRequired, method } = getSpendRequirements(state, spendInfo)
-  if (!isRequired) {
-    return Promise.resolve(true)
-  } else {
-    const account = getAccount(state)
-    if (method === 'pin') return checkPin(account, pin)
-  }
-  return Promise.resolve(false)
-}
+// const authorize = (account, requirements, { pin, password }): Promise<boolean> => {
+//   const { isRequired, method } = getSpendRequirements(state, spendInfo)
+//   if (!isRequired) {
+//     return Promise.resolve(true)
+//   } else {
+//     const account = getAccount(state)
+//     if (method === 'pin') return checkPin(account, pin)
+//   }
+//   return Promise.resolve(false)
+// }
 
-export type SpendRequirements = { isRequired: boolean, method: 'pin' }
-export const getSpendRequirements = (state: State, spendInfo: EdgeSpendInfo): SpendRequirements => {
-  const { nativeAmount, currencyCode } = spendInfo
+export type SpendRequirements = 'pin' | 'none'
+export const getAuthRequired = (state: State, spendInfo: EdgeSpendInfo): SpendRequirements => {
+  const { nativeAmount, currencyCode } = spendInfo.spendTargets[0]
   if (!nativeAmount || !currencyCode) throw new Error('Invalid EdgeSpendInfo')
 
   const account = getAccount(state)
@@ -219,7 +229,6 @@ export const getSpendRequirements = (state: State, spendInfo: EdgeSpendInfo): Sp
   const exchangeAmount = convertNativeToExchange(nativeToExchangeRatio)(nativeAmount)
   const fiatAmount = convertCurrency(account, currencyCode, isoFiatCurrencyCode, parseFloat(exchangeAmount))
   const isRequired = fiatAmount >= spendingLimits.transaction.amount
-  const method = 'pin'
 
-  return { isRequired, method }
+  return isRequired ? 'pin' : 'none'
 }

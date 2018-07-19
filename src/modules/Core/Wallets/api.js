@@ -157,7 +157,12 @@ export const parseURI = (wallet: EdgeCurrencyWallet, uri: string): EdgeParsedUri
 
 export const parseUriAsync = (wallet: EdgeCurrencyWallet, uri: string): Promise<EdgeParsedUri> => {
   try {
-    return Promise.resolve(wallet.parseUri(uri))
+    const parsedUri = wallet.parseUri(uri)
+    return Promise.resolve({
+      ...parsedUri,
+      currencyCode: wallet.currencyInfo.currencyCode,
+      nativeAmount: parsedUri.nativeAmount || '0'
+    })
   } catch (error) {
     return Promise.reject(error)
   }

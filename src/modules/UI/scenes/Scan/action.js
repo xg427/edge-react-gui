@@ -2,14 +2,14 @@
 
 import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import type { EdgeParsedUri } from 'edge-core-js'
+import type { EdgeParsedUri, EdgeSpendInfo } from 'edge-core-js'
 
 import * as Constants from '../../../../constants/indexConstants.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
 import * as WALLET_API from '../../../Core/Wallets/api.js'
 import { isEdgeLogin, denominationToDecimalPlaces, noOp } from '../../../utils.js'
 import { loginWithEdge } from '../../../../actions/EdgeLoginActions.js'
-import { updateParsedURI, paymentProtocolUriReceived } from '../SendConfirmation/action.js'
+import { spendRequested, paymentProtocolUriReceived } from '../SendConfirmation/action.js'
 import s from '../../../../locales/strings.js'
 
 import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
@@ -115,7 +115,8 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
       }
 
       // PUBLIC ADDRESS URI
-      dispatch(updateParsedURI(parsedUri))
+      const spendInfo = convertParsedUriToSpendInfo(parsedUri)
+      dispatch(spendRequested(spendInfo))
       return Actions.sendConfirmation('fromScan')
     },
     () => {
@@ -157,7 +158,8 @@ export const legacyAddressModalContinueButtonPressed = () => (dispatch: Dispatch
   const parsedUri = state.ui.scenes.scan.parsedUri
   if (!parsedUri) return
 
-  dispatch(updateParsedURI(parsedUri))
+  const spendInfo = convertParsedUriToSpendInfo(parsedUri)
+  dispatch(spendRequested(spendInfo))
   Actions.sendConfirmation('fromScan')
 }
 
@@ -181,3 +183,14 @@ export const isPrivateKeyUri = (parsedUri: EdgeParsedUri): boolean => {
 export const isPaymentProtocolUri = (parsedUri: EdgeParsedUri): boolean => {
   return !!parsedUri.paymentProtocolURL && !parsedUri.publicAddress
 }
+
+export const convertParsedUriToSpendInfo = (parsedUri: EdgeParsedUri): EdgeSpendInfo => ({
+  spendTargets: [
+    {
+      currencyCode: parsedUri.currencyCode,
+      nativeAmount: parsedUri.nativeAmount,
+      otherParams: { uniqueIdentifier: parsedUri.uniqueIdentifier }
+    }
+  ],
+  metadata: parsedUri.metadata
+})
