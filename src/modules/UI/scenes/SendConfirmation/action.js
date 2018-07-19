@@ -28,10 +28,7 @@ import type { SpendOptions } from './reducer.js'
 
 import s from '../../../../locales/strings.js'
 
-export type NetworkFees = {
-  customNetworkFee: Object,
-  networkFeeOption: 'low' | 'standard' | 'high' | 'custom'
-}
+export type NetworkFees = { networkFeeOption: 'low' | 'standard' | 'high' } | { networkFeeOption: 'custom', customNetworkFee: Object }
 
 export const maxSpendRequested = () => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
