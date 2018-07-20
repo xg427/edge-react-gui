@@ -97,7 +97,7 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
     .then(spendInfo => {
       const authRequired = getAuthRequired(state, spendInfo)
       dispatch(newSpendRequest(spendInfo, { ...options, authRequired }))
-      return options.sign ? transaction : makeSpend(edgeWallet, spendInfo)
+      return makeSpend(edgeWallet, spendInfo)
     })
     .then(transaction => {
       dispatch(newTransaction(transaction))
@@ -107,7 +107,7 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
       if (!options.sign) return transaction
 
       return authorize(state, spendInfo, pin).then(isAuthorized => {
-        if (!isAuthorized) throw new Error('IncorrectPinError')
+        if (!isAuthorized) throw new IncorrectPinError()
         return signTransaction(edgeWallet, transaction).then(() => transaction)
       })
     })
@@ -120,11 +120,12 @@ export const spendRequested = (spendInfo: EdgeSpendInfo, options?: SpendOptions 
       return saveTransaction(edgeWallet, transaction).then(() => transaction)
     })
     .then(transaction => {
-      if (options.sign) dispatch(spendSucceeded(transaction))
+      if (!options.sign) return
+      dispatch(spendSucceeded(transaction))
     })
     .catch(error => {
       switch (error.message) {
-        case 'IncorrectPinError':
+        case errorNames.IncorrectPinError:
         case 'InsufficientFundsError':
         case 'Insufficient funds':
         case 'Invalid payment ID.':
@@ -232,9 +233,8 @@ const authorize = (state, spendInfo, pin): Promise<boolean> => {
 
 export type SpendRequirements = 'pin' | 'none'
 export const getAuthRequired = (state: State, spendInfo: EdgeSpendInfo): SpendRequirements => {
-  const { currencyCode } = spendInfo
+  const currencyCode = spendInfo.currencyCode || spendInfo.spendTargets[0].currencyCode
   const { nativeAmount } = spendInfo.spendTargets[0]
-  if (!nativeAmount || !currencyCode) throw new Error('Invalid EdgeSpendInfo')
 
   const account = getAccount(state)
   const { spendingLimits } = state.ui.settings
@@ -246,4 +246,13 @@ export const getAuthRequired = (state: State, spendInfo: EdgeSpendInfo): SpendRe
   const isRequired = fiatAmount >= spendingLimits.transaction.amount
 
   return isRequired ? 'pin' : 'none'
+}
+
+const errorNames = {
+  IncorrectPinError: 'IncorrectPinError'
+}
+export function IncorrectPinError (message = 'Incorrect Pin') {
+  const error = new Error(message)
+  error.name = errorNames.IncorrectPinError
+  return error
 }

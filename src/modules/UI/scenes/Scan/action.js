@@ -198,7 +198,9 @@ export const convertParsedUriToSpendInfo = (parsedUri: EdgeParsedUri): EdgeSpend
       otherParams: { uniqueIdentifier: parsedUri.uniqueIdentifier }
     }
   ],
-  metadata: parsedUri.metadata
+  metadata: {
+    name: parsedUri.publicAddress
+  }
 })
 
 const BITPAY = {
@@ -214,8 +216,9 @@ const BITPAY = {
 
 export const convertPaymentProtocolInfoToSpendInfo = (paymentProtocolInfo: EdgePaymentProtocolInfo): Promise<EdgeSpendInfo> => {
   const { domain, memo, merchant, nativeAmount, spendTargets } = paymentProtocolInfo
+  const { publicAddress } = spendTargets[0]
 
-  const name = domain === BITPAY.domain ? BITPAY.merchantName(memo) : merchant || domain
+  const name = domain === BITPAY.domain ? BITPAY.merchantName(memo) : merchant || domain || publicAddress
   const notes = memo
 
   return Promise.resolve({

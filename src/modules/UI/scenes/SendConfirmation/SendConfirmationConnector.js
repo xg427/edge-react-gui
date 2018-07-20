@@ -36,10 +36,8 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
   let error = state.ui.scenes.sendConfirmation.error
 
   let errorMsg = null
-  let resetSlider = false
   if (error && error.message === 'broadcastError') {
     error = null
-    resetSlider = true
   }
   errorMsg = error ? error.message : ''
 
@@ -78,9 +76,9 @@ const mapStateToProps = (state: State): SendConfirmationStateProps => {
     primaryDisplayDenomination: getDisplayDenomination(state, currencyCode),
     primaryExchangeDenomination,
     publicAddress: state.ui.scenes.sendConfirmation.publicAddress,
-    resetSlider,
+    resetSlider: state.ui.scenes.sendConfirmation.resetSlider,
     secondaryExchangeCurrencyCode,
-    sliderDisabled: !transaction || !!error || !!pending,
+    sliderDisabled: state.ui.scenes.sendConfirmation.sliderDisabled,
     uniqueIdentifier,
     pinIsRequired,
     pin,

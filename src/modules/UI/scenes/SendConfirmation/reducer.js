@@ -114,6 +114,7 @@ export const pending = (state: boolean = false, action: Action) => {
     case ACTION.NEW_SPEND_REQUEST: {
       return action.data.options.sign
     }
+    case ACTION.NEW_ERROR:
     case ACTION.RESET: {
       return false
     }
@@ -194,6 +195,31 @@ export const destination = (state: string = '', action: Action) => {
   }
 }
 
+export const resetSlider = (state: boolea = false, action: Action) => {
+  switch (action.type) {
+    case ACTION.NEW_ERROR:
+    case ACTION.RESET: {
+      return true
+    }
+    default:
+      return state
+  }
+}
+
+export const sliderDisabled = (state: boolea = false, action: Action) => {
+  switch (action.type) {
+    case ACTION.NEW_TRANSACTION: {
+      return false
+    }
+    case ACTION.NEW_SPEND_REQUEST:
+    case ACTION.RESET: {
+      return true
+    }
+    default:
+      return state
+  }
+}
+
 export const sendConfirmation = combineReducers({
   authRequired,
   error,
@@ -202,7 +228,9 @@ export const sendConfirmation = combineReducers({
   pending,
   pin,
   spendInfo,
-  transaction
+  transaction,
+  destination,
+  resetSlider
 })
 
 export default sendConfirmation

@@ -192,28 +192,6 @@ export class SendConfirmation extends Component<Props, State> {
                 </View>
               )}
 
-              {pinIsRequired && (
-                <Scene.Row style={{ paddingHorizontal: 24 }}>
-                  <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
-                    <Text style={{ backgroundColor: 'transparent', color: 'white' }}>{s.strings.enter_4_digit_pin}</Text>
-                  </View>
-
-                  <View style={{ width: 20 }} />
-
-                  <View style={{ width: 60 }}>
-                    <PinInput
-                      fontSize={20}
-                      baseColor={'white'}
-                      textColor={'white'}
-                      tintColor={'white'}
-                      onChangePin={onChangePin}
-                      style={{ justifyContent: 'center' }}
-                      value={pin}
-                    />
-                  </View>
-                </Scene.Row>
-              )}
-
               {!!destination && (
                 <Recipient>
                   <Recipient.Text>
@@ -228,6 +206,18 @@ export class SendConfirmation extends Component<Props, State> {
                     <Text>{uniqueIdentifierText(this.props.currencyCode, this.props.uniqueIdentifier)}</Text>
                   </UniqueIdentifier.Text>
                 </UniqueIdentifier>
+              )}
+
+              {pinIsRequired && (
+                <Scene.Row style={{ width: '100%', paddingHorizontal: 24, justifyContent: 'flex-start' }}>
+                  <Text style={{ backgroundColor: 'transparent', color: 'white' }}>{s.strings.four_digit_pin}</Text>
+
+                  <View style={{ width: 20 }} />
+
+                  <View style={{ width: 60 }}>
+                    <PinInput fontSize={20} baseColor={'white'} textColor={'white'} tintColor={'white'} onChangePin={onChangePin} style={{}} value={pin} />
+                  </View>
+                </Scene.Row>
               )}
             </View>
 
