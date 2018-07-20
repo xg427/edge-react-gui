@@ -58,7 +58,15 @@ export const networkFeesChanged = (networkFees: NetworkFees) => (dispatch: Dispa
   dispatch(spendRequested(spendInfo))
 }
 
-export { networkFeesChanged as updateMiningFees }
+export const updateMiningFees = ({ customNetworkFee, networkFeeOption }: { customNetworkFee: string, networkFeeOption: Object }) => (
+  dispatch: Dispatch,
+  getState: GetState
+) => {
+  const state = getState()
+  const hack = state.ui.scenes.sendConfirmation.spendInfo.customNetworkFee
+  const result = networkFeeOption === 'custom' && !customNetworkFee ? hack : customNetworkFee
+  dispatch(networkFeesChanged({ networkFeeOption, customNetworkFee: result }))
+}
 
 export const uniqueIdentifierChanged = (uniqueIdentifier: string) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(newUniqueIdentifier(uniqueIdentifier))

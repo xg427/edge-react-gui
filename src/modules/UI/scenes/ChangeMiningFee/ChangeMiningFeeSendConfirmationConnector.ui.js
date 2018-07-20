@@ -16,7 +16,7 @@ export const mapStateToProps = (state: State): ChangeMiningFeeStateProps => ({
 })
 
 export const mapDispatchToProps = (dispatch: Dispatch): ChangeMiningFeeDispatchProps => ({
-  onSubmit: (networkFeeOption: 'low' | 'standard' | 'high') => dispatch(updateMiningFees({ networkFeeOption }))
+  onSubmit: (networkFeeOption: 'low' | 'standard' | 'high' | 'custom') => dispatch(updateMiningFees({ networkFeeOption }))
 })
 
 export default connect(
