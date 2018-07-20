@@ -37,7 +37,9 @@ export const maxSpendRequested = () => (dispatch: Dispatch, getState: GetState) 
   const spendInfo = state.ui.scenes.sendConfirmation.spendInfo
   if (!spendInfo) throw new Error('Invalid Max Spend Request')
 
-  getMaxSpendable(edgeWallet, spendInfo).then(nativeAmount => dispatch(newNativeAmount(nativeAmount)))
+  getMaxSpendable(edgeWallet, spendInfo).then(nativeAmount => {
+    return dispatch(nativeAmountChanged(nativeAmount))
+  })
 }
 
 export const paymentProtocolSpendRequested = (spendInfo: EdgeSpendInfo) => (dispatch: Dispatch, getState: GetState) => {
@@ -230,7 +232,8 @@ const authorize = (state, spendInfo, pin): Promise<boolean> => {
 
 export type SpendRequirements = 'pin' | 'none'
 export const getAuthRequired = (state: State, spendInfo: EdgeSpendInfo): SpendRequirements => {
-  const { nativeAmount, currencyCode } = spendInfo.spendTargets[0]
+  const { currencyCode } = spendInfo
+  const { nativeAmount } = spendInfo.spendTargets[0]
   if (!nativeAmount || !currencyCode) throw new Error('Invalid EdgeSpendInfo')
 
   const account = getAccount(state)

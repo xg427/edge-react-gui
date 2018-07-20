@@ -190,10 +190,10 @@ export const isPaymentProtocolUri = (parsedUri: EdgeParsedUri): boolean => {
 }
 
 export const convertParsedUriToSpendInfo = (parsedUri: EdgeParsedUri): EdgeSpendInfo => ({
+  currencyCode: parsedUri.currencyCode,
   spendTargets: [
     {
       publicAddress: parsedUri.publicAddress,
-      currencyCode: parsedUri.currencyCode,
       nativeAmount: parsedUri.nativeAmount,
       otherParams: { uniqueIdentifier: parsedUri.uniqueIdentifier }
     }
