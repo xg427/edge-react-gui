@@ -45,7 +45,14 @@ console.ignoredYellowBox = IGNORED_WARNINGS
 global.OS = Platform.OS
 global.slowlogOptions = { threshold: 16 }
 // Disable the font scaling
+if (!Text.defaultProps) {
+  Text.defaultProps = {}
+}
 Text.defaultProps.allowFontScaling = false
+
+if (!TextInput.defaultProps) {
+  TextInput.defaultProps = {}
+}
 TextInput.defaultProps.allowFontScaling = false
 
 if (!__DEV__) {
