@@ -79,6 +79,10 @@ export const styles = {
     minWidth: 132,
     height: 50
   },
+  donePlusSortable: {
+    alignItems: 'flex-end',
+    marginRight: 30
+  },
   plusContainer: {
     position: 'absolute',
     justifyContent: 'space-between',
@@ -248,6 +252,7 @@ export const styles = {
   },
   rowBalanceDenominationText: {
     fontSize: 14,
+    lineHeight: 18,
     color: THEME.COLORS.GRAY_1,
     textAlign: 'right'
   },

@@ -5,30 +5,49 @@ import { StyleSheet } from 'react-native'
 import { TextField } from 'react-native-material-textfield'
 
 import { THEME } from '../../../../theme/variables/airbitz.js'
-import s from '../../../../locales/strings.js'
 
 const rawStyles = {
-  pinInput: {}
+  pinInput: {
+    justifyContent: 'center'
+  },
+  debug: {
+    borderWidth: 1,
+    borderColor: 'red'
+  }
 }
 const styles = StyleSheet.create(rawStyles)
 
 const DEFAULTS = {
+  maxLength: 4,
   secureTextEntry: true,
-  tintColor: THEME.COLORS.GRAY_2,
-  baseColor: THEME.COLORS.GRAY_2,
-  label: s.strings.pin,
-  keyboardType: 'numeric'
+  tintColor: THEME.COLORS.WHITE,
+  baseColor: THEME.COLORS.WHITE,
+  textColor: THEME.COLORS.WHITE,
+  autoFocus: false,
+  label: '',
+  keyboardType: 'numeric',
+  inputContainerStyle: { paddingTop: 14, width: 45, alignItems: 'center', justifyContent: 'center' },
+  inputContainerPadding: -10
 }
 
 export type Props = {
   style?: StyleSheet.Styles,
   onChangePin: (pin: string) => mixed
 }
-export type State = {}
-export class PinInput extends Component<Props, State> {
+export class PinInput extends Component<Props> {
+  textField: any
+
   render () {
     const { onChangePin, style, ...props } = this.props
-    return <TextField style={[styles.pinInput, style]} maxLength={4} onChangeText={onChangePin} {...DEFAULTS} {...props} />
+    return <TextField ref={ref => (this.textField = ref)} onChangeText={onChangePin} style={[styles.pinInput, style]} {...DEFAULTS} {...props} />
+  }
+
+  blur = () => {
+    this.textField.blur()
+  }
+
+  focus = () => {
+    this.textField.focus()
   }
 }
 

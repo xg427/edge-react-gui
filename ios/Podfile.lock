@@ -37,23 +37,23 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.6.0)
-  - React (0.55.3):
-    - React/Core (= 0.55.3)
-  - React/Core (0.55.3):
-    - yoga (= 0.55.3.React)
-  - React/DevSupport (0.55.3):
+  - React (0.56.0):
+    - React/Core (= 0.56.0)
+  - React/Core (0.56.0):
+    - yoga (= 0.56.0.React)
+  - React/DevSupport (0.56.0):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.55.3)
-  - React/RCTBlob (0.55.3):
+  - React/fishhook (0.56.0)
+  - React/RCTBlob (0.56.0):
     - React/Core
-  - React/RCTNetwork (0.55.3):
+  - React/RCTNetwork (0.56.0):
     - React/Core
-  - React/RCTWebSocket (0.55.3):
+  - React/RCTWebSocket (0.56.0):
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - yoga (0.55.3.React)
+  - yoga (0.56.0.React)
 
 DEPENDENCIES:
   - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
@@ -92,8 +92,8 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 0fc0ad8bec688b2a3017a139953e01374fedbd5f
-  React: aa2040dbb6f317b95314968021bd2888816e03d5
-  yoga: a23273df0088bf7f2bb7e5d7b00044ea57a2a54a
+  React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
+  yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
 PODFILE CHECKSUM: 15017bb6d62e16ae9f28aae8946f5821df932fc1
 

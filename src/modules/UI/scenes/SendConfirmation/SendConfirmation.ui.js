@@ -51,8 +51,7 @@ export type SendConfirmationStateProps = {
   uniqueIdentifier?: string,
   destination: string,
   isEditable: boolean,
-  authRequired: 'pin' | 'none',
-  pin: string
+  authRequired: 'pin' | 'none'
 }
 
 export type SendConfirmationDispatchProps = {
@@ -79,6 +78,8 @@ type State = {|
 |}
 
 export class SendConfirmation extends Component<Props, State> {
+  pinInput: any
+
   constructor (props: Props) {
     super(props)
     slowlog(this, /.*/, global.slowlogOptions)
@@ -102,6 +103,12 @@ export class SendConfirmation extends Component<Props, State> {
     const secondaryDisplayDenomination = getDenomFromIsoCode(this.props.fiatCurrencyCode)
     const overridePrimaryExchangeAmount = bns.div(this.props.nativeAmount, this.props.primaryExchangeDenomination.multiplier, DIVIDE_PRECISION)
     this.setState({ secondaryDisplayDenomination, overridePrimaryExchangeAmount })
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (prevProps.destination === '' && this.props.destination !== '' && this.props.authRequired !== 'none' && this.props.nativeAmount !== '0') {
+      this.pinInput.focus()
+    }
   }
 
   componentWillReceiveProps (nextProps: Props) {
@@ -148,17 +155,17 @@ export class SendConfirmation extends Component<Props, State> {
     const cryptoBalanceAmountString = cryptoBalanceAmount ? intl.formatNumber(decimalOrZero(bns.toFixed(cryptoBalanceAmount, 0, 6), 6)) : '0' // limit decimals and check if infitesimal, also cut off trailing zeroes (to right of significant figures)
     const balanceInFiatString = intl.formatNumber(this.props.balanceInFiat || 0, { toFixed: 2 })
 
-    const { pin, authRequired, destination, onChangePin } = this.props
+    const { authRequired, destination } = this.props
     const SEND_TO_DESTINATION_TEXT = sprintf(s.strings.send_to_title, destination)
 
     return (
       <SafeAreaView>
-        <Gradient style={[styles.view]}>
-          <Gradient style={[styles.gradient]} />
+        <Gradient style={styles.view}>
+          <Gradient style={styles.gradient} />
 
-          <View style={[styles.mainScrollView]}>
+          <View style={styles.mainScrollView}>
             <View style={[styles.balanceContainer, styles.error]}>
-              <Text style={[styles.balanceText]}>
+              <Text style={styles.balanceText}>
                 Balance: {cryptoBalanceAmountString} {primaryInfo.displayDenomination.name} ({secondaryInfo.displayDenomination.symbol} {balanceInFiatString})
               </Text>
             </View>
@@ -171,7 +178,7 @@ export class SendConfirmation extends Component<Props, State> {
               )}
             </View>
 
-            <View style={[styles.main]}>
+            <View style={styles.main}>
               <ExchangedFlipInput
                 primaryCurrencyInfo={{ ...primaryInfo }}
                 secondaryCurrencyInfo={{ ...secondaryInfo }}
@@ -183,46 +190,48 @@ export class SendConfirmation extends Component<Props, State> {
                 isEditable={this.props.isEditable}
               />
 
-              {(!!this.props.networkFee || !!this.props.parentNetworkFee) && (
-                <View style={[styles.feeArea]}>
-                  <Text style={[styles.feeAreaText]}>{this.networkFeeSyntax()}</Text>
-                </View>
-              )}
+              <Scene.Padding style={{ paddingHorizontal: 54 }}>
+                <Scene.Item style={{ alignItems: 'center', flex: -1 }}>
+                  {(!!this.props.networkFee || !!this.props.parentNetworkFee) && (
+                    <Scene.Row style={{ paddingVertical: 4 }}>
+                      <Text style={[styles.feeAreaText]}>{this.networkFeeSyntax()}</Text>
+                    </Scene.Row>
+                  )}
 
-              {!!destination && (
-                <Recipient style={{paddingHorizontal: 20}}>
-                  <Recipient.Text>
-                    <Text>{SEND_TO_DESTINATION_TEXT}</Text>
-                  </Recipient.Text>
-                </Recipient>
-              )}
+                  {!!destination && (
+                    <Scene.Row style={{ paddingVertical: 4 }}>
+                      <Recipient.Text style={{}}>
+                        <Text>{SEND_TO_DESTINATION_TEXT}</Text>
+                      </Recipient.Text>
+                    </Scene.Row>
+                  )}
 
-              {!!this.props.uniqueIdentifier && (
-                <UniqueIdentifier>
-                  <UniqueIdentifier.Text>
-                    <Text>{uniqueIdentifierText(this.props.currencyCode, this.props.uniqueIdentifier)}</Text>
-                  </UniqueIdentifier.Text>
-                </UniqueIdentifier>
-              )}
+                  {!!this.props.uniqueIdentifier && (
+                    <Scene.Row>
+                      <UniqueIdentifier.Text>
+                        <Text>{uniqueIdentifierText(this.props.currencyCode, this.props.uniqueIdentifier)}</Text>
+                      </UniqueIdentifier.Text>
+                    </Scene.Row>
+                  )}
 
-              {authRequired === 'pin' && (
-                <Scene.Row style={styles.row}>
-                  <Text style={styles.rowText}>{s.strings.four_digit_pin}</Text>
+                  {authRequired === 'pin' && (
+                    <Scene.Row style={{ width: '100%', justifyContent: 'flex-start', alignItems: 'center' }}>
+                      <Text style={styles.rowText}>{s.strings.four_digit_pin}</Text>
 
-                  <View style={styles.pinInputSpacer} />
+                      <View style={styles.pinInputSpacer} />
 
-                  <View style={styles.pinInputContainer}>
-                    <PinInput fontSize={20} baseColor={'white'} textColor={'white'} tintColor={'white'} onChangePin={onChangePin} style={{}} value={pin} />
-                  </View>
-                </Scene.Row>
-              )}
+                      <View style={styles.pinInputContainer}>
+                        <PinInput ref={ref => (this.pinInput = ref)} onChangePin={this.handleChangePin} returnKeyType="done" />
+                      </View>
+                    </Scene.Row>
+                  )}
+                </Scene.Item>
+              </Scene.Padding>
             </View>
 
-            <View style={[styles.pendingSymbolArea]}>
-              {this.props.pending && <ActivityIndicator style={[{ flex: 1, alignSelf: 'center' }]} size={'small'} />}
-            </View>
+            <Scene.Row>{this.props.pending && <ActivityIndicator style={[{ flex: 1, alignSelf: 'center' }]} size={'small'} />}</Scene.Row>
 
-            <View style={[styles.sliderWrap]}>
+            <Scene.Footer style={styles.footer}>
               <ABSlider
                 forceUpdateGuiCounter={this.state.forceUpdateGuiCounter}
                 resetSlider={this.props.resetSlider}
@@ -230,7 +239,7 @@ export class SendConfirmation extends Component<Props, State> {
                 onSlidingComplete={this.props.signBroadcastAndSave}
                 sliderDisabled={this.props.sliderDisabled}
               />
-            </View>
+            </Scene.Footer>
           </View>
         </Gradient>
 
@@ -239,6 +248,13 @@ export class SendConfirmation extends Component<Props, State> {
         )}
       </SafeAreaView>
     )
+  }
+
+  handleChangePin = (pin: string) => {
+    this.props.onChangePin(pin)
+    if (pin.length >= 4) {
+      this.pinInput.blur()
+    }
   }
 
   onExchangeAmountChanged = ({ nativeAmount, exchangeAmount }: ExchangedFlipInputAmounts) => {
