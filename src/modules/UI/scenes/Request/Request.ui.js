@@ -5,7 +5,6 @@ import { bns } from 'biggystring'
 import type { EdgeCurrencyWallet, EdgeEncodeUri } from 'edge-core-js'
 import React, { Component } from 'react'
 import { ActivityIndicator, Alert, Clipboard, Share, View } from 'react-native'
-import ContactsWrapper from 'react-native-contacts-wrapper'
 import { sprintf } from 'sprintf-js'
 
 import * as Constants from '../../../../constants/indexConstants'
@@ -63,7 +62,6 @@ export type State = {
   publicAddress: string,
   legacyAddress: string,
   encodedURI: string,
-  result: string,
   isXRPMinimumModalVisible: boolean,
   hasXRPMinimumModalAlreadyShown: boolean
 }
@@ -75,7 +73,6 @@ export class Request extends Component<Props, State> {
       publicAddress: '',
       legacyAddress: '',
       encodedURI: '',
-      result: '',
       isXRPMinimumModalVisible: false,
       hasXRPMinimumModalAlreadyShown: false
     }
@@ -162,17 +159,11 @@ export class Request extends Component<Props, State> {
     return (
       <SafeAreaView>
         <Gradient style={styles.view}>
-          <XRPMinimumModal
-            visibilityBoolean={this.state.isXRPMinimumModalVisible}
-            onExit={this.onCloseXRPMinimumModal}
-          />
+          <XRPMinimumModal visibilityBoolean={this.state.isXRPMinimumModalVisible} onExit={this.onCloseXRPMinimumModal} />
           <Gradient style={styles.gradient} />
 
           <View style={styles.exchangeRateContainer}>
-            <ExchangeRate
-              primaryInfo={primaryCurrencyInfo}
-              secondaryInfo={secondaryCurrencyInfo}
-              secondaryDisplayAmount={exchangeSecondaryToPrimaryRatio} />
+            <ExchangeRate primaryInfo={primaryCurrencyInfo} secondaryInfo={secondaryCurrencyInfo} secondaryDisplayAmount={exchangeSecondaryToPrimaryRatio} />
           </View>
 
           <View style={styles.main}>
@@ -194,9 +185,9 @@ export class Request extends Component<Props, State> {
           <View style={styles.shareButtonsContainer}>
             <ShareButtons
               styles={styles.shareButtons}
-              shareViaEmail={this.shareViaEmail}
-              shareViaSMS={this.shareViaSMS}
-              shareViaShare={this.shareViaShare}
+              shareViaEmail={() => null}
+              shareViaSMS={() => null}
+              shareViaShare={this.handleShareViaShare}
               copyToClipboard={this.copyToClipboard}
             />
           </View>
@@ -225,9 +216,7 @@ export class Request extends Component<Props, State> {
       }, PUBLIC_ADDRESS_REFRESH_MS)
     }
 
-    this.setState({
-      encodedURI
-    })
+    this.setState({ encodedURI })
   }
 
   copyToClipboard = () => {
@@ -236,64 +225,12 @@ export class Request extends Component<Props, State> {
     Alert.alert(s.strings.fragment_request_address_copied)
   }
 
-  showResult = (result: { activityType: string }) => {
-    if (result.action === Share.sharedAction) {
-      if (this.props.receiveAddress) {
-        this.props.saveReceiveAddress(this.props.receiveAddress)
-      }
+  shareViaShareContent = () => ({
+    message: this.state.encodedURI,
+    title: sprintf(s.strings.request_qr_email_title, s.strings.app_name)
+  })
 
-      if (result.activityType) {
-        this.setState({
-          result: 'shared with an activityType: ' + result.activityType
-        })
-      } else {
-        this.setState({ result: 'shared' })
-      }
-    } else if (result.action === Share.dismissedAction) {
-      this.setState({ result: 'dismissed' })
-    }
-  }
-
-  shareMessage = () => {
-    Share.share(
-      {
-        message: this.state.encodedURI,
-        title: sprintf(s.strings.request_qr_email_title, s.strings.app_name)
-      },
-      { dialogTitle: s.strings.request_share_edge_request }
-    )
-      .then(this.showResult)
-      .catch(error =>
-        this.setState({
-          result: 'error: ' + error.message
-        })
-      )
-  }
-
-  shareViaEmail = () => {
-    ContactsWrapper.getContact()
-      .then(() => {
-        this.shareMessage()
-        // console.log('shareViaEmail')
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
-
-  shareViaSMS = () => {
-    ContactsWrapper.getContact()
-      .then(() => {
-        this.shareMessage()
-        // console.log('shareViaSMS')
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
-
-  shareViaShare = () => {
-    this.shareMessage()
-    // console.log('shareViaShare')
+  handleShareViaShare = () => {
+    Share.share(this.shareViaShareContent())
   }
 }
