@@ -2867,19 +2867,19 @@ edge-exchange-plugins@^0.2.0:
   dependencies:
     iso4217 "^0.2.0"
 
-edge-login-ui-rn@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/edge-login-ui-rn/-/edge-login-ui-rn-0.4.0.tgz#7eda74b956ac1f1de29cc25924ded307bf3d0373"
+edge-login-ui-rn@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/edge-login-ui-rn/-/edge-login-ui-rn-0.4.1.tgz#ce351dedd2b719f0cd474072d8254cf983c6f18a"
   dependencies:
     material-ui "^0.20.0"
     moment "^2.19.3"
-    native-base "^2.3.9"
+    native-base "^2.7.2"
     react-native-device-info "^0.11.0"
     react-native-keyboard-aware-scroll-view "^0.4.1"
     react-native-linear-gradient "^2.0.0"
     react-native-mail "^3.0.5"
     react-native-material-textfield "git://github.com/Airbitz/react-native-material-textfield.git"
-    react-native-modal "^4.1.0"
+    react-native-modal "^6.5.0"
     react-native-qrcode "^0.2.6"
     react-native-vector-icons "^4.4.2"
     react-redux "^5.0.7"
@@ -6076,7 +6076,7 @@ native-base-shoutem-theme@0.2.2:
     lodash "^4.10.1"
     prop-types "^15.5.10"
 
-native-base@^2.3.9:
+native-base@^2.7.2:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.7.2.tgz#682bc2bc9f9e4d3b27a8c58ad4b5994222ad0ebd"
   dependencies:
@@ -7009,12 +7009,6 @@ react-native-animatable@^1.1.0, react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-animatable@^1.2.3:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.0.tgz#b5c3940fc758cfd9b2fe54613a457c4b6962b46e"
-  dependencies:
-    prop-types "^15.5.10"
-
 react-native-background-fetch@^2.2.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-2.4.1.tgz#5bb3c6ecc5d646f05b9ca5a8feec724152582d1d"
@@ -7192,13 +7186,6 @@ react-native-mail@^3.0.5:
   resolved "git://github.com/Airbitz/react-native-material-textfield.git#c30320fd26e5619c1fe57b3043b8fd9ae2a0c57a"
   dependencies:
     prop-types "^15.5.9"
-
-react-native-modal@^4.1.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-4.1.1.tgz#4c1055dc045106542a8e3bb3fd656a6d3bc319d9"
-  dependencies:
-    prop-types "15.5.10"
-    react-native-animatable "^1.2.3"
 
 react-native-modal@^6.5.0:
   version "6.5.0"
