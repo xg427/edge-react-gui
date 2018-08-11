@@ -88,7 +88,8 @@ const CryptoExchangeSceneStyle = {
       },
       top: {
         flex: 4,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom: 20
       },
       topRight: {
         flex: 8
@@ -104,7 +105,8 @@ const CryptoExchangeSceneStyle = {
       },
       bottom: {
         flex: 4,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom: 20
       },
       bottomRight: {
         flex: 8
