@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal should render 1`] = `
+<ReactNativeModal
+  animationIn="slideInUp"
+  animationInTiming={300}
+  animationOut="slideOutDown"
+  animationOutTiming={300}
+  avoidKeyboard={false}
+  backdropColor="black"
+  backdropOpacity={0.7}
+  backdropTransitionInTiming={300}
+  backdropTransitionOutTiming={300}
+  hideModalContentWhileAnimating={false}
+  isVisible={true}
+  onBackButtonPress={[Function]}
+  onBackdropPress={[Function]}
+  onModalHide={[Function]}
+  onModalShow={[Function]}
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "transparent",
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 166.75,
+      },
+      Object {},
+    ]
+  }
+  swipeThreshold={100}
+  useNativeDriver={false}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderColor": "#0E4B75",
+          "borderRadius": 27,
+          "borderWidth": 2,
+          "height": 54,
+          "justifyContent": "space-around",
+          "position": "relative",
+          "top": 27,
+          "width": 54,
+          "zIndex": 2,
+        },
+        Object {},
+      ]
+    }
+  />
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 3,
+          "paddingBottom": 14,
+          "width": 562.5,
+          "zIndex": 1,
+        },
+        Object {},
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "flex-end",
+            "justifyContent": "center",
+            "position": "relative",
+            "zIndex": 200,
+          },
+        ]
+      }
+    >
+      <TouchableOpacity
+        activeOpacity={0.2}
+        onPress={[MockFunction]}
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "transparent",
+              "height": 30,
+              "justifyContent": "center",
+              "width": 30,
+            },
+            Object {
+              "borderColor": "#5f9ea0",
+              "borderWidth": 0,
+            },
+          ]
+        }
+      >
+        <Icon
+          allowFontScaling={false}
+          color="#4A5157"
+          name="ios-close"
+          size={30}
+          style={
+            Object {
+              "borderColor": "#eee8aa",
+              "borderWidth": 0,
+            }
+          }
+        />
+      </TouchableOpacity>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "justifyContent": "flex-start",
+            "paddingHorizontal": 15,
+          },
+          Object {},
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            undefined,
+            Object {},
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "justifyContent": "space-between",
+                "position": "relative",
+              },
+              Object {},
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "padding": 10,
+                  "paddingBottom": 4,
+                },
+              ]
+            }
+          >
+            <FormattedText
+              style={
+                Array [
+                  Object {
+                    "color": "#0D2145",
+                    "fontSize": 16,
+                    "textAlign": "center",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              header text
+            </FormattedText>
+            <FormattedText
+              style={
+                Array [
+                  Object {
+                    "color": "#4A5157",
+                    "fontSize": 14,
+                    "paddingTop": 4,
+                    "textAlign": "center",
+                  },
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</ReactNativeModal>
+`;

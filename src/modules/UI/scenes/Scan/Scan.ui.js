@@ -58,7 +58,7 @@ export default class Scan extends Component<Props> {
 
     return (
       <SafeAreaView>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} testID={'edge: scan-scene'}>
           <Gradient style={styles.gradient} />
           <View style={styles.topSpacer} />
 
@@ -75,7 +75,12 @@ export default class Scan extends Component<Props> {
               <View style={[styles.overlayBlank]} />
 
               <Gradient style={[styles.overlayButtonAreaWrap]}>
-                <TouchableHighlight style={styles.bottomButton} onPress={this._onToggleAddressModal} underlayColor={styleRaw.underlay.color}>
+                <TouchableHighlight
+                  testID={'edge: address-modal-button'}
+                  style={styles.bottomButton}
+                  onPress={this._onToggleAddressModal}
+                  underlayColor={styleRaw.underlay.color}
+                >
                   <View style={styles.bottomButtonTextWrap}>
                     <FAIcon style={[styles.addressBookIcon]} name="address-book-o" size={18} />
                     <T style={[styles.addressButtonText, styles.bottomButtonText]}>{ADDRESS_TEXT}</T>
@@ -130,7 +135,7 @@ export default class Scan extends Component<Props> {
     })
   }
 
-  onBarCodeRead = (result: { data: string}) => {
+  onBarCodeRead = (result: { data: string }) => {
     return this.props.qrCodeScanned(result.data)
   }
 

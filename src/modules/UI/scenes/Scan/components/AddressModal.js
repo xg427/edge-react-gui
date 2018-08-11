@@ -95,6 +95,7 @@ export default class AddressModal extends Component<Props, State> {
 
     return (
       <StylizedModal
+        testID={'edge: address-modal'}
         featuredIcon={icon}
         headerText={s.strings.fragment_send_address_dialog_title}
         modalMiddle={middle}

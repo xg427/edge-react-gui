@@ -27,6 +27,7 @@ export class AddressInput extends Component<Props> {
       <View>
         <View style={[styles.addressInputWrap]}>
           <FormField
+            testID={'edge: address-modal-text-input'}
             style={[styles.addressInput]}
             value={this.props.uri}
             onChangeText={this.props.onChangeText}
@@ -40,7 +41,13 @@ export class AddressInput extends Component<Props> {
         </View>
         {this.props.copyMessage && (
           <View style={styles.pasteButtonRow}>
-            <TertiaryButton text={this.props.copyMessage} ellipsizeMode={'middle'} onPressFunction={this.props.onPaste} numberOfLines={1} style={styles.addressInputButton} />
+            <TertiaryButton
+              text={this.props.copyMessage}
+              ellipsizeMode={'middle'}
+              onPressFunction={this.props.onPaste}
+              numberOfLines={1}
+              style={styles.addressInputButton}
+            />
           </View>
         )}
       </View>
