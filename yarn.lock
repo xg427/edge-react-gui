@@ -1976,9 +1976,9 @@ buffer@^5.2.0:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
 
-bugsnag-react-native@^2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/bugsnag-react-native/-/bugsnag-react-native-2.10.0.tgz#40a274ac13f36d888b724aa0dfc8dc974faf5e2a"
+bugsnag-react-native@^2.10.2:
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/bugsnag-react-native/-/bugsnag-react-native-2.10.2.tgz#be5bac92ec5ba593116703cec4669667436a8407"
   dependencies:
     iserror "^0.0.2"
     promise "^7"
@@ -7037,9 +7037,9 @@ react-native-contacts-wrapper@^0.2.3:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/react-native-contacts-wrapper/-/react-native-contacts-wrapper-0.2.4.tgz#7513eac1e2093239348e44b71ac29d62f81f1da0"
 
-react-native-contacts@^0.9.0:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-0.9.1.tgz#c0b4ba5d7998550e23aee149c5ed7a3161dccf85"
+react-native-contacts@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-2.2.2.tgz#8bfec0a82bce3c24847ed69419ebc0ba8d7defee"
 
 react-native-crypto@^2.0.1:
   version "2.1.2"
@@ -7058,6 +7058,10 @@ react-native-crypto@^2.0.1:
 react-native-device-info@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.11.0.tgz#e96dd0e3f8a7d7e3022c1f441f51fa912fdc7444"
+
+react-native-device-info@^0.22.3:
+  version "0.22.3"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.3.tgz#25e81f275eda85f181bc3eaf9dadca140e6decf6"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
@@ -7117,16 +7121,16 @@ react-native-firebase@^4.3.5:
   version "1.0.5"
   resolved "git://github.com/Airbitz/react-native-flip-view.git#9796c6469385559da6689a4f56f540fc6f3d003a"
 
-react-native-fs@^2.5.1:
-  version "2.9.11"
-  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.9.11.tgz#0fd134ecc8ae53fe8023267f51463eb77287c93a"
+react-native-fs@^2.11.15:
+  version "2.11.15"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.11.15.tgz#b80ac78edf124137624697b4864f834c1caf4f43"
   dependencies:
     base-64 "^0.1.0"
     utf8 "^2.1.1"
 
-react-native-fs@^2.9.12:
-  version "2.9.12"
-  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.9.12.tgz#88d6c1e8eb26acbebca955e1cbd9c47d2c9452ba"
+react-native-fs@^2.5.1:
+  version "2.9.11"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.9.11.tgz#0fd134ecc8ae53fe8023267f51463eb77287c93a"
   dependencies:
     base-64 "^0.1.0"
     utf8 "^2.1.1"
@@ -7218,9 +7222,9 @@ react-native-qrcode@^0.2.3, react-native-qrcode@^0.2.6:
     prop-types "^15.5.10"
     qr.js "0.0.0"
 
-"react-native-randombytes@git://github.com/Airbitz/react-native-randombytes.git":
-  version "3.0.0"
-  resolved "git://github.com/Airbitz/react-native-randombytes.git#40d02a5f9227c4d12a7758fe7053287451dabd64"
+react-native-randombytes@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-randombytes/-/react-native-randombytes-3.5.0.tgz#a641130a52eca65ef2165409f65d930184c6dc83"
   dependencies:
     buffer "^4.9.1"
     sjcl "^1.0.3"
@@ -7243,9 +7247,9 @@ react-native-safe-area-view@^0.7.0:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-share@^1.0.27:
-  version "1.0.27"
-  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-1.0.27.tgz#1861afe0d1256bde95d19520ca5d5c3cd348ffad"
+react-native-share@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-1.1.1.tgz#8c50c67c3fa519607f3352c03f56076c0481edeb"
 
 react-native-slider@^0.11.0:
   version "0.11.0"
