@@ -3,6 +3,11 @@ package co.edgesecure.app;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.shell.MainReactPackage;
+import com.facebook.soloader.SoLoader;
+
 import com.bugsnag.BugsnagReactNative;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
@@ -31,11 +36,6 @@ import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import io.fixd.rctlocale.RCTLocalePackage;
 import com.oblongmana.webviewfileuploadandroid.AndroidWebViewPackage;
-
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
-import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
@@ -82,9 +82,12 @@ public class MainApplication extends Application implements ReactApplication {
             new AndroidWebViewPackage()
       );
     }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
   };
-
-
 
   @Override
   public ReactNativeHost getReactNativeHost() {
