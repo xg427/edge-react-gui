@@ -2173,6 +2173,7 @@
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
 					"$(SRCROOT)/../node_modules/react-native-background-fetch/ios/RNBackgroundFetch",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa",
 				);
 				INFOPLIST_FILE = edge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
