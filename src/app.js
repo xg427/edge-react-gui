@@ -7,7 +7,7 @@ import './util/polyfills'
 import { Client } from 'bugsnag-react-native'
 import React, { Component } from 'react'
 import { AppState, AsyncStorage, Platform, Text, TextInput } from 'react-native'
-import BackgroundTask from 'react-native-background-task'
+import BackgroundFetch from 'react-native-background-fetch'
 import firebase from 'react-native-firebase'
 import RNFS from 'react-native-fs'
 import PushNotification from 'react-native-push-notification'
@@ -127,7 +127,7 @@ global.pcount = function (label: string) {
   }
 }
 
-BackgroundTask.define(async () => {
+BackgroundFetch.registerHeadlessTask(async (event) => {
   console.log('appStateLog: running background task')
   const lastNotif = await AsyncStorage.getItem(Constants.LOCAL_STORAGE_BACKGROUND_PUSH_KEY)
   const now = new Date()
@@ -135,7 +135,7 @@ BackgroundTask.define(async () => {
     const lastNotifDate = new Date(lastNotif).getTime() / 1000
     const delta = now.getTime() / 1000 - lastNotifDate
     if (delta < Constants.PUSH_DELAY_SECONDS) {
-      BackgroundTask.finish()
+      BackgroundFetch.finish()
       return
     }
   }
@@ -170,8 +170,9 @@ BackgroundTask.define(async () => {
     }
   })
   await AsyncStorage.setItem(Constants.LOCAL_STORAGE_BACKGROUND_PUSH_KEY, now.toString())
-  BackgroundTask.finish()
+  BackgroundFetch.finish()
 })
+
 function _handleAppStateChange () {
   console.log('appStateLog: ', AppState.currentState)
 }
