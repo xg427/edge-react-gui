@@ -9,18 +9,18 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import com.bugsnag.BugsnagReactNative;
+import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
+import org.reactnative.camera.RNCameraPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.chirag.RNMail.RNMail;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
-import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.beefe.picker.PickerViewPackage;
 import co.airbitz.AbcCoreJsUi.AbcCoreJsUiPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import cl.json.RNSharePackage;
-import com.cmcewen.blurview.BlurViewPackage;
 import co.airbitz.fastcrypto.RNFastCryptoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.tradle.react.UdpSocketsModule;
@@ -33,7 +33,6 @@ import com.rnfs.RNFSPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.lynxit.contactswrapper.ContactsWrapperPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
-import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import io.fixd.rctlocale.RCTLocalePackage;
 import com.oblongmana.webviewfileuploadandroid.AndroidWebViewPackage;
 
@@ -52,6 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNBackgroundFetchPackage(),
             BugsnagReactNative.getPackage(),
             new RNFirebasePackage(),
             new RNFirebaseAnalyticsPackage(),
@@ -59,13 +59,11 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactNativePushNotificationPackage(),
             new RNMail(),
             new RCTSplashScreenPackage(),
-            new BackgroundTaskPackage(),
             new PickerViewPackage(),
             new AbcCoreJsUiPackage(),
             new RNSoundPackage(),
             new RNSharePackage(),
             new RandomBytesPackage(),
-            new BlurViewPackage(),
             new RNFastCryptoPackage(),
             new VectorIconsPackage(),
             new UdpSocketsModule(),
@@ -77,7 +75,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNDeviceInfo(),
             new ContactsWrapperPackage(),
             new ReactNativeContacts(),
-            new RCTCameraPackage(),
+            new RNCameraPackage(),
             new RCTLocalePackage(),
             new AndroidWebViewPackage()
       );
@@ -99,6 +97,5 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     BugsnagReactNative.start(this);
     SoLoader.init(this, /* native exopackage */ false);
-    BackgroundTaskPackage.useContext(this);
   }
 }

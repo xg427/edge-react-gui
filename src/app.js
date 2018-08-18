@@ -127,7 +127,11 @@ global.pcount = function (label: string) {
   }
 }
 
-BackgroundFetch.registerHeadlessTask(async (event) => {
+BackgroundFetch.configure({
+  minimumFetchInterval: 15,
+  stopOnTerminate: false,
+  startOnBoot: true
+}, async () => {
   console.log('appStateLog: running background task')
   const lastNotif = await AsyncStorage.getItem(Constants.LOCAL_STORAGE_BACKGROUND_PUSH_KEY)
   const now = new Date()
@@ -170,7 +174,14 @@ BackgroundFetch.registerHeadlessTask(async (event) => {
     }
   })
   await AsyncStorage.setItem(Constants.LOCAL_STORAGE_BACKGROUND_PUSH_KEY, now.toString())
-  BackgroundFetch.finish()
+
+  // Required: Signal completion of your task to native code
+  // If you fail to do this, the OS can terminate your app
+  // or assign battery-blame for consuming too much background-time
+  BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA)
+}, (error) => {
+  console.log('RNBackgroundFetch failed to start')
+  console.log(error)
 })
 
 function _handleAppStateChange () {
@@ -179,7 +190,6 @@ function _handleAppStateChange () {
 function _handleSingleAppStateChange () {
   if (AppState.currentState === 'background') {
     AppState.removeEventListener('change', _handleSingleAppStateChange)
-    BackgroundTask.schedule()
   }
 }
 export default class App extends Component<{}> {
@@ -187,7 +197,6 @@ export default class App extends Component<{}> {
     console.log('appStateLog: Component Mounted', AppState.currentState)
     AppState.addEventListener('change', _handleAppStateChange)
     if (Platform.OS === Constants.IOS) {
-      BackgroundTask.schedule()
     } else {
       AppState.addEventListener('change', _handleSingleAppStateChange)
     }
