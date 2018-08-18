@@ -306,6 +306,7 @@
   "restore_wallets_modal_cancel": "Cancel",
   "unique_identifier": "Unique Identifier",
   "unique_identifier_dropdown_option": "Add %s",
+  "unique_identifier_add": "Add %s",
   "unique_identifier_destination_tag": "Destination Tag",
   "unique_identifier_payment_id": "Payment ID",
   "unique_identifier_dropdown_option_destination_tag": "Add Destination Tag",
