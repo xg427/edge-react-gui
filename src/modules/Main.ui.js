@@ -319,6 +319,7 @@ export default class Main extends Component<Props, State> {
                   {/* Wrapper Scene needed to fix a bug where the tabs would reload as a modal ontop of itself */}
                   <Scene hideNavBar>
                     <Tabs
+                      animationEnabled={false}
                       key={Constants.EDGE}
                       swipeEnabled={false}
                       navTransparent={true}

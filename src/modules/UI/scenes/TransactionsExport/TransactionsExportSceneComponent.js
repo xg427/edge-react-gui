@@ -12,7 +12,7 @@ import { TransactionExportSceneStyle } from '../../../../styles/indexStyles'
 import { PrimaryButton } from '../../components/Buttons/index'
 import Gradient from '../../components/Gradient/Gradient.ui'
 import SafeAreaView from '../../components/SafeAreaView/index.js'
-
+import { InteractiveModal } from '../../components/Modals'
 export type PassedProps = {
   sourceWallet: EdgeCurrencyWallet
 }
@@ -30,17 +30,19 @@ export class TransactionsExportSceneComponent extends Component<Props> {
         <View style={styles.container}>
           <Gradient style={styles.gradient} />
           <View style={styles.shim} />
-          <View style={styles.actionButtonContainer}>
+          <InteractiveModal.Item style={{ flex: -1, alignSelf: 'stretch' }}>
             <PrimaryButton onPress={this.exportQBO}>
               <PrimaryButton.Text>{s.strings.string_export_qbo}</PrimaryButton.Text>
             </PrimaryButton>
-          </View>
+          </InteractiveModal.Item>
+
           <View style={styles.shim} />
-          <View style={styles.actionButtonContainer}>
+
+          <InteractiveModal.Item style={{ flex: -1, alignSelf: 'stretch' }}>
             <PrimaryButton onPress={this.exportCSV}>
               <PrimaryButton.Text>{s.strings.string_export_csv}</PrimaryButton.Text>
             </PrimaryButton>
-          </View>
+          </InteractiveModal.Item>
         </View>
       </SafeAreaView>
     )
@@ -132,5 +134,9 @@ export class TransactionsExportSceneComponent extends Component<Props> {
         }
       }
     )
+  }
+
+  componentWillUnmount () {
+    console.log('TransactionExportSceneComponent componentWillUnmount qweqwe')
   }
 }
