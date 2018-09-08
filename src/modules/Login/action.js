@@ -12,7 +12,6 @@ import * as actions from '../../actions/indexActions'
 import * as Constants from '../../constants/indexConstants'
 import s from '../../locales/strings.js'
 import * as ACCOUNT_API from '../Core/Account/api'
-import { loggedIn } from '../Core/Account/reducer.js'
 import * as SETTINGS_API from '../Core/Account/settings.js'
 // Login/action.js
 import * as CORE_SELECTORS from '../Core/selectors'
@@ -24,7 +23,10 @@ import { getReceiveAddresses } from '../utils.js'
 const localeInfo = Locale.constants() // should likely be moved to login system and inserted into Redux
 
 export const initializeAccount = (account: EdgeAccount, touchIdInfo: Object) => async (dispatch: Dispatch, getState: GetState) => {
-  dispatch(loggedIn(account))
+  dispatch({
+    type: 'ACCOUNT/LOGGED_IN',
+    data: { account }
+  })
 
   const walletInfos = account.allKeys
   const filteredWalletInfos = walletInfos.map(({ keys, id, ...info }) => info)

@@ -5,19 +5,18 @@ import type { EdgeAccount } from 'edge-core-js'
 import * as Constants from '../../../constants/indexConstants.js'
 import type { Action } from '../../ReduxTypes.js'
 
-export const PREFIX = 'ACCOUNT/'
+export type LoggedInAction = {
+  type: 'ACCOUNT/LOGGED_IN',
+  data: { account: EdgeAccount }
+}
 
-export const LOGGED_IN = PREFIX + 'LOGGED_IN'
-export const loggedIn = (account: EdgeAccount) => ({
-  type: LOGGED_IN,
-  data: { account }
-})
+export type AccountAction = LoggedInAction
 
 export type AccountReducerState = EdgeAccount | {} | void
 export const initialState: AccountReducerState = {}
 const accountReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGGED_IN:
+    case 'ACCOUNT/LOGGED_IN':
       if (!action.data) throw new Error('Invalid Action')
       return action.data.account
     default:
