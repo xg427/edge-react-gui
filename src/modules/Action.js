@@ -15,6 +15,7 @@
 // import { type TransactionAlertAction } from './UI/components/TransactionAlert/actions.js'
 // import { type WalletListModalAction } from './UI/components/WalletListModal/action.js'
 // import { type DimensionsAction } from './UI/dimensions/action.js'
+// import { type RequestAction } from './UI/Request/action.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -35,3 +36,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | TransactionAlertAction // uncomment to get flow checking
 //   | WalletListModalAction // uncomment to get flow checking
 //   | DimensionsAction // uncomment to get flow checking
+//   | RequestAction // uncomment to get flow checking

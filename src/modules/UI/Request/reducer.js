@@ -49,7 +49,7 @@ export const request = (state: RequestState = initialState, action: Action): Req
         ...state,
         receiveAddress
       }
-    case 'UPDATE_AMOUNT_REQUESTED_IN_CRYPTO':
+    case 'REQUEST/UPDATE_AMOUNT_REQUESTED_IN_CRYPTO':
       amountSatoshi = action.data.amountSatoshi
       return {
         ...state,
@@ -58,7 +58,7 @@ export const request = (state: RequestState = initialState, action: Action): Req
           amountSatoshi
         }
       }
-    case 'UPDATE_AMOUNT_REQUESTED_IN_FIAT':
+    case 'REQUEST/UPDATE_AMOUNT_REQUESTED_IN_FIAT':
       amountFiat = action.data.amountFiat
       return {
         ...state,
