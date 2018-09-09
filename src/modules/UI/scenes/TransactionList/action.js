@@ -9,7 +9,6 @@ import * as WALLET_API from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState, State } from '../../../ReduxTypes'
 import * as UI_SELECTORS from '../../../UI/selectors.js'
 import * as UTILS from '../../../utils'
-import { displayTransactionAlert } from '../../components/TransactionAlert/actions'
 
 // import type { TransactionListTx } from './TransactionList.ui.js'
 const PREFIX = 'UI/Scenes/TransactionList/'
@@ -171,7 +170,7 @@ export const newTransactionsRequest = (walletId: string, edgeTransactions: Array
   }
   dispatch(fetchTransactions(walletId, selectedCurrencyCode, options))
   if (!UTILS.isReceivedTransaction(edgeTransaction)) return
-  dispatch(displayTransactionAlert(edgeTransaction))
+  dispatch({ type: 'TRANSACTION_ALERT/DISPLAY_TRANSACTION_ALERT', data: { edgeTransaction } })
 }
 
 export const updateTransactions = (transactionUpdate: {

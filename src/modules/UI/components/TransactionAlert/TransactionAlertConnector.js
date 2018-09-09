@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import type { Dispatch, State } from '../../../ReduxTypes'
 import * as UTILS from '../../../utils'
 import * as SETTINGS_SELECTORS from '../../Settings/selectors'
-import { dismissTransactionAlert } from './actions.js'
 import TransactionAlert from './TransactionAlert.ui'
 
 const mapStateToProps = (state: State) => {
@@ -30,7 +29,7 @@ const mapStateToProps = (state: State) => {
   }
 }
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  dismissAlert: () => dispatch(dismissTransactionAlert())
+  dismissAlert: () => dispatch({ type: 'TRANSACTION_ALERT/DISMISS_TRANSACTION_ALERT' })
 })
 
 export default connect(

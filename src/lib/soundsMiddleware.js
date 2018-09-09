@@ -4,7 +4,6 @@ import Sound from 'react-native-sound'
 
 import { OPEN_AB_ALERT } from '../../src/constants/ActionConstants'
 import type { Action } from '../modules/ReduxTypes.js'
-import { DISPLAY_TRANSACTION_ALERT } from '../modules/UI/components/TransactionAlert/actions'
 
 const AUDIO_RECEUVED_FILE = 'audio_received.mp3'
 const AUDIO_SEND_FILE = 'audio_sent.mp3'
@@ -28,7 +27,7 @@ const playCb = audioName => success => {
 }
 
 export default () => (next: Function) => (action: Action) => {
-  if (action.type === DISPLAY_TRANSACTION_ALERT) {
+  if (action.type === 'TRANSACTION_ALERT/DISPLAY_TRANSACTION_ALERT') {
     audioReceived.play(playCb(AUDIO_RECEUVED_FILE))
   }
   if (action.type === OPEN_AB_ALERT && action.data && action.data.success) {
