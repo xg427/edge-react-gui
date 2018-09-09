@@ -3,12 +3,11 @@
 import type { EdgeContextCallbacks } from 'edge-core-js'
 
 import type { Dispatch } from '../../ReduxTypes'
-import { displayErrorAlert } from '../../UI/components/ErrorAlert/actions'
 
 export default (dispatch: Dispatch): EdgeContextCallbacks => ({
   onError: (error: Error) => {
     console.log(error)
-    dispatch(displayErrorAlert(error.message))
+    dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
   },
 
   onExchangeUpdate () {

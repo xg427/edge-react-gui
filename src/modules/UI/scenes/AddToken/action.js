@@ -8,7 +8,6 @@ import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import * as WALLET_API from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState, State } from '../../../ReduxTypes'
 import * as UTILS from '../../../utils.js'
-import { displayErrorAlert } from '../../components/ErrorAlert/actions'
 import * as UI_WALLET_SELECTORS from '../../selectors.js'
 import * as WALLET_ACTIONS from '../../Wallets/action.js'
 
@@ -33,7 +32,7 @@ export const addNewToken = (walletId: string, currencyName: string, currencyCode
       .catch(error => {
         dispatch(addNewTokenFailure(error.message))
         console.log(error)
-        dispatch(displayErrorAlert(error.message))
+        dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
       })
   }
 }

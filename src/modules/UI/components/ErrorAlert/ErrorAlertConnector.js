@@ -3,7 +3,6 @@
 import { connect } from 'react-redux'
 
 import type { Dispatch, State } from '../../../ReduxTypes'
-import { dismissErrorAlert } from './actions.js'
 import ErrorAlert from './ErrorAlert.ui'
 
 const mapStateToProps = (state: State) => ({
@@ -12,7 +11,10 @@ const mapStateToProps = (state: State) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  dismissAlert: () => dispatch(dismissErrorAlert())
+  dismissAlert: () =>
+    dispatch({
+      type: 'ERROR_ALERT/DISMISS_ERROR_ALERT'
+    })
 })
 
 export default connect(

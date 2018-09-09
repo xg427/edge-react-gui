@@ -11,7 +11,6 @@ import * as SETTINGS_API from '../../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../../Core/selectors.js'
 import * as WALLET_API from '../../Core/Wallets/api.js'
 import type { Dispatch, GetState } from '../../ReduxTypes'
-import { displayErrorAlert } from '../../UI/components/ErrorAlert/actions'
 import * as UTILS from '../../utils'
 import { addTokenAsync } from '../scenes/AddToken/action'
 import * as UI_SELECTORS from '../selectors.js'
@@ -220,7 +219,7 @@ export const getEnabledTokens = (walletId: string) => async (dispatch: Dispatch,
     }
   } catch (error) {
     console.log(error)
-    dispatch(displayErrorAlert(error.message))
+    dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
   }
 }
 
@@ -273,7 +272,7 @@ export const editCustomToken = (
           })
           .catch(error => {
             console.log(error)
-            dispatch(displayErrorAlert(error.message))
+            dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
             dispatch(editCustomTokenFailure())
           })
       } else {
@@ -288,7 +287,7 @@ export const editCustomToken = (
           })
           .catch(error => {
             console.log(error)
-            dispatch(displayErrorAlert(error.message))
+            dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
             dispatch(editCustomTokenFailure())
           })
       }
@@ -314,7 +313,7 @@ export const editCustomToken = (
         })
         .catch(error => {
           console.log(error)
-          dispatch(displayErrorAlert(error.message))
+          dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
           dispatch(editCustomTokenFailure())
         })
     }
@@ -407,7 +406,7 @@ export const deleteCustomToken = (walletId: string, currencyCode: string) => (di
     })
     .catch(error => {
       console.log(error)
-      dispatch(displayErrorAlert(error.message))
+      dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
       dispatch(deleteCustomTokenFailure())
     })
 }

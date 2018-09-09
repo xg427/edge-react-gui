@@ -11,7 +11,6 @@ import s from '../../../../locales/strings.js'
 import { convertCurrency, restoreWalletsRequest } from '../../../Core/Account/api.js'
 import * as ACCOUNT_SETTINGS from '../../../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../../../Core/selectors'
-import { displayErrorAlert } from '../../components/ErrorAlert/actions.js'
 import * as SETTINGS_ACTIONS from '../../Settings/action.js'
 import { newSpendingLimits } from '../../Settings/spendingLimits/SpendingLimitsReducer.js'
 
@@ -226,7 +225,7 @@ export function togglePinLoginEnabled (pinLoginEnabled: boolean) {
       // TODO: Make a proper error action so we can avoid the double dispatch:
       dispatch(SETTINGS_ACTIONS.togglePinLoginEnabled(pinLoginEnabled))
       console.log(error)
-      dispatch(displayErrorAlert(error.message))
+      dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
     })
   }
 }

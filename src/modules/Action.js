@@ -8,7 +8,7 @@
 // import { type SendLogsAction } from './Logs/action.js'
 // import { type ABAlertAction } from './UI/components/ABAlert/action.js'
 // import { type ControlPanelAction } from './UI/components/ControlPanel/action.js'
-// import { type DropdownAlertAction } from './UI/components/DropdownAlert/actions.js'
+// import { type ErrorAlertAction } from './UI/components/ErrorAlert/actions.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -22,3 +22,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | ABAlertAction // uncomment to get flow checking
 //   | ControlPanelAction // uncomment to get flow checking
 //   | DropdownAlertAction // uncomment to get flow checking
+//   | ErrorAlertAction // uncomment to get flow checking

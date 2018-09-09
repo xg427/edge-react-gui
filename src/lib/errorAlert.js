@@ -1,7 +1,6 @@
 // @flow
 
 import type { Action, Store } from '../modules/ReduxTypes.js'
-import { displayErrorAlert } from '../modules/UI/components/ErrorAlert/actions.js'
 
 export default (store: Store) => (next: Function) => (action: Action) => {
   let out
@@ -9,13 +8,13 @@ export default (store: Store) => (next: Function) => (action: Action) => {
     out = next(action)
   } catch (error) {
     console.log(error)
-    store.dispatch(displayErrorAlert(error.message))
+    store.dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
   }
 
   if (out && out.then && typeof out.then === 'function') {
     out.catch(error => {
       console.log(error)
-      store.dispatch(displayErrorAlert(error.message))
+      store.dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
     })
   }
 
