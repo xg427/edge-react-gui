@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import * as actions from '../actions/indexActions'
 import { requestPermission } from '../reducers/permissions/actions.js'
-import { addContext, addUsernames } from './Core/Context/action.js'
 import makeContextCallbacks from './Core/Context/callbacks'
 import Main from './Main.ui'
 import type { Dispatch } from './ReduxTypes'
@@ -32,10 +31,16 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     return dispatch(setKeyboardHeight(keyboardHeight))
   },
   addContext: (context, folder) => {
-    return dispatch(addContext(context, folder))
+    return dispatch({
+      type: 'CONTEXT/ADD_CONTEXT',
+      data: { context, folder }
+    })
   },
   addUsernames: usernames => {
-    return dispatch(addUsernames(usernames))
+    return dispatch({
+      type: 'CONTEXT/ADD_USERNAME',
+      data: { usernames }
+    })
   },
   updateCurrentSceneKey: sceneKey => {
     return dispatch(updateCurrentSceneKey(sceneKey))

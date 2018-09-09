@@ -2,34 +2,34 @@
 
 import type { DiskletFolder, EdgeContext } from 'edge-core-js'
 
-const PREFIX = 'Core/Context/'
+type AddContextAction = {
+  type: 'CONTEXT/ADD_CONTEXT',
+  data: { context: EdgeContext, folder: DiskletFolder }
+}
 
-export const ADD_CONTEXT = PREFIX + 'ADD_CONTEXT'
-export const addContext = (context: EdgeContext, folder: DiskletFolder) => ({
-  type: ADD_CONTEXT,
-  data: { context, folder }
-})
+type AddUsernamesAction = {
+  type: 'CONTEXT/ADD_USERNAMES',
+  data: { usernames: Array<string> }
+}
 
-export const ADD_USERNAMES = PREFIX + 'ADD_USERNAMES'
-export const addUsernames = (usernames: Array<string>) => ({
-  type: ADD_USERNAMES,
-  data: { usernames }
-})
+type DeleteLocalAccountRequestAction = {
+  type: 'CONTEXT/DELETE_LOCAL_ACCOUNT_REQUEST',
+  data: { username: string }
+}
 
-export const DELETE_LOCAL_ACCOUNT_REQUEST = PREFIX + 'DELETE_LOCAL_ACCOUNT_REQUEST'
-export const deleteLocalAccountRequest = (username: string) => ({
-  type: DELETE_LOCAL_ACCOUNT_REQUEST,
-  data: { username }
-})
+type DeleteLocalAccountSuccessAction = {
+  type: 'CONTEXT/DELETE_LOCAL_ACCOUNT_SUCCESS',
+  data: { usernames: Array<string> }
+}
 
-export const DELETE_LOCAL_ACCOUNT_SUCCESS = PREFIX + 'DELETE_LOCAL_ACCOUNT_SUCCESS'
-export const deleteLocalAccountSuccess = (allUsernames: Array<string>) => ({
-  type: DELETE_LOCAL_ACCOUNT_SUCCESS,
-  data: { usernames: allUsernames }
-})
+type DeleteLocalAccountErrorAction = {
+  type: 'CONTEXT/DELETE_LOCAL_ACCOUNT_ERROR',
+  data: { username: string }
+}
 
-export const DELETE_LOCAL_ACCOUNT_ERROR = PREFIX + 'DELETE_LOCAL_ACCOUNT_ERROR'
-export const deleteLocalAccountError = (username: string) => ({
-  type: DELETE_LOCAL_ACCOUNT_ERROR,
-  data: { username }
-})
+export type ContextAction =
+  | AddContextAction
+  | AddUsernamesAction
+  | DeleteLocalAccountRequestAction
+  | DeleteLocalAccountErrorAction
+  | DeleteLocalAccountSuccessAction

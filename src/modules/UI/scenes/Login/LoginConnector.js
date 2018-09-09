@@ -2,7 +2,6 @@
 
 import { connect } from 'react-redux'
 
-import { addUsernames } from '../../../Core/Context/action'
 import * as CORE_SELECTORS from '../../../Core/selectors'
 import { initializeAccount } from '../../../Login/action'
 import type { Dispatch, State } from '../../../ReduxTypes'
@@ -16,7 +15,7 @@ const mapStateToProps = (state: State) => ({
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
-  addUsernames: usernames => dispatch(addUsernames(usernames)),
+  addUsernames: usernames => dispatch({ type: 'CONTEXT/ADD_USERNAMES', data: { usernames } }),
   initializeAccount: (account, touchIdInfo) => dispatch(initializeAccount(account, touchIdInfo))
 })
 

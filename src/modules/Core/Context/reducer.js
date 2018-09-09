@@ -2,9 +2,7 @@
 
 import type { DiskletFolder, EdgeContext } from 'edge-core-js'
 
-import * as Constants from '../../../constants/indexConstants.js'
 import type { Action } from '../../ReduxTypes'
-import * as ACTION from './action.js'
 
 const initialState = {
   context: {},
@@ -17,12 +15,11 @@ export type State = {
   nextUsername: string
 }
 export const context = (state: State = initialState, action: Action) => {
-  const { type, data = {} } = action
-
-  switch (type) {
-    case ACTION.ADD_CONTEXT: {
-      const context: EdgeContext = data.context
-      const folder: DiskletFolder = data.folder
+  switch (action.type) {
+    case 'CONTEXT/ADD_CONTEXT': {
+      if (!action.data) throw new Error('Invalid Action')
+      const context: EdgeContext = action.data.context
+      const folder: DiskletFolder = action.data.folder
       return {
         ...state,
         context,
@@ -30,30 +27,27 @@ export const context = (state: State = initialState, action: Action) => {
       }
     }
 
-    case ACTION.ADD_USERNAMES: {
-      const { usernames } = data
+    case 'CONTEXT/ADD_USERNAMES': {
+      if (!action.data) throw new Error('Invalid Action')
       return {
         ...state,
-        usernames
+        usernames: action.data.usernames
       }
     }
 
-    case ACTION.DELETE_LOCAL_ACCOUNT_SUCCESS: {
-      const { usernames } = data
+    case 'CONTEXT/DELETE_LOCAL_ACCOUNT_SUCCESS': {
+      if (!action.data) throw new Error('Invalid Action')
       return {
         ...state,
-        usernames
+        usernames: action.data.usernames
       }
     }
-    case Constants.DEEP_LINK_RECEIVED:
-    case Constants.LOGOUT: {
-      if (!data) {
-        return state
-      }
-      const { username } = data
+    case 'DEEP_LINK_RECEIVED':
+    case 'LOGOUT': {
+      if (!action.data) throw new Error('Invalid Action')
       return {
         ...state,
-        nextUsername: username || ''
+        nextUsername: action.data.username || ''
       }
     }
 
