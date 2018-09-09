@@ -7,7 +7,7 @@ import { CHANGE_PASSWORD } from '../../../../constants/indexConstants.js'
 import { postponePasswordReminder } from '../../../../reducers/passwordReminder/indexPasswordReminder.js'
 import type { PasswordReminder } from '../../../../types.js'
 import type { Dispatch, State } from '../../../ReduxTypes.js'
-import { checkPassword, requestChangePassword, setPasswordReminder } from './indexPasswordReminderModal.js'
+import { checkPassword, setPasswordReminder } from './indexPasswordReminderModal.js'
 import { PasswordReminderModal } from './PasswordReminderModal.ui.js'
 
 export const mapStateToProps = (state: State) => ({
@@ -20,7 +20,7 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSubmit: (password: string) => dispatch(checkPassword(password)),
   onRequestChangePassword: () => {
     Actions[CHANGE_PASSWORD]()
-    dispatch(requestChangePassword())
+    dispatch({ type: 'PASSWORD_REMINDER_MODAL/REQUEST_CHANGE_PASSWORD' })
   },
   onPostpone: () => dispatch(postponePasswordReminder()),
   setPasswordReminder: (passwordReminder: PasswordReminder) => dispatch(setPasswordReminder(passwordReminder))

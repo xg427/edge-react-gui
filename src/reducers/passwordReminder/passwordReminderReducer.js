@@ -2,11 +2,9 @@
 
 import { ACCOUNT_INIT_COMPLETE } from '../../constants/indexConstants.js'
 import type { Action } from '../../modules/ReduxTypes.js'
-import { CHECK_PASSWORD_SUCCESS, REQUEST_CHANGE_PASSWORD } from '../../modules/UI/components/PasswordReminderModal/indexPasswordReminderModal.js'
 import { UNLOCK as UNLOCK_WALLET_SEED } from '../../modules/UI/scenes/WalletList/components/GetSeedModal/GetSeedModalConnector.js'
 import { SET_SETTINGS_LOCK } from '../../modules/UI/Settings/action.js'
 import { MILLISECONDS_PER_DAY, daysBetween } from '../../modules/utils.js'
-import { PASSWORD_REMINDER_POSTPONED } from './indexPasswordReminder.js'
 
 export const INITIAL_NON_PASSWORD_DAYS_LIMIT = 2
 export const INITIAL_NON_PASSWORD_LOGINS_LIMIT = 2
@@ -248,7 +246,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
       }
     }
   }
-  if (action.type === CHECK_PASSWORD_SUCCESS) {
+  if (action.type === 'PASSWORD_REMINDER_MODAL/CHECK_PASSWORD_SUCCESS') {
     translatedAction = {
       type: 'PASSWORD_USED',
       data: {
@@ -257,14 +255,14 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
     }
   }
 
-  if (action.type === PASSWORD_REMINDER_POSTPONED) {
+  if (action.type === 'PASSWORD_REMINDER_MODAL/PASSWORD_REMINDER_POSTPONED') {
     translatedAction = {
       type: 'PASSWORD_REMINDER_POSTPONED',
       data: {}
     }
   }
 
-  if (action.type === REQUEST_CHANGE_PASSWORD) {
+  if (action.type === 'PASSWORD_REMINDER_MODAL/REQUEST_CHANGE_PASSWORD') {
     translatedAction = {
       type: 'REQUEST_CHANGE_PASSWORD',
       data: {}
