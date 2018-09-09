@@ -2,14 +2,13 @@
 
 import * as Constants from '../../constants/indexConstants'
 import type { Action } from '../ReduxTypes'
-import * as ACTION from './action.js'
 
 const initialState = 0
 
 type ExchangeRateState = ?number
 const exchangeRatesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ACTION.UPDATE_EXCHANGE_RATES:
+    case 'EXCHANGE_RATES/UPDATE_EXCHANGE_RATES':
       return state + 1
     default:
       return state

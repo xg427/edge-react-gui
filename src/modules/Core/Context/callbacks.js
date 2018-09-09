@@ -2,7 +2,6 @@
 
 import type { EdgeContextCallbacks } from 'edge-core-js'
 
-import { updateExchangeRates } from '../../ExchangeRates/action'
 import type { Dispatch } from '../../ReduxTypes'
 import { displayErrorAlert } from '../../UI/components/ErrorAlert/actions'
 
@@ -13,6 +12,6 @@ export default (dispatch: Dispatch): EdgeContextCallbacks => ({
   },
 
   onExchangeUpdate () {
-    dispatch(updateExchangeRates())
+    dispatch({ type: 'EXCHANGE_RATES/UPDATE_EXCHANGE_RATES' })
   }
 })
