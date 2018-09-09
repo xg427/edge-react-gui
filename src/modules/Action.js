@@ -7,6 +7,7 @@
 // import { type LogoutAction } from './Login/action.js'
 // import { type SendLogsAction } from './Logs/action.js'
 // import { type ABAlertAction } from './UI/components/ABAlert/action.js'
+// import { type ControlPanelAction } from './UI/components/ControlPanel/action.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -18,3 +19,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | LogoutAction // uncomment to get flow checking
 //   | SendLogsAction // uncomment to get flow checking
 //   | ABAlertAction // uncomment to get flow checking
+//   | ControlPanelAction // uncomment to get flow checking

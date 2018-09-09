@@ -6,7 +6,6 @@ import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import type { Dispatch, State } from '../../../ReduxTypes.js'
 import * as UI_SELECTORS from '../../../UI/selectors.js'
 import * as SETTINGS_SELECTORS from '../../Settings/selectors.js'
-import { closeSelectUser, openSelectUser } from './action'
 import ControlPanel from './ControlPanel.ui'
 
 const mapStateToProps = (state: State) => {
@@ -48,8 +47,8 @@ const mapStateToProps = (state: State) => {
   }
 }
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  openSelectUser: () => dispatch(openSelectUser()),
-  closeSelectUser: () => dispatch(closeSelectUser())
+  openSelectUser: () => dispatch({ type: 'CONTROL_PANEL/OPEN_SELECT_USER' }),
+  closeSelectUser: () => dispatch({ type: 'CONTROL_PANEL/CLOSE_SELECT_USER' })
 })
 export default connect(
   mapStateToProps,
