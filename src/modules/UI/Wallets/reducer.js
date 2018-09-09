@@ -6,7 +6,6 @@ import { combineReducers } from 'redux'
 
 import * as Constants from '../../../constants/indexConstants.js'
 import type { GuiWallet } from '../../../types.js'
-import { UPDATE_WALLETS } from '../../Core/Wallets/action.js'
 import type { Action } from '../../ReduxTypes.js'
 import * as ADD_TOKEN_ACTION from '../scenes/AddToken/action.js'
 import * as ACTION from './action'
@@ -37,7 +36,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
 
       return out
     }
-    case UPDATE_WALLETS: {
+    case 'WALLETS/UPDATE_WALLETS': {
       const wallets = action.data.currencyWallets
       const out = {}
       for (const walletId of Object.keys(wallets)) {
@@ -182,7 +181,7 @@ export const walletEnabledTokens = (state: any = {}, action: Action) => {
   if (action.type === Constants.ACCOUNT_INIT_COMPLETE && action.data) {
     return action.data.activeWalletIds
   }
-  if (action.type === UPDATE_WALLETS && action.data) {
+  if (action.type === 'WALLETS/UPDATE_WALLETS' && action.data) {
     return action.data.activeWalletIds
   }
 
@@ -217,7 +216,7 @@ export const activeWalletIds = (state: WalletIds = [], action: Action) => {
   if (action.type === Constants.ACCOUNT_INIT_COMPLETE) {
     return action.data.activeWalletIds
   }
-  if (action.type === UPDATE_WALLETS) {
+  if (action.type === 'WALLETS/UPDATE_WALLETS') {
     return action.data.activeWalletIds
   }
 
@@ -229,7 +228,7 @@ export const archivedWalletIds = (state: WalletIds = [], action: Action) => {
   if (action.type === Constants.ACCOUNT_INIT_COMPLETE) {
     return action.data.archivedWalletIds
   }
-  if (action.type === UPDATE_WALLETS) {
+  if (action.type === 'WALLETS/UPDATE_WALLETS') {
     return action.data.archivedWalletIds
   }
 

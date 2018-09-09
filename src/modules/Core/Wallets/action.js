@@ -8,23 +8,17 @@ import * as SETTINGS_SELECTORS from '../../UI/Settings/selectors'
 import { getReceiveAddresses } from '../../utils.js'
 import * as CORE_SELECTORS from '../selectors'
 
-export const PREFIX = 'Core/Wallets/'
-export const UPDATE_WALLETS = PREFIX + 'UPDATE_WALLETS'
-
-export const updateWallets = (
-  activeWalletIds: Array<string>,
-  archivedWalletIds: Array<string>,
-  currencyWallets: { [id: string]: EdgeCurrencyWallet },
-  receiveAddresses: { [id: string]: EdgeReceiveAddress }
-) => ({
-  type: UPDATE_WALLETS,
+type UpdateWalletsAction = {
+  type: 'WALLETS/UPDATE_WALLETS',
   data: {
-    activeWalletIds,
-    archivedWalletIds,
-    currencyWallets,
-    receiveAddresses
+    activeWalletIds: Array<string>,
+    archivedWalletIds: Array<string>,
+    currencyWallets: { [id: string]: EdgeCurrencyWallet },
+    receiveAddresses: { [id: string]: EdgeReceiveAddress }
   }
-})
+}
+
+export type WalletsAction = UpdateWalletsAction
 
 export const updateWalletsRequest = () => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -57,6 +51,14 @@ export const updateWalletsRequest = () => (dispatch: Dispatch, getState: GetStat
       }
     }
 
-    return dispatch(updateWallets(activeWalletIds, archivedWalletIds, currencyWallets, receiveAddresses))
+    return dispatch({
+      type: 'WALLETS/UPDATE_WALLETS',
+      data: {
+        activeWalletIds,
+        archivedWalletIds,
+        currencyWallets,
+        receiveAddresses
+      }
+    })
   })
 }

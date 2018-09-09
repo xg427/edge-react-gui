@@ -5,7 +5,6 @@ import { combineReducers } from 'redux'
 
 import * as Constants from '../../../constants/indexConstants'
 import type { Action } from '../../ReduxTypes'
-import * as ACTION from './action.js'
 
 type WalletState = { [id: string]: EdgeCurrencyWallet } | void
 
@@ -14,7 +13,7 @@ export const initialState = {}
 const byId = (state = initialState, action) => {
   switch (action.type) {
     case Constants.ACCOUNT_INIT_COMPLETE:
-    case ACTION.UPDATE_WALLETS:
+    case 'WALLETS/UPDATE_WALLETS':
       const { currencyWallets } = action.data
       return {
         ...state,
