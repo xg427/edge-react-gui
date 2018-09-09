@@ -8,9 +8,23 @@ import { setPasswordRecoveryRemindersAsync } from '../../../Core/Account/setting
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
 import { getTotalFiatAmount } from '../../../utils.js'
 
-export const SHOW_PASSWORD_RECOVERY_MODAL = 'SHOW_PASSWORD_RECOVERY_MODAL'
-export const HIDE_PASSWORD_RECOVERY_MODAL = 'HIDE_PASSWORD_RECOVERY_MODAL'
-export const UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL = 'UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL'
+type UpdatePasswordRecoveryReminderModalAction = {
+  type: 'PASSWORD_RECOVERY_REMINDER_MODAL/UPDATE_PASSWORD_RECOVERY_REMINDER_MODAL',
+  data: { level: string, wasShown: boolean }
+}
+
+type ShowPasswordRecoveryReminderModalAction = {
+  type: 'PASSWORD_RECOVERY_REMINDER_MODAL/SHOW_PASSWORD_RECOVERY_REMINDER_MODAL'
+}
+
+type HidePasswordRecoveryReminderModalAction = {
+  type: 'PASSWORD_RECOVERY_REMINDER_MODAL/HIDE_PASSWORD_RECOVERY_REMINDER_MODAL'
+}
+
+export type PasswordRecoveryReminderModalAction =
+  | UpdatePasswordRecoveryReminderModalAction
+  | ShowPasswordRecoveryReminderModalAction
+  | HidePasswordRecoveryReminderModalAction
 
 export const checkPasswordRecovery = () => async (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -24,36 +38,14 @@ export const checkPasswordRecovery = () => async (dispatch: Dispatch, getState: 
     if (bns.lt(totalDollars, level)) return // if balance is not big enough to trigger then exit routine
     if (passwordRecoveryRemindersShown[level] === true) continue // if it's already been shown then go to higher level
     // now show the modal
-    dispatch(showPasswordRecoveryReminderModal())
+    dispatch({ type: 'PASSWORD_REMINDER_MODAL/SHOW_PASSWORD_REMINDER_MODAL' })
     await setPasswordRecoveryRemindersAsync(account, level, true)
-    dispatch(updateShowPasswordRecoveryReminderModal(level, true))
+    dispatch({ type: 'PASSWORD_REMINDER_MODAL/UPDATE_PASSWORD_REMINDER_MODAL', data: { level, wasShown: true } })
     return
   }
 }
 
-export const updateShowPasswordRecoveryReminderModal = (level: string, wasShown: boolean) => {
-  return {
-    type: UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL,
-    data: {
-      level,
-      wasShown
-    }
-  }
-}
-
-export const showPasswordRecoveryReminderModal = () => {
-  return {
-    type: SHOW_PASSWORD_RECOVERY_MODAL
-  }
-}
-
-export const hidePasswordRecoveryReminderModal = () => {
-  return {
-    type: HIDE_PASSWORD_RECOVERY_MODAL
-  }
-}
-
 export const onGoToPasswordRecoveryScene = () => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(hidePasswordRecoveryReminderModal())
+  dispatch({ type: 'PASSWORD_REMINDER_MODAL/HIDE_PASSWORD_REMINDER_MODAL' })
   Actions[PASSWORD_RECOVERY_SCENE]()
 }
