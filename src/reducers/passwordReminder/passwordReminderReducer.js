@@ -3,7 +3,6 @@
 import { ACCOUNT_INIT_COMPLETE } from '../../constants/indexConstants.js'
 import type { Action } from '../../modules/ReduxTypes.js'
 import { UNLOCK as UNLOCK_WALLET_SEED } from '../../modules/UI/scenes/WalletList/components/GetSeedModal/GetSeedModalConnector.js'
-import { SET_SETTINGS_LOCK } from '../../modules/UI/Settings/action.js'
 import { MILLISECONDS_PER_DAY, daysBetween } from '../../modules/utils.js'
 
 export const INITIAL_NON_PASSWORD_DAYS_LIMIT = 2
@@ -230,7 +229,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
     }
   }
 
-  if (action.type === SET_SETTINGS_LOCK && action.data === false) {
+  if (action.type === 'SETTINGS/SET_SETTINGS_LOCK' && action.data === false) {
     translatedAction = {
       type: 'PASSWORD_USED',
       data: {

@@ -9,7 +9,6 @@ import Main from './Main.ui'
 import type { Dispatch } from './ReduxTypes'
 import { updateCurrentSceneKey } from './UI/scenes/action.js'
 import { disableScan, enableScan } from './UI/scenes/Scan/action'
-import { addCurrencyPlugin } from './UI/Settings/action'
 import { selectWallet } from './UI/Wallets/action.js'
 
 const mapStateToProps = () => ({})
@@ -24,7 +23,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     return dispatch(disableScan())
   },
   addCurrencyPlugin: plugin => {
-    return dispatch(addCurrencyPlugin(plugin))
+    return dispatch({
+      type: 'SETTINGS/ADD_CURRENCY_PLUGIN',
+      data: { plugin }
+    })
   },
   setKeyboardHeight: keyboardHeight => {
     return dispatch({ type: 'DIMENSIONS/SET_KEYBOARD_HEIGHT', data: keyboardHeight })

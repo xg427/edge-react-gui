@@ -4,7 +4,6 @@ import * as ACCOUNT_API from '../../../Core/Account/api.js'
 import * as ACCOUNT_SETTINGS from '../../../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes'
-import { setAccountBalanceVisibility, updateWalletFiatBalanceVisibility } from '../../Settings/action.js'
 
 export const TOGGLE_ARCHIVE_VISIBILITY = 'TOGGLE_ARCHIVE_VISIBILITY'
 
@@ -32,7 +31,7 @@ export const toggleAccountBalanceVisibility = () => (dispatch: Dispatch, getStat
   const account = CORE_SELECTORS.getAccount(state)
   const currentAccountBalanceVisibility = state.ui.settings.isAccountBalanceVisible
   ACCOUNT_SETTINGS.setAccountBalanceVisibility(account, !currentAccountBalanceVisibility)
-    .then(() => dispatch(setAccountBalanceVisibility(!currentAccountBalanceVisibility)))
+    .then(() => dispatch({ type: 'SETTINGS/SET_ACCOUNT_BALANCE_VISIBILITY', data: { isAccountBalanceVisible: !currentAccountBalanceVisibility } }))
     .catch(error => {
       console.error(error)
     })
@@ -43,7 +42,7 @@ export const toggleWalletFiatBalanceVisibility = () => (dispatch: Dispatch, getS
   const account = CORE_SELECTORS.getAccount(state)
   const currentWalletFiatBalanceVisibility = state.ui.settings.isWalletFiatBalanceVisible
   ACCOUNT_SETTINGS.setWalletFiatBalanceVisibility(account, !currentWalletFiatBalanceVisibility)
-    .then(() => dispatch(updateWalletFiatBalanceVisibility(!currentWalletFiatBalanceVisibility)))
+    .then(() => dispatch({ type: 'SETTINGS/UPDATE_WALLET_FIAT_BALANCE_VISIBILITY', data: { isWalletFiatBalanceVisible: !currentWalletFiatBalanceVisibility } }))
     .catch(error => {
       console.error(error)
     })

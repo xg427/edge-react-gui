@@ -11,45 +11,24 @@ import s from '../../../../locales/strings.js'
 import { convertCurrency, restoreWalletsRequest } from '../../../Core/Account/api.js'
 import * as ACCOUNT_SETTINGS from '../../../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../../../Core/selectors'
-import * as SETTINGS_ACTIONS from '../../Settings/action.js'
 import { newSpendingLimits } from '../../Settings/spendingLimits/SpendingLimitsReducer.js'
 
-const PREFIX = 'UI/Scenes/Settings/'
-
-const SET_PIN_MODE_START = PREFIX + 'SET_PIN_MODE_START'
-const SET_PIN_START = PREFIX + 'SET_PIN_START'
-
-const SET_DEFAULT_FIAT_START = PREFIX + 'SET_DEFAULT_FIAT_START'
-const SET_MERCHANT_MODE_START = PREFIX + 'SET_MERCHANT_MODE_START'
-
-const SET_BLUETOOTH_MODE_START = PREFIX + 'SET_BLUETOOTH_MODE_START'
-const SET_BITCOIN_OVERRIDE_SERVER_START = PREFIX + 'SET_BITCOIN_OVERRIDE_SERVER_START'
-
-export const SELECT_DEFAULT_FIAT = PREFIX + 'SELECT_DEFAULT_FIAT'
-
-export const setPINModeRequest = (pinMode: boolean) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(setPINModeStart(pinMode))
-
-  const state = getState()
-  const account = CORE_SELECTORS.getAccount(state)
-  ACCOUNT_SETTINGS.setPINModeRequest(account, pinMode)
-    .then(() => dispatch(SETTINGS_ACTIONS.setPINMode(pinMode)))
-    .catch(error => {
-      console.error(error)
-    })
+type SetDefaultFiatStartAction = {
+  type: 'SET_DEFAULT_FIAT_START',
+  data: { defaultFiat: string }
 }
 
-export const setPINRequest = (pin: string) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(setPINStart(pin))
-
-  const state = getState()
-  const account = CORE_SELECTORS.getAccount(state)
-  ACCOUNT_SETTINGS.setPINRequest(account, pin)
-    .then(() => dispatch(SETTINGS_ACTIONS.setPIN(pin)))
-    .catch(error => {
-      console.error(error)
-    })
+type SetBluetoothModeStartAction = {
+  type: 'SET_BLUETOOTH_MODE_START',
+  data: { bluetoothMode: boolean }
 }
+
+type SetBitcoinOverrideServerStartAction = {
+  type: 'SET_BITCOIN_OVERRIDE_SERVER_START',
+  data: { overrideServer: string }
+}
+
+export type SettingsAction = SetDefaultFiatStartAction | SetBluetoothModeStartAction | SetBitcoinOverrideServerStartAction
 
 export const setAutoLogoutTimeInMinutesRequest = (autoLogoutTimeInMinutes: number) => {
   const autoLogoutTimeInSeconds = autoLogoutTimeInMinutes * 60
@@ -60,14 +39,14 @@ export const setAutoLogoutTimeInSecondsRequest = (autoLogoutTimeInSeconds: numbe
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
   ACCOUNT_SETTINGS.setAutoLogoutTimeInSecondsRequest(account, autoLogoutTimeInSeconds)
-    .then(() => dispatch(SETTINGS_ACTIONS.setAutoLogoutTimeInSeconds(autoLogoutTimeInSeconds)))
+    .then(() => dispatch({ type: 'SETTINGS/SET_AUTOLOGOUT_TIME_IN_SECONDS', data: { autoLogoutTimeInSeconds } }))
     .catch(error => {
       console.error(error)
     })
 }
 
 export const setDefaultFiatRequest = (defaultFiat: string) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(setDefaultFiatStart(defaultFiat))
+  dispatch({ type: 'SetDefaultFiatStart', data: { defaultFiat } })
 
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
@@ -85,7 +64,8 @@ export const setDefaultFiatRequest = (defaultFiat: string) => (dispatch: Dispatc
     })
     .then(() => {
       // update default fiat in settings
-      dispatch(SETTINGS_ACTIONS.setDefaultFiat(defaultFiat))
+      dispatch({ type: 'SETTINGS/SET_DEFAULT_FIAT', data: { defaultFiat } })
+
       const nextDefaultIsoFiat = getState().ui.settings.defaultIsoFiat
       // convert from previous fiat to next fiat
       return convertCurrency(account, previousDefaultIsoFiat, nextDefaultIsoFiat, transaction.amount)
@@ -106,51 +86,27 @@ export const setDefaultFiatRequest = (defaultFiat: string) => (dispatch: Dispatc
     .catch(e => console.log(e))
 }
 
-export const setMerchantModeRequest = (merchantMode: boolean) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(setMerchantModeStart(merchantMode))
-
-  const state = getState()
-  const account = CORE_SELECTORS.getAccount(state)
-  ACCOUNT_SETTINGS.setMerchantModeRequest(account, merchantMode)
-    .then(() => dispatch(SETTINGS_ACTIONS.setMerchantMode(merchantMode)))
-    .catch(error => {
-      console.error(error)
-    })
-}
-
-export const setBluetoothModeRequest = (bluetoothMode: boolean) => (dispatch: Dispatch, getState: GetState) => {
-  dispatch(setBluetoothModeStart(bluetoothMode))
-
-  const state = getState()
-  const account = CORE_SELECTORS.getAccount(state)
-  ACCOUNT_SETTINGS.setBluetoothModeRequest(account, bluetoothMode)
-    .then(() => dispatch(SETTINGS_ACTIONS.setBluetoothMode(bluetoothMode)))
-    .catch(error => {
-      console.error(error)
-    })
-}
-
 export const checkCurrentPassword = (arg: string) => async (dispatch: Dispatch, getState: GetState) => {
   const clearPasswordError = { confirmPasswordError: '' }
   dispatch(actions.dispatchActionObject(Constants.SET_CONFIRM_PASSWORD_ERROR, clearPasswordError))
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
   const isPassword = await account.checkPassword(arg)
-  dispatch(SETTINGS_ACTIONS.setSettingsLock(!isPassword))
+  dispatch({ type: 'SETTINGS/SET_SETTINGS_LOCK', data: !isPassword })
   if (!isPassword) {
     dispatch(actions.dispatchActionObject(Constants.SET_CONFIRM_PASSWORD_ERROR, { confirmPasswordError: s.strings.fragmet_invalid_password }))
   }
 }
 
 export const lockSettings = () => async (dispatch: Dispatch) => {
-  dispatch(SETTINGS_ACTIONS.setSettingsLock(true))
+  dispatch({ type: 'SETTINGS/SET_SETTINGS_LOCK', data: true })
 }
 
 // Denominations
 export const setDenominationKeyRequest = (currencyCode: string, denominationKey: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
-  const onSuccess = () => dispatch(SETTINGS_ACTIONS.setDenominationKey(currencyCode, denominationKey))
+  const onSuccess = () => dispatch({ type: 'SETTINGS/SET_DENOMINATION_KEY', data: { currencyCode, denominationKey } })
   const onError = e => console.log(e)
 
   return ACCOUNT_SETTINGS.setDenominationKeyRequest(account, currencyCode, denominationKey)
@@ -159,16 +115,16 @@ export const setDenominationKeyRequest = (currencyCode: string, denominationKey:
 }
 
 export const setBitcoinOverrideServerRequest = (overrideServer: string) => (dispatch: Dispatch) => {
-  dispatch(setBitcoinOverrideServerStart(overrideServer))
+  dispatch({ type: 'SetBitcoinOverrideServerStart', data: { overrideServer } })
 
-  dispatch(SETTINGS_ACTIONS.setBitcoinOverrideServer(overrideServer))
+  dispatch({ type: 'SETTINGS/SET_BITCOIN_OVERRIDE_SERVER', data: overrideServer })
 }
 
 // touch id interaction
 export const updateTouchIdEnabled = (arg: boolean, account: EdgeAccount) => async (dispatch: Dispatch, getState: GetState) => {
   const folder = CORE_SELECTORS.getFolder(getState())
   // dispatch the update for the new state for
-  dispatch(SETTINGS_ACTIONS.updateTouchIdEnabled(arg))
+  dispatch({ type: 'SETTINGS/UPDATE_TOUCH_ID_ENABLED', data: arg })
   if (arg) {
     enableTouchId(folder, account)
   } else {
@@ -182,81 +138,20 @@ export const restoreWallets = () => (dispatch: Dispatch, getState: GetState) => 
   restoreWalletsRequest(account).then(Actions.walletList)
 }
 
-const setPINModeStart = (pinMode: boolean) => ({
-  type: SET_PIN_MODE_START,
-  data: { pinMode }
-})
-
-const setPINStart = (pin: string) => ({
-  type: SET_PIN_START,
-  data: { pin }
-})
-
-const setDefaultFiatStart = (defaultFiat: string) => ({
-  type: SET_DEFAULT_FIAT_START,
-  data: { defaultFiat }
-})
-
-const setMerchantModeStart = (merchantMode: boolean) => ({
-  type: SET_MERCHANT_MODE_START,
-  data: { merchantMode }
-})
-
-const setBluetoothModeStart = (bluetoothMode: boolean) => ({
-  type: SET_BLUETOOTH_MODE_START,
-  data: { bluetoothMode }
-})
-
-const setBitcoinOverrideServerStart = (overrideServer: string) => ({
-  type: SET_BITCOIN_OVERRIDE_SERVER_START,
-  data: { overrideServer }
-})
-
 export function togglePinLoginEnabled (pinLoginEnabled: boolean) {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState()
     const context = CORE_SELECTORS.getContext(state)
     const account = CORE_SELECTORS.getAccount(state)
 
-    dispatch(SETTINGS_ACTIONS.togglePinLoginEnabled(pinLoginEnabled))
+    dispatch({ type: 'SETTINGS/TOGGLE_PIN_LOGIN_ENABLED', data: pinLoginEnabled })
     return account.changePin({ enableLogin: pinLoginEnabled }).catch(async error => {
       const pinLoginEnabled = await context.pinLoginEnabled(account.username)
 
       // TODO: Make a proper error action so we can avoid the double dispatch:
-      dispatch(SETTINGS_ACTIONS.togglePinLoginEnabled(pinLoginEnabled))
+      dispatch({ type: 'SETTINGS/TOGGLE_PIN_LOGIN_ENABLED', data: pinLoginEnabled })
       console.log(error)
       dispatch({ type: 'ERROR_ALERT/DISPLAY_ERROR_ALERT', data: { message: error.message } })
     })
   }
 }
-
-// Settings
-
-// Account Settings
-// pinLoginEnabled         (boolean)
-// fingerprintLoginEnabled (boolean)
-// pinLoginCount           (integer)
-// minutesAutoLogout       (integer)
-// secondsAutoLogout       (integer)
-// recoveryReminderCount   (integer)
-
-// Requests Settings
-// nameOnPayments (boolean)
-// firstName      (string)
-// lastName       (string)
-// nickName       (string)
-
-// Spend Limits
-// spendRequirePinEnabled  (boolean)
-// spendRequirePinSatoshis (integer)
-// dailySpendLimitEnabled  (boolean)
-// dailySpendLimitSatoshi  (integer)
-
-// Currency Settings
-// advancedFeatures          (boolean)
-// bitcoinDenomination       (Value)?
-// exchangeRateSource        (string)
-// language                  (string)
-// numCurrency?              (integer)
-// overrideBitcoinServers    (boolean)
-// overrideBitcoinServerList (string)

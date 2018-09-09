@@ -14,7 +14,6 @@ import type { Dispatch, GetState } from '../../ReduxTypes'
 import * as UTILS from '../../utils'
 import { addTokenAsync } from '../scenes/AddToken/action'
 import * as UI_SELECTORS from '../selectors.js'
-import { updateSettings } from '../Settings/action'
 import * as SETTINGS_SELECTORS from '../Settings/selectors'
 
 type RefreshReceiveAddressAction = {
@@ -457,7 +456,10 @@ export const deleteCustomToken = (walletId: string, currencyCode: string) => (di
       })
     })
     .then(() => {
-      dispatch(updateSettings(localSettings))
+      dispatch({
+        type: 'SETTINGS/UPDATE_SETTIGS',
+        data: { settings: localSettings }
+      })
       dispatch({ type: 'WALLETS/DELETE_CUSTOM_TOKENS_SUCCESS', data: { currencyCode } })
       Actions.pop()
     })
