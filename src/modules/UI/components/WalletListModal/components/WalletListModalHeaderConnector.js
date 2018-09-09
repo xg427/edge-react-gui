@@ -3,11 +3,9 @@
 import { connect } from 'react-redux'
 
 import * as Constants from '../../../../../constants/indexConstants'
-import { disableWalletListModalVisibility } from '../action'
 import WalletListModalHeader from './WalletListModalHeader.ui'
 
 const mapStateToProps = (state?: any, ownProps: any): { type: string, whichWallet: string } => {
-  // console.log(state.ui.scenes.dimensions)
   const walletType = ownProps.type ? ownProps.type : Constants.FROM
   return {
     type: walletType,
@@ -15,7 +13,7 @@ const mapStateToProps = (state?: any, ownProps: any): { type: string, whichWalle
   }
 }
 const mapDispatchToProps = (dispatch: Function): {} => ({
-  disableWalletListModalVisibility: () => dispatch(disableWalletListModalVisibility())
+  disableWalletListModalVisibility: () => dispatch({ type: 'WALLET_LIST_MODAL/DISABLE_WALLET_LIST_MODAL_VISIBILITY' })
 })
 
 export default connect(

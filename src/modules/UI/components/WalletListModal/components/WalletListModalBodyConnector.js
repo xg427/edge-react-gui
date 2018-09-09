@@ -9,7 +9,6 @@ import { updateReceiveAddress } from '../../../scenes/Request/action.js'
 import * as UI_SELECTORS from '../../../selectors'
 import * as SETTINGS_SELECTORS from '../../../Settings/selectors'
 import * as UI_ACTIONS from '../../../Wallets/action.js'
-import { disableWalletListModalVisibility, toggleScanToWalletListModal } from '../action'
 import WalletListModalBody from './WalletListModalBody.ui'
 
 const mapStateToProps = (state: State, ownProps: { type: string }): {} => ({
@@ -29,9 +28,9 @@ const mapDispatchToProps = (dispatch: Dispatch): {} => ({
     // $FlowFixMe
     dispatch(actions.selectWalletForExchange(walletId, currencyCode))
   },
-  disableWalletListModalVisibility: () => dispatch(disableWalletListModalVisibility()),
-  toggleSelectedWalletListModal: () => dispatch(toggleScanToWalletListModal()),
-  toggleScanToWalletListModal: () => dispatch(toggleScanToWalletListModal()),
+  disableWalletListModalVisibility: () => dispatch({ type: 'WALLET_LIST_MODAL/DISABLE_WALLET_LIST_MODAL_VISIBILITY' }),
+  toggleSelectedWalletListModal: () => dispatch({ type: 'WALLET_LIST_MODAL/TOGGLE_SCAN_TO_WALLET_LIST_MODAL' }),
+  toggleScanToWalletListModal: () => dispatch({ type: 'WALLET_LIST_MODAL/TOGGLE_SCAN_TO_WALLET_LIST_MODAL' }),
   updateReceiveAddress: (walletId, currencyCode) => dispatch(updateReceiveAddress(walletId, currencyCode))
 })
 

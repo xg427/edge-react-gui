@@ -13,6 +13,7 @@
 // import { type PasswordRecoveryReminderModalAction } from './UI/components/PasswordRecoveryReminderModal/PasswordRecoveryReminderModalActions.js'
 // import { type PasswordReminderModalAction } from './UI/components/PasswordReminderModal/actions.js'
 // import { type TransactionAlertAction } from './UI/components/TransactionAlert/actions.js'
+// import { type WalletListModalAction } from './UI/components/WalletListModal/action.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -31,3 +32,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | PasswordRecoveryReminderModalAction // uncomment to get flow checking
 //   | PasswordReminderModalAction // uncomment to get flow checking
 //   | TransactionAlertAction // uncomment to get flow checking
+//   | WalletListModalAction // uncomment to get flow checking

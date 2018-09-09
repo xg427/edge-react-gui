@@ -103,7 +103,7 @@ function cryptoExchangerReducer (state = initialState, action) {
         transaction: null,
         quoteExpireDate: null
       }
-    case Constants.DISABLE_WALLET_LIST_MODAL_VISIBILITY:
+    case 'WALLET_LIST_MODAL/DISABLE_WALLET_LIST_MODAL_VISIBILITY':
       return { ...state, walletListModalVisible: false }
     case Constants.OPEN_WALLET_SELECTOR_MODAL:
       return {
