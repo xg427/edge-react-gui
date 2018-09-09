@@ -26,9 +26,6 @@ test('initialState', () => {
       deleteTokenModalVisible: false,
       editCustomTokenProcessing: false
     },
-    exchangeRate: {
-      exchangeRates: {}
-    },
     helpModal: false,
     request: request(undefined, {}),
     requestType: {

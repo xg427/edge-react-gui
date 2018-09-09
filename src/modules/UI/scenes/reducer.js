@@ -6,7 +6,6 @@ import { requestType } from '../../../reducers/RequestTypeReducer.js'
 import type { Action } from '../../ReduxTypes.js'
 import ABAlert from '../components/ABAlert/reducer'
 import controlPanel from '../components/ControlPanel/reducer.js'
-import exchangeRate from '../components/ExchangeRate/reducer.js'
 import { helpModal } from '../components/HelpModal/reducer.js'
 import { passwordRecoveryReminderModal } from '../components/PasswordRecoveryReminderModal/PasswordRecoveryReminderModalReducer.js'
 import { passwordReminderModalReducer as passwordReminderModal } from '../components/PasswordReminderModal/indexPasswordReminderModal.js'
@@ -53,7 +52,6 @@ export const scenes = combineReducers({
   dimensions,
   helpModal,
   transactionAlert,
-  exchangeRate,
   ABAlert,
   currentScene,
   passwordRecoveryReminderModal,
