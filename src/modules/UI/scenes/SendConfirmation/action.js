@@ -5,7 +5,7 @@ import type { EdgeMetadata, EdgeParsedUri, EdgeSpendInfo, EdgeTransaction } from
 import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
-import { OPEN_AB_ALERT, SEND_CONFIRMATION } from '../../../../constants/indexConstants'
+import { SEND_CONFIRMATION } from '../../../../constants/indexConstants'
 import s from '../../../../locales/strings.js'
 import { checkPin } from '../../../Core/Account/api.js'
 import { getAccount, getWallet } from '../../../Core/selectors.js'
@@ -19,7 +19,6 @@ import {
   signTransaction
 } from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes'
-import { openABAlert } from '../../components/ABAlert/action'
 import { getSelectedWalletId } from '../../selectors.js'
 import { getAuthRequired, getSpendInfo, getTransaction } from './selectors'
 import type { AuthType, GuiMakeSpendInfo } from './selectors'
@@ -151,7 +150,10 @@ export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: G
       title: 'Transaction Sent',
       message: 'Your transaction has been successfully sent.'
     }
-    dispatch(openABAlert(OPEN_AB_ALERT, successInfo))
+    dispatch({
+      type: 'AB_ALERT/OPEN_AB_ALERT',
+      data: successInfo
+    })
   } catch (e) {
     dispatch(updateSpendPending(false))
     const errorInfo = {
@@ -160,7 +162,10 @@ export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: G
       message: e.message
     }
     dispatch(updateTransaction(edgeSignedTransaction, null, true, new Error('broadcastError')))
-    dispatch(openABAlert(OPEN_AB_ALERT, errorInfo))
+    dispatch({
+      type: 'AB_ALERT/OPEN_AB_ALERT',
+      data: errorInfo
+    })
   }
 }
 

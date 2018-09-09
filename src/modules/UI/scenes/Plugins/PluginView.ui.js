@@ -6,11 +6,9 @@ import { Actions } from 'react-native-router-flux'
 import AndroidWebView from 'react-native-webview-file-upload-android'
 import { connect } from 'react-redux'
 
-import * as Constants from '../../../../constants/indexConstants'
 import s from '../../../../locales/strings.js'
 import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import T from '../../../UI/components/FormattedText'
-import { openABAlert } from '../../components/ABAlert/action'
 import Gradient from '../../components/Gradient/Gradient.ui'
 import BackButton from '../../components/Header/Component/BackButton.ui'
 import SafeAreaView from '../../components/SafeAreaView'
@@ -283,7 +281,11 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  showAlert: alertSyntax => dispatch(openABAlert(Constants.OPEN_AB_ALERT, alertSyntax))
+  showAlert: alertSyntax =>
+    dispatch({
+      type: 'AB_ALERT/OPEN_AB_ALERT',
+      data: alertSyntax
+    })
 })
 
 const PluginViewConnect = connect(
