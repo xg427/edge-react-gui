@@ -8,7 +8,6 @@ import * as Constants from '../../../constants/indexConstants.js'
 import type { GuiWallet } from '../../../types.js'
 import type { Action } from '../../ReduxTypes.js'
 import * as ADD_TOKEN_ACTION from '../scenes/AddToken/action.js'
-import * as ACTION from './action'
 
 export type WalletId = string
 export type WalletIds = Array<WalletId>
@@ -57,7 +56,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
       return out
     }
 
-    case ACTION.UPDATE_WALLET_ENABLED_TOKENS: {
+    case 'WALLETS/UPDATE_WALLET_ENABLED_TOKENS': {
       const { walletId, tokens } = action.data
       if (state[walletId] !== undefined) {
         return {
@@ -87,7 +86,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
       }
     }
 
-    case ACTION.ADD_NEW_TOKEN_THEN_DELETE_OLD_SUCCESS: {
+    case 'WALLETS/ADD_NEW_TOKEN_THEN_DELETE_OLD_SUCCESS': {
       const { coreWalletsToUpdate, oldCurrencyCode, tokenObj } = action.data
       // coreWalletsToUpdate are wallets with non-empty enabledTokens properties
       // receiving token will have to take on sending tokens enabledness
@@ -114,7 +113,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
       return state
     }
 
-    case ACTION.OVERWRITE_THEN_DELETE_TOKEN_SUCCESS: {
+    case 'WALLETS/OVERWRITE_THEN_DELETE_TOKEN_SUCCESS': {
       // adjust enabled tokens
       const { coreWalletsToUpdate, oldCurrencyCode } = action.data
       // coreWalletsToUpdate are wallets with non-empty enabledTokens properties
@@ -137,7 +136,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
       return state
     }
 
-    case ACTION.UPSERT_WALLETS: {
+    case 'WALLETS/UPSERT_WALLETS': {
       const { data } = action
       const wallets = data.wallets
       const out = { ...state }
@@ -159,7 +158,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
       return out
     }
 
-    case ACTION.REFRESH_RECEIVE_ADDRESS: {
+    case 'WALLETS/REFRESH_RECEIVE_ADDRESS': {
       const {
         data: { walletId, receiveAddress }
       } = action
@@ -192,14 +191,14 @@ export const walletLoadingProgress = (state: { [string]: Number } = {}, action: 
   if (!action.data) return state
   const { type, data } = action
   switch (type) {
-    case ACTION.INSERT_WALLET_IDS_FOR_PROGRESS:
+    case 'WALLETS/INSERT_WALLET_IDS_FOR_PROGRESS':
       const activeWalletIdList = data.activeWalletIds
       const activeWalletIdProgress = {}
       activeWalletIdList.map(item => {
         activeWalletIdProgress[item] = 0
       })
       return activeWalletIdProgress
-    case ACTION.UPDATE_WALLET_LOADING_PROGRESS:
+    case 'WALLETS/UPDATE_WALLET_LOADING_PROGRESS':
       // prevent backwards progress
       if (data.addressLoadingProgress < state[data.walletId]) return state
       return {
@@ -238,7 +237,7 @@ export const archivedWalletIds = (state: WalletIds = [], action: Action) => {
 export const selectedWalletId = (state: WalletId = '', action: Action) => {
   if (!action.data) return state
   switch (action.type) {
-    case ACTION.SELECT_WALLET:
+    case 'WALLETS/SELECT_WALLET':
       return action.data.walletId
     case Constants.ACCOUNT_INIT_COMPLETE:
       if (action.data.walletId) {
@@ -253,7 +252,7 @@ export const selectedWalletId = (state: WalletId = '', action: Action) => {
 export const selectedCurrencyCode = (state: string = '', action: Action) => {
   if (!action.data) return state
   switch (action.type) {
-    case ACTION.SELECT_WALLET:
+    case 'WALLETS/SELECT_WALLET':
       return action.data.currencyCode
     case Constants.ACCOUNT_INIT_COMPLETE:
       if (action.data.currencyCode) {
@@ -286,9 +285,9 @@ export const manageTokensPending = (state: boolean = false, action: Action) => {
   if (!action.data) return state
   const type = action.type
   switch (type) {
-    case ACTION.MANAGE_TOKENS_START:
+    case 'WALLETS/MANAGE_TOKENS_START':
       return true
-    case ACTION.MANAGE_TOKENS_SUCCESS:
+    case 'WALLETS/MANAGE_TOKENS_SUCCESS':
       return false
     default:
       return state

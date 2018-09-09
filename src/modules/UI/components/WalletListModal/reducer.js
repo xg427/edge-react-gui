@@ -4,7 +4,6 @@ import { combineReducers } from 'redux'
 
 import { OPEN_WALLET_SELECTOR_MODAL, SELECT_FROM_WALLET_CRYPTO_EXCHANGE, SELECT_TO_WALLET_CRYPTO_EXCHANGE } from '../../../../constants/indexConstants'
 import { UPDATE_CURRENT_SCENE_KEY } from '../../scenes/action.js'
-import { CLOSE_ALL_WALLET_LIST_MODALS } from '../../Wallets/action.js'
 
 const walletListModalVisible = (state = false, action) => {
   switch (action.type) {
@@ -18,7 +17,7 @@ const walletListModalVisible = (state = false, action) => {
       return false
     case 'WALLET_LIST_MODAL/TOGGLE_TRANSACTIONS_WALLET_LIST_MODAL':
       return false
-    case CLOSE_ALL_WALLET_LIST_MODALS:
+    case 'WALLETS/CLOSE_ALL_WALLET_LIST_MODALS':
       return false
     case OPEN_WALLET_SELECTOR_MODAL:
       return true

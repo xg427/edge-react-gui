@@ -17,7 +17,6 @@ import * as SETTINGS_API from '../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../Core/selectors'
 import { updateWalletsRequest } from '../Core/Wallets/action.js'
 import type { Dispatch, GetState } from '../ReduxTypes'
-import { insertWalletIdsForProgress } from '../UI/Wallets/action.js'
 import { getReceiveAddresses } from '../utils.js'
 
 const localeInfo = Locale.constants() // should likely be moved to login system and inserted into Redux
@@ -133,7 +132,7 @@ export const initializeAccount = (account: EdgeAccount, touchIdInfo: Object) => 
       accountInitObject.currencyCode = currencyCode
     }
     const activeWalletIds = account.activeWalletIds
-    dispatch(insertWalletIdsForProgress(activeWalletIds))
+    dispatch({ type: 'WALLETS/INSERT_WALLETS_IDS_FOR_PROGRESS', data: { activeWalletIds } })
     const archivedWalletIds = account.archivedWalletIds
     const currencyWallets = account.currencyWallets
 

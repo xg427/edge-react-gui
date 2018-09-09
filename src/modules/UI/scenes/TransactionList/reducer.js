@@ -4,7 +4,6 @@ import type { EdgeTransaction } from 'edge-core-js'
 import { combineReducers } from 'redux'
 
 import type { Action } from '../../../ReduxTypes.js'
-import * as WALLET_ACTION from '../../Wallets/action.js'
 import * as ACTION from './action'
 
 export type TransactionsState = Array<EdgeTransaction>
@@ -14,7 +13,7 @@ const transactions = (state: TransactionsState = [], action: Action) => {
   switch (action.type) {
     case ACTION.UPDATE_TRANSACTIONS:
       return action.data.transactions
-    case WALLET_ACTION.SELECT_WALLET:
+    case 'WALLETS/SELECT_WALLET':
       return []
     default:
       return state
