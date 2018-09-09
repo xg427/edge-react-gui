@@ -4,6 +4,7 @@
 // import { type ContextAction } from './Core/Context/action.js'
 // import { type WalletsAction } from './Core/Wallets/action.js'
 // import { type ExchangeRatesAction } from './ExchangeRates/action.js'
+// import { type LogoutAction } from './Login/action.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -12,3 +13,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | ContextAction // uncomment to get flow checking
 //   | WalletsAction // uncomment to get flow checking
 //   | ExchangeRatesAction // uncomment to get flow checking
+//   | LogoutAction // uncomment to get flow checking

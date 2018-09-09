@@ -218,12 +218,12 @@ export const logoutRequest = (username?: string) => (dispatch: Dispatch, getStat
   dispatch(SETTINGS_ACTIONS.setLoginStatus(false))
 
   const account = CORE_SELECTORS.getAccount(state)
-  dispatch(logout(username))
+  dispatch({ type: 'LOGOUT', data: { username } })
   ACCOUNT_API.logoutRequest(account) */
   Actions.popTo(Constants.LOGIN, { username })
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
-  dispatch(logout(username))
+  dispatch({ type: 'LOGOUT', data: { username } })
   account.logout()
 }
 export const deepLinkLogout = (backupKey: string) => (dispatch: Dispatch, getState: GetState) => {
@@ -238,7 +238,7 @@ export const deepLinkLogout = (backupKey: string) => (dispatch: Dispatch, getSta
   }
 }
 
-export const logout = (username?: string) => ({
-  type: Constants.LOGOUT,
-  data: { username }
-})
+export type LogoutAction = {
+  type: 'LOGOUT',
+  data: { username: ?string }
+}
