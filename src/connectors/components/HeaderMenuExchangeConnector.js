@@ -8,7 +8,6 @@ import * as Constants from '../../constants/indexConstants'
 import s from '../../locales/strings.js'
 import * as CORE_SELECTORS from '../../modules/Core/selectors.js'
 import type { Dispatch, State } from '../../modules/ReduxTypes.js'
-import { openHelpModal } from '../../modules/UI/components/HelpModal/actions'
 import { MenuDropDown } from '../../modules/UI/components/MenuDropDown/MenuDropDown.ui.js'
 import * as Styles from '../../styles/indexStyles'
 import THEME from '../../theme/variables/airbitz'
@@ -64,7 +63,7 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSelect: (value: Object) => {
     switch (value.title) {
       case Constants.HELP_VALUE:
-        dispatch(openHelpModal())
+        dispatch({ type: 'HELP_MODA/OPEN_HELP_MODAL' })
         break
       case Constants.EXCHANGE_MAX_AMOUNT_VALUE:
         dispatch(exchangeMax())

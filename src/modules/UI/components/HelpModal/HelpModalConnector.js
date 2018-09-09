@@ -3,7 +3,6 @@
 import { connect } from 'react-redux'
 
 import type { Dispatch, State } from '../../../ReduxTypes'
-import { closeHelpModal } from './actions.js'
 import HelpModal from './HelpModal.ui'
 
 const mapStateToProps = (state: State) => ({
@@ -11,7 +10,7 @@ const mapStateToProps = (state: State) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  closeModal: () => dispatch(closeHelpModal())
+  closeModal: () => dispatch({ type: 'HELP_MODAL/CLOSE_HELP_MODAL' })
 })
 
 export default connect(
