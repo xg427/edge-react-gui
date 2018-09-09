@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { PLATFORM } from '../../../../theme/variables/platform.js'
 import type { Dispatch, State } from '../../../ReduxTypes'
 import * as UTILS from '../../../utils'
-import { displayDropdownAlert } from '../../components/DropdownAlert/actions'
 import * as UI_SELECTORS from '../../selectors'
 import * as SETTINGS_SELECTORS from '../../Settings/selectors.js'
 import { getSubcategories, setNewSubcategory, setTransactionDetails } from './action.js'
@@ -40,7 +39,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(setTransactionDetails(txid, currencyCode, edgeMetadata))
   },
   getSubcategories: () => dispatch(getSubcategories()),
-  displayDropdownAlert: (message: string, title: string) => dispatch(displayDropdownAlert({ message, title })),
+  displayDropdownAlert: (message: string, title: string) =>
+    dispatch({
+      type: 'DROPDOWN_ALERT/DISPLAY_DROPDOWN_ALERT',
+      data: {
+        type: 'custom',
+        message,
+        title
+      }
+    }),
   setNewSubcategory: (newSubcategory: string) => dispatch(setNewSubcategory(newSubcategory))
 })
 
