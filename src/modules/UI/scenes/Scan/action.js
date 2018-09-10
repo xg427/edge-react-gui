@@ -13,50 +13,44 @@ import { denominationToDecimalPlaces, isEdgeLogin, noOp } from '../../../utils.j
 import { paymentProtocolUriReceived, updateParsedURI } from '../SendConfirmation/action.js'
 import { activated as privateKeyModalActivated } from './PrivateKeyModal/PrivateKeyModalActions.js'
 
-export const PREFIX = 'SCAN/'
-
-export const UPDATE_RECIPIENT_ADDRESS = 'UPDATE_RECIPIENT_ADDRESS'
-
-export const TOGGLE_ENABLE_TORCH = 'TOGGLE_ENABLE_TORCH'
-export const toggleEnableTorch = () => ({
-  type: TOGGLE_ENABLE_TORCH
-})
-
-export const TOGGLE_ADDRESS_MODAL_VISIBILITY = 'TOGGLE_ADDRESS_MODAL_VISIBILITY'
-export const toggleAddressModal = () => ({
-  type: TOGGLE_ADDRESS_MODAL_VISIBILITY
-})
-
-export const ENABLE_SCAN = 'ENABLE_SCAN'
-export const enableScan = () => {
-  return {
-    type: ENABLE_SCAN
-  }
+type ToggleEnableTorchAction = {
+  type: 'SCAN/TOGGLE_ENABLE_TORCH'
 }
 
-export const DISABLE_SCAN = 'DISABLE_SCAN'
-export const disableScan = () => {
-  return {
-    type: DISABLE_SCAN
-  }
+type ToggleAddressModalAction = {
+  type: 'SCAN/TOGGLE_ADDRESS_MODAL_VISIBILITY'
 }
 
-export const PARSE_URI_SUCCEEDED = 'PARSE_URI_SUCCEEDED'
-export const parseUriSucceeded = (parsedUri: EdgeParsedUri) => ({
-  type: PARSE_URI_SUCCEEDED,
-  data: { parsedUri }
-})
+type EnableScanAction = {
+  type: 'SCAN/ENABLE_SCAN'
+}
 
-export const PARSE_URI_FAILED = 'PARSE_URI_FAILED'
-export const parseUriFailed = (error: Error) => ({
-  type: PARSE_URI_FAILED,
-  data: { error }
-})
+type DisableScanAction = {
+  type: 'SCAN/DISABLE_SCAN'
+}
 
-export const PARSE_URI_RESET = 'PARSE_URI_RESET'
-export const parseUriReset = () => ({
-  type: PARSE_URI_RESET
-})
+type ParseUriSucceededAction = {
+  type: 'SCAN/PARSE_URI_SUCCEEDED',
+  data: { parsedUri: EdgeParsedUri }
+}
+
+type ParseUriFailedAction = {
+  type: 'SCAN/PARSE_URI_FAILED',
+  data: { error: Error }
+}
+
+type ParseUriResetAction = {
+  type: 'SCAN/PARSE_URI_RESET'
+}
+
+export type ScanAction =
+  | ToggleEnableTorchAction
+  | ToggleAddressModalAction
+  | EnableScanAction
+  | DisableScanAction
+  | ParseUriSucceededAction
+  | ParseUriFailedAction
+  | ParseUriResetAction
 
 export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetState) => {
   if (!data) return
@@ -73,7 +67,7 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
 
   WALLET_API.parseUri(edgeWallet, data).then(
     (parsedUri: EdgeParsedUri) => {
-      dispatch(parseUriSucceeded(parsedUri))
+      dispatch({ type: 'SCAN/PARSE_URI_SUCCEEDED', data: { uri: parsedUri } })
 
       if (parsedUri.token) {
         // TOKEN URI
@@ -118,11 +112,11 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
     },
     () => {
       // INVALID URI
-      dispatch(disableScan())
+      dispatch({ type: 'SCAN/DISABLE_SCAN' })
       setTimeout(
         () =>
           Alert.alert(s.strings.scan_invalid_address_error_title, s.strings.scan_invalid_address_error_description, [
-            { text: s.strings.string_ok, onPress: () => dispatch(enableScan()) }
+            { text: s.strings.string_ok, onPress: () => dispatch({ type: 'SCAN/ENABLE_SCAN' }) }
           ]),
         500
       )
@@ -136,7 +130,7 @@ export const legacyAddressModalContinueButtonPressed = () => (dispatch: Dispatch
   const parsedUri = state.ui.scenes.scan.parsedUri
   setImmediate(() => {
     if (!parsedUri) {
-      dispatch(enableScan())
+      dispatch({ type: 'SCAN/ENABLE_SCAN' })
       return
     }
 
@@ -150,7 +144,7 @@ export const qrCodeScanned = (data: string) => (dispatch: Dispatch, getState: Ge
   const isScanEnabled = state.ui.scenes.scan.scanEnabled
   if (!isScanEnabled) return
 
-  dispatch(disableScan())
+  dispatch({ type: 'SCAN/DISABLE_SCAN' })
   dispatch(parseUri(data))
 }
 
@@ -164,7 +158,7 @@ export const addressModalCancelButtonPressed = () => (dispatch: Dispatch, getSta
 
 export const legacyAddressModalCancelButtonPressed = () => (dispatch: Dispatch) => {
   dispatch({ type: 'LEGACY_ADDRESS_MODAL/DEACTIVATED' })
-  dispatch(enableScan())
+  dispatch({ type: 'SCAN/ENABLE_SCAN' })
 }
 
 export const isTokenUri = (parsedUri: EdgeParsedUri): boolean => {

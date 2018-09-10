@@ -8,7 +8,6 @@ import makeContextCallbacks from './Core/Context/callbacks'
 import Main from './Main.ui'
 import type { Dispatch } from './ReduxTypes'
 import { updateCurrentSceneKey } from './UI/scenes/action.js'
-import { disableScan, enableScan } from './UI/scenes/Scan/action'
 import { selectWallet } from './UI/Wallets/action.js'
 
 const mapStateToProps = () => ({})
@@ -17,10 +16,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     return dispatch(requestPermission(permission))
   },
   dispatchEnableScan: () => {
-    return dispatch(enableScan())
+    return dispatch({ type: 'SCAN/ENABLE_SCAMN' })
   },
   dispatchDisableScan: () => {
-    return dispatch(disableScan())
+    return dispatch({ type: 'SCAN/DISABLE_SCAN' })
   },
   addCurrencyPlugin: plugin => {
     return dispatch({

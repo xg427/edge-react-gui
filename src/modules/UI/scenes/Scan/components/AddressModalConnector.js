@@ -10,7 +10,6 @@ import * as CORE_SELECTORS from '../../../../Core/selectors.js'
 import type { Dispatch, State } from '../../../../ReduxTypes'
 import * as UI_SELECTORS from '../../../selectors.js'
 import { updateParsedURI } from '../../SendConfirmation/action.js'
-import { toggleAddressModal } from '../action'
 import AddressModal from './AddressModal'
 
 const mapStateToProps = (state: State) => {
@@ -26,7 +25,7 @@ const mapStateToProps = (state: State) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  toggleAddressModal: () => dispatch(toggleAddressModal()),
+  toggleAddressModal: () => dispatch({ type: 'SCAN/TOGGLE_ADDRES_MODAL' }),
   updateParsedURI: (parsedURI: EdgeParsedUri) => dispatch(updateParsedURI(parsedURI)),
   loginWithEdge: (url: string) => {
     Actions[Constants.EDGE_LOGIN]()

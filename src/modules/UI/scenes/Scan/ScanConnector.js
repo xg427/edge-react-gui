@@ -10,9 +10,7 @@ import {
   addressModalDoneButtonPressed,
   legacyAddressModalCancelButtonPressed,
   legacyAddressModalContinueButtonPressed,
-  qrCodeScanned,
-  toggleAddressModal,
-  toggleEnableTorch
+  qrCodeScanned
 } from './action'
 import Scan from './Scan.ui'
 
@@ -25,8 +23,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   qrCodeScanned: data => dispatch(qrCodeScanned(data)),
-  toggleEnableTorch: () => dispatch(toggleEnableTorch()),
-  toggleAddressModal: () => dispatch(toggleAddressModal()),
+  toggleEnableTorch: () => dispatch({ type: 'SCAN/TOGGLE_ENABLE_TORCH' }),
+  toggleAddressModal: () => dispatch({ type: 'SCAN/TOGGLE_ADDRESS_MODAL' }),
   legacyAddressModalContinueButtonPressed: () => dispatch(legacyAddressModalContinueButtonPressed()),
   legacyAddressModalCancelButtonPressed: () => dispatch(legacyAddressModalCancelButtonPressed()),
   addressModalDoneButtonPressed: data => dispatch(addressModalDoneButtonPressed(data)),

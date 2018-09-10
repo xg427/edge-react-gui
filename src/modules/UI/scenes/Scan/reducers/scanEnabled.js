@@ -1,13 +1,12 @@
 // @flow
 
 import type { Action } from '../../../../ReduxTypes.js'
-import * as ACTION from '../action'
 
 export const initialState = false
 export type State = boolean
 export const scanEnabled = (state: State = initialState, action: Action) => {
   switch (action.type) {
-    case ACTION.ENABLE_SCAN: {
+    case 'SCAN/ENABLE_SCAN': {
       return true
     }
 
@@ -15,7 +14,7 @@ export const scanEnabled = (state: State = initialState, action: Action) => {
       return true
     }
 
-    case ACTION.DISABLE_SCAN: {
+    case 'SCAN/DISABLE_SCAN': {
       return false
     }
 
