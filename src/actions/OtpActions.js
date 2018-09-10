@@ -1,9 +1,12 @@
 // @flow
 
-import * as actions from '../actions/indexActions'
-import * as Constants from '../constants/indexConstants'
 import * as CORE_SELECTORS from '../modules/Core/selectors'
 import type { Dispatch, GetState } from '../modules/ReduxTypes'
+
+type DisableOtpResetAction = { type: 'OTP/DISABLE_OTP_RESET' }
+
+export type OtpAction = DisableOtpResetAction
+
 export const enableOtp = () => async (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
@@ -13,8 +16,8 @@ export const enableOtp = () => async (dispatch: Dispatch, getState: GetState) =>
       type: 'SETTINGS/UPDATE_OTP_INFO',
       data: { enabled: true, otpKey: account.otpKey }
     })
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    console.log(error)
   }
 }
 export const disableOtp = () => async (dispatch: Dispatch, getState: GetState) => {
@@ -26,8 +29,8 @@ export const disableOtp = () => async (dispatch: Dispatch, getState: GetState) =
       type: 'SETTINGS/UPDATE_OTP_INFO',
       data: { enabled: false, otpKey: null, otpResetPending: false }
     })
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    console.log(error)
   }
 }
 export const keepOtp = () => async (dispatch: Dispatch, getState: GetState) => {
@@ -35,8 +38,8 @@ export const keepOtp = () => async (dispatch: Dispatch, getState: GetState) => {
   const account = CORE_SELECTORS.getAccount(state)
   try {
     await account.cancelOtpReset()
-    dispatch(actions.dispatchAction(Constants.DISABLE_OTP_RESET))
-  } catch (e) {
-    console.log(e)
+    dispatch({ type: 'OTP/DISABLE_OTP_RESET' })
+  } catch (error) {
+    console.log(error)
   }
 }
