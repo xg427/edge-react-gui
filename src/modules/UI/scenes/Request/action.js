@@ -1,38 +1,70 @@
 // @flow
 
-import * as Constants from '../../../../constants/indexConstants.js'
+import { type EdgeReceiveAddress } from 'edge-core-js'
+
 import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import * as WALLET_API from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
 import * as UI_SELECTORS from '../../../UI/selectors.js'
 
-export const UPDATE_RECEIVE_ADDRESS = 'UPDATE_RECEIVE_ADDRESS'
-export const UPDATE_RECEIVE_ADDRESS_START = 'UPDATE_RECEIVE_ADDRESS_START'
-export const UPDATE_RECEIVE_ADDRESS_ERROR = 'UPDATE_RECEIVE_ADDRESS_ERROR'
-export const SAVE_RECEIVE_ADDRESS = 'SAVE_RECEIVE_ADDRESS'
-export const UPDATE_INPUT_CURRENCY_SELECTED = 'UPDATE_INPUT_CURRENCY_SELECTED'
+type UpdateReceiveAddressStartAction = {
+  type: 'REQUEST/UPDATE_RECEIVE_ADDRESS_START'
+}
+
+type UpdateReceiveAddressSuccessAction = {
+  type: 'REQUEST/UPDATE_RECEIVE_ADDRESS_SUCCESS',
+  data: { receiveAddress: EdgeReceiveAddress }
+}
+
+type UpdateReceiveAddressErrorAction = {
+  type: 'REQUEST/UPDATE_RECEIVE_ADDRESS_ERROR',
+  data: { error: Error }
+}
+
+type UpdateInputCurrencySelectedAction = {
+  type: 'REQUEST/UPDATE_INPUT_CURRENCY_SELECTED',
+  data: { inputCurrencySelected: string }
+}
+
+type UpdateAmountRequestedInCryptoAction = {
+  type: 'REQUEST/UPDATE_AMOUNT_REQUESTED_IN_CRYPTO',
+  data: { amountRequestedInCrypto: number }
+}
+
+type UpdateAmountReceivedInCryptoAction = {
+  type: 'REQUEST/UPDATE_AMOUNT_RECEIVED_IN_CRYPTO',
+  data: { amountReceivedInCrypto: number }
+}
+
+type UpdateAmountRequestedInFiatAction = {
+  type: 'REQUEST/UPDATE_AMOUNT_REQUESTED_IN_FIAT',
+  data: { amountRequestedInFiat: number }
+}
+
+export type RequestAction =
+  | UpdateReceiveAddressStartAction
+  | UpdateReceiveAddressSuccessAction
+  | UpdateReceiveAddressErrorAction
+  | UpdateInputCurrencySelectedAction
+  | UpdateAmountRequestedInCryptoAction
+  | UpdateAmountReceivedInCryptoAction
+  | UpdateAmountRequestedInFiatAction
 
 export const updateReceiveAddress = (walletId: string, currencyCode: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const wallet = CORE_SELECTORS.getWallet(state, walletId)
 
   const onSuccess = receiveAddress => {
-    dispatch(updateReceiveAddressSuccess(receiveAddress))
+    dispatch({ type: 'REQUEST/UPDATE_RECEIVE_ADDRESS_SUCCESS', data: { receiveAddress } })
   }
   const onError = error => {
-    // console.log('Core Error', error)
-    dispatch(updateReceiveAddressError(error))
+    dispatch({ type: 'REQUEST/UPDATE_RECEIVE_ADDRESS_ERROR', data: { error } })
   }
 
   WALLET_API.getReceiveAddress(wallet, currencyCode)
     .then(onSuccess)
     .catch(onError)
 }
-
-export const updateInputCurrencySelected = (inputCurrencySelected: string) => ({
-  type: UPDATE_INPUT_CURRENCY_SELECTED,
-  data: { inputCurrencySelected }
-})
 
 export const saveReceiveAddress = (receiveAddress: Object) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -52,33 +84,3 @@ export const saveReceiveAddress = (receiveAddress: Object) => (dispatch: Dispatc
     .then(onSuccess)
     .catch(onError)
 }
-
-export const updateReceiveAddressSuccess = (receiveAddress: Object) => ({
-  type: Constants.UPDATE_RECEIVE_ADDRESS_SUCCESS,
-  data: { receiveAddress }
-})
-
-export const updateReceiveAddressError = (error: Object) => ({
-  type: UPDATE_RECEIVE_ADDRESS_ERROR,
-  data: { error }
-})
-
-export const UPDATE_AMOUNT_REQUESTED_IN_CRYPTO = 'UPDATE_AMOUNT_REQUESTED_IN_CRYPTO'
-export const updateAmountRequestedInCrypto = (amountRequestedInCrypto: number) => ({
-  type: UPDATE_AMOUNT_REQUESTED_IN_CRYPTO,
-  data: { amountRequestedInCrypto }
-})
-
-export const UPDATE_AMOUNT_RECEIVED_IN_CRYPTO = 'UPDATE_AMOUNT_RECEIVED_IN_CRYPTO'
-export const updateAmountReceivedInCrypto = (amountReceivedInCrypto: number) => ({
-  type: UPDATE_AMOUNT_RECEIVED_IN_CRYPTO,
-  data: { amountReceivedInCrypto }
-})
-
-export const UPDATE_AMOUNT_REQUESTED_IN_FIAT = 'UPDATE_AMOUNT_REQUESTED_IN_FIAT'
-export const updateAmountRequestedInFiat = (amountRequestedInFiat: number) => ({
-  type: UPDATE_AMOUNT_REQUESTED_IN_FIAT,
-  data: { amountRequestedInFiat }
-})
-
-export const UPDATE_METADATA = 'UPDATE_METADATA'
