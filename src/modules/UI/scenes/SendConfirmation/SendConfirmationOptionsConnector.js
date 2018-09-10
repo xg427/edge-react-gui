@@ -7,7 +7,6 @@ import { CHANGE_MINING_FEE_SEND_CONFIRMATION } from '../../../../constants/index
 import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import type { Dispatch, State } from '../../../ReduxTypes'
 import { updateMaxSpend } from './action'
-import { activated } from './components/UniqueIdentifierModal/UniqueIdentifierModalActions.js'
 import SendConfirmationOptions from './SendConfirmationOptions'
 
 const mapStateToProps = (state: State) => {
@@ -26,7 +25,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   changeMiningFee: sourceWallet => Actions[CHANGE_MINING_FEE_SEND_CONFIRMATION]({ sourceWallet }),
   openHelpModal: () => dispatch({ type: 'HELP_MODAL/OPEN_HELP_MODAL' }),
   sendMaxSpend: () => dispatch(updateMaxSpend()),
-  uniqueIdentifierModalActivated: () => dispatch(activated())
+  uniqueIdentifierModalActivated: () => dispatch({ type: 'UNIQUE_IDENTIFIER_MODAL/ACTIVATED' })
 })
 
 export default connect(

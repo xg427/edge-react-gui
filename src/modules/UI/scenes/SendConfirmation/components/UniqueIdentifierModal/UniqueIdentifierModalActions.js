@@ -1,24 +1,20 @@
 // @flow
 
-export const PREFIX = 'UNIQUE_IDENTIFIER_MODAL/'
-export const ACTIVATED = PREFIX + 'ACTIVATED'
-export const DEACTIVATED = PREFIX + 'DEACTIVATED'
-export const UNIQUE_IDENTIFIER_CHANGED = PREFIX + 'UNIQUE_IDENTIFIER_CHANGED'
-export const RESET = PREFIX + 'RESET'
+type ActivatedAction = {
+  type: 'UNIQUE_IDENTIFIER_MODAL/ACTIVATED'
+}
 
-export const activated = () => ({
-  type: ACTIVATED
-})
+type DeactivatedAction = {
+  type: 'UNIQUE_IDENTIFIER_MODAL/DEACTIVATED'
+}
 
-export const deactivated = () => ({
-  type: DEACTIVATED
-})
+type ResetAction = {
+  type: 'UNIQUE_IDENTIFIER_MODAL/RESET'
+}
 
-export const reset = () => ({
-  type: RESET
-})
+type ChangedAction = {
+  type: 'UNIQUE_IDENTIFIER_MODAL/CHANGED',
+  data: { uniqueIdentifier: string }
+}
 
-export const uniqueIdentifierChanged = (uniqueIdentifier: string) => ({
-  type: UNIQUE_IDENTIFIER_CHANGED,
-  data: { uniqueIdentifier }
-})
+export type UniqueIdentifierModalAction = ChangedAction | ActivatedAction | DeactivatedAction | ResetAction

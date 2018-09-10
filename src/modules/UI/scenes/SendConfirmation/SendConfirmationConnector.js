@@ -9,7 +9,6 @@ import { convertNativeToExchange } from '../../../utils'
 import { getExchangeDenomination, getSelectedCurrencyCode, getSelectedWallet } from '../../selectors.js'
 import { getDisplayDenomination, getExchangeDenomination as settingsGetExchangeDenomination } from '../../Settings/selectors.js'
 import { newPin, reset, signBroadcastAndSave, uniqueIdentifierUpdated, updateAmount, updateSpendPending } from './action.js'
-import { activated as uniqueIdentifierModalActivated } from './components/UniqueIdentifierModal/UniqueIdentifierModalActions.js'
 import { getError, getForceUpdateGuiCounter, getKeyboardIsVisible, getPending, getPublicAddress, getTransaction } from './selectors'
 import { SendConfirmation } from './SendConfirmation.ui'
 import type { SendConfirmationDispatchProps, SendConfirmationStateProps } from './SendConfirmation.ui'
@@ -95,7 +94,7 @@ const mapDispatchToProps = (dispatch: Dispatch): SendConfirmationDispatchProps =
   signBroadcastAndSave: (): any => dispatch(signBroadcastAndSave()),
   onChangePin: (pin: string) => dispatch(newPin(pin)),
   uniqueIdentifierButtonPressed: () => {
-    dispatch(uniqueIdentifierModalActivated())
+    dispatch({ type: 'UNIQUE_IDENTIFIER_MODAL/ACTIVATED' })
   }
 })
 
