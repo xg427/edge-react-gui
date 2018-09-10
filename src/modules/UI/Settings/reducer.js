@@ -7,7 +7,6 @@ import * as Constants from '../../../constants/indexConstants.js'
 import type { CustomTokenInfo } from '../../../types'
 import { CORE_DEFAULTS, LOCAL_ACCOUNT_DEFAULTS, SYNCED_ACCOUNT_DEFAULTS } from '../../Core/Account/settings.js'
 import type { Action } from '../../ReduxTypes'
-import * as ADD_TOKEN_ACTION from '../scenes/AddToken/action.js'
 import { spendingLimits } from './spendingLimits/SpendingLimitsReducer.js'
 
 export const initialState = {
@@ -329,7 +328,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
-    case ADD_TOKEN_ACTION.SET_TOKEN_SETTINGS: {
+    case 'ADD_TOKEN/SET_TOKEN_SETTINGS': {
       const { currencyCode } = data
       return {
         ...state,
@@ -337,7 +336,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
-    case ADD_TOKEN_ACTION.ADD_NEW_CUSTOM_TOKEN_SUCCESS: {
+    case 'ADD_TOKEN/ADD_NEW_CUSTOM_TOKEN_SUCCESS': {
       const { tokenObj, newCurrencyCode, settings } = data
       const customTokens = settings.customTokens
       return {
