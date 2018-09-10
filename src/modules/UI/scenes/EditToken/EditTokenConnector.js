@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import type { Dispatch, State } from '../../../ReduxTypes'
 import * as WALLET_ACTIONS from '../../Wallets/action'
-import * as EDIT_TOKEN_ACTIONS from './action.js'
 import EditToken from './EditToken.ui'
 import type { EditTokenDispatchProps, EditTokenStateProps } from './EditToken.ui'
 
@@ -16,10 +15,10 @@ const mapStateToProps = (state: State): EditTokenStateProps => ({
 })
 const mapDispatchToProps = (dispatch: Dispatch): EditTokenDispatchProps => ({
   showDeleteTokenModal: () => {
-    dispatch(EDIT_TOKEN_ACTIONS.showDeleteTokenModal())
+    dispatch({ type: 'EDIT_TOKEN/SHOW_DELETE_TOKEN_MODAL' })
   },
   hideDeleteTokenModal: () => {
-    dispatch(EDIT_TOKEN_ACTIONS.hideDeleteTokenModal())
+    dispatch({ type: 'EDIT_TOKEN/SHOW_DELETE_TOKEN_MODAL' })
   },
   deleteCustomToken: (walletId: string, currencyCode: string) => {
     dispatch(WALLET_ACTIONS.deleteCustomToken(walletId, currencyCode))

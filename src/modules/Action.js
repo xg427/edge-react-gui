@@ -23,6 +23,7 @@
 // import { type OtpAction } from '../actions/OtpActions.js'
 // import { type AddTokenAction } from './UI/scenes/AddToken/action.js'
 // import { type CreateWalletAction } from './UI/scenes/CreateWallet/action.js'
+// import { type EditTokenAction } from './UI/scenes/EditToken/action.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -50,3 +51,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | OtpAction // uncomment to get flow checking
 //   | AddTokenAction // uncomment to get flow checking
 //   | CreateWalletAction // uncomment to get flow checking
+//   | EditTokenAction // uncomment to get flow checking
