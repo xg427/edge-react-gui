@@ -25,6 +25,7 @@
 // import { type CreateWalletAction } from './UI/scenes/CreateWallet/action.js'
 // import { type EditTokenAction } from './UI/scenes/EditToken/action.js'
 // import { type RequestAction } from './UI/scenes/Request/action.js'
+// import { type LegacyAddressModalAction } from './UI/scenes/Scan/LegacyAddressModal/LegacyAddressModalActions.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -54,3 +55,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | CreateWalletAction // uncomment to get flow checking
 //   | EditTokenAction // uncomment to get flow checking
 //   | RequestAction // uncomment to get flow checking
+//   | LegacyAddressModalAction // uncomment to get flow checking

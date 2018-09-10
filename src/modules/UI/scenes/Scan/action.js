@@ -11,7 +11,6 @@ import * as WALLET_API from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
 import { denominationToDecimalPlaces, isEdgeLogin, noOp } from '../../../utils.js'
 import { paymentProtocolUriReceived, updateParsedURI } from '../SendConfirmation/action.js'
-import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
 import { activated as privateKeyModalActivated } from './PrivateKeyModal/PrivateKeyModalActions.js'
 
 export const PREFIX = 'SCAN/'
@@ -99,7 +98,7 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
 
       if (isLegacyAddressUri(parsedUri)) {
         // LEGACY ADDRESS URI
-        return setTimeout(() => dispatch(legacyAddressModalActivated()), 500)
+        return setTimeout(() => dispatch({ type: 'LEGACY_ADDRESS_MODAL/ACTIVATED' }), 500)
       }
 
       if (isPrivateKeyUri(parsedUri)) {
@@ -133,7 +132,7 @@ export const parseUri = (data: string) => (dispatch: Dispatch, getState: GetStat
 
 export const legacyAddressModalContinueButtonPressed = () => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
-  dispatch(legacyAddressModalDeactivated())
+  dispatch({ type: 'LEGACY_ADDRESS_MODAL/DEACTIVATED' })
   const parsedUri = state.ui.scenes.scan.parsedUri
   setImmediate(() => {
     if (!parsedUri) {
@@ -164,7 +163,7 @@ export const addressModalCancelButtonPressed = () => (dispatch: Dispatch, getSta
 }
 
 export const legacyAddressModalCancelButtonPressed = () => (dispatch: Dispatch) => {
-  dispatch(legacyAddressModalDeactivated())
+  dispatch({ type: 'LEGACY_ADDRESS_MODAL/DEACTIVATED' })
   dispatch(enableScan())
 }
 
