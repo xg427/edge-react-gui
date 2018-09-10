@@ -26,6 +26,7 @@
 // import { type EditTokenAction } from './UI/scenes/EditToken/action.js'
 // import { type RequestAction } from './UI/scenes/Request/action.js'
 // import { type LegacyAddressModalAction } from './UI/scenes/Scan/LegacyAddressModal/LegacyAddressModalActions.js'
+// import { type PrivateKeyModalAction } from './UI/scenes/Scan/PrivateKeyModal/PrivateKeyModalActions.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -56,3 +57,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | EditTokenAction // uncomment to get flow checking
 //   | RequestAction // uncomment to get flow checking
 //   | LegacyAddressModalAction // uncomment to get flow checking
+//   | PrivateKeyModalAction // uncomment to get flow checking

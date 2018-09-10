@@ -4,20 +4,19 @@ import { connect } from 'react-redux'
 
 import type { Dispatch, State } from '../../../../../ReduxTypes.js'
 import { PrimaryModal } from './PrimaryModal.ui.js'
-import { deactivated } from './PrimaryModalActions.js'
 
 export const mapStateToProps = (state: State) => ({
   isActive: state.ui.scenes.scan.privateKeyModal.primaryModal.isActive
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onReject: () => {
-    dispatch(deactivated())
+    dispatch({ type: 'PRIVATE_KEY_MODAL/PRIMARY_MODAL_DEACTIVATED' })
   },
   onBackButtonPress: () => {
-    dispatch(deactivated())
+    dispatch({ type: 'PRIVATE_KEY_MODAL/PRIMARY_MODAL_DEACTIVATED' })
   },
   onBackdropPress: () => {
-    dispatch(deactivated())
+    dispatch({ type: 'PRIVATE_KEY_MODAL/PRIMARY_MODAL_DEACTIVATED' })
   }
 })
 

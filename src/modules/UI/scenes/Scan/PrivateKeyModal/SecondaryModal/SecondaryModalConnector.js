@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import type { Dispatch, State } from '../../../../../ReduxTypes.js'
 import { SecondaryModal } from './SecondaryModal.ui.js'
-import { deactivated } from './SecondaryModalActions.js'
 
 export const mapStateToProps = (state: State) => ({
   error: state.ui.scenes.scan.privateKeyModal.error,
@@ -13,10 +12,10 @@ export const mapStateToProps = (state: State) => ({
 })
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onBackButtonPress: () => {
-    dispatch(deactivated())
+    dispatch({ type: 'PRIVATE_KEY_MODAL/SECONDARY_MODAL_DEACTIVATED' })
   },
   onBackdropPress: () => {
-    dispatch(deactivated())
+    dispatch({ type: 'PRIVATE_KEY_MODAL/SECONDARY_MODAL_DEACTIVATED' })
   }
 })
 

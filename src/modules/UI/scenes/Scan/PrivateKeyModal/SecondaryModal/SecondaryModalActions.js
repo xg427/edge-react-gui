@@ -1,13 +1,11 @@
 // @flow
 
-export const PREFIX = 'PRIVATE_KEY_MODAL/SECONDARY_MODAL/'
+type ActivatedAction = {
+  type: 'PRIVATE_KEY_MODAL/SECONDARTY_MODAL_ACTIVATED'
+}
 
-export const ACTIVATED = PREFIX + 'ACTIVATED'
-export const activated = () => ({
-  type: ACTIVATED
-})
+type DeactivatedAction = {
+  type: 'PRIVATE_KEY_MODAL/SECONDARTY_MODAL_DEACTIVATED'
+}
 
-export const DEACTIVATED = PREFIX + 'DEACTIVATED'
-export const deactivated = () => ({
-  type: DEACTIVATED
-})
+export type SecondaryModalAction = ActivatedAction | DeactivatedAction
