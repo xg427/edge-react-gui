@@ -6,33 +6,35 @@ import * as Constants from '../../../../constants/indexConstants.js'
 import * as ACCOUNT_API from '../../../Core/Account/api.js'
 import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes'
-import * as WALLET_ACTIONS from '../../Wallets/action'
+import { selectWallet } from '../../Wallets/action'
 
-export const UPDATE_WALLET_NAME = 'UPDATE_WALLET_NAME'
-export const SELECT_WALLET_TYPE = 'SELECT_WALLET_TYPE'
-export const SELECT_FIAT = 'SELECT_FIAT'
+type UpdateWalletNameAction = {
+  type: 'CREATE_WALLET/UPDATE_WALLET_NAME',
+  data: { waleltName: string }
+}
 
-export const updateWalletName = (walletName: string) => ({
-  type: UPDATE_WALLET_NAME,
-  data: { walletName }
-})
+type SelectWalletFiatAction = {
+  type: 'CREATE_WALLET/SELECT_WALLET_FIAT'
+}
 
-export const selectWalletType = (walletType: string) => ({
-  type: SELECT_WALLET_TYPE,
-  data: { walletType }
-})
+type SelectWalletTypeAction = {
+  type: 'CREATE_WALLET/SELECT_WALLET_TYPE',
+  data: { walletType: string }
+}
 
-export const selectFiat = (fiat: string) => ({
-  type: SELECT_FIAT,
-  data: { fiat }
-})
+type SelectFiatAction = {
+  type: 'CREATE_WALLET/SELECT_FIAT',
+  data: { fiat: string }
+}
+
+export type CreateWalletAction = UpdateWalletNameAction | SelectWalletFiatAction | SelectFiatAction | SelectWalletTypeAction
 
 export const createCurrencyWallet = (
   walletName: string,
   walletType: string,
   fiatCurrencyCode: string,
   popScene: boolean = true,
-  selectWallet: boolean = false
+  shouldSelectWallet: boolean = false
 ) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
@@ -47,8 +49,8 @@ export const createCurrencyWallet = (
   }).then(edgeWallet => {
     Actions.popTo(Constants.WALLET_LIST_SCENE)
     dispatch({ type: 'WALLETS/CREATE_WALLET_SUCCESS' })
-    if (selectWallet) {
-      dispatch(WALLET_ACTIONS.selectWallet(edgeWallet.id, edgeWallet.currencyInfo.currencyCode))
+    if (shouldSelectWallet) {
+      dispatch(selectWallet(edgeWallet.id, edgeWallet.currencyInfo.currencyCode))
     }
   })
 }
