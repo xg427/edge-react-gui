@@ -39,6 +39,7 @@
 // import { type ScenesAction } from './UI/scenes/action.js'
 // import { type ContactsAction } from '../reducers/contacts/actions.js'
 // import { type PasswordReminderAction } from '../reducers/passwordReminder/actions.js'
+// import { type PermissionsAction } from '../reducers/permissions/actions.js'
 type LegacyAction = { type: string, data?: any }
 
 export type Action = LegacyAction // remove once all actions have type definitions
@@ -81,3 +82,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 // | ScenesAction // uncomment to get flow checking
 // | ContactsAction // uncomment to get flow checking
 // | PasswordReminderAction // uncomment to get flow checking
+// | PermissionsAction // uncomment to get flow checking

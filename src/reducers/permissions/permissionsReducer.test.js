@@ -1,14 +1,14 @@
-/* eslint-disable flowtype/require-valid-file-annotation */
+// @flow
 
 /* globals test expect */
 
 import { AUTHORIZED, DENIED, RESTRICTED } from '../../modules/UI/permissions.js'
-import { updatePermissions } from './actions.js'
 import { initialState, permissionsReducer } from './permissionsReducer.js'
 
 test('initialState', () => {
   const expected = initialState
-  const actual = permissionsReducer(undefined, { type: 'UNKNOWN' })
+  // $FlowExpectedError
+  const actual = permissionsReducer(undefined, {})
 
   expect(actual).toEqual(expected)
 })
@@ -18,7 +18,7 @@ test('updatePermissions => AUTHORIZED', () => {
     ...initialState,
     camera: AUTHORIZED
   }
-  const action = updatePermissions({ camera: AUTHORIZED })
+  const action = { type: 'PERMISSIONS/UPDATE_PERMISSIONS', data: { camera: AUTHORIZED } }
   const actual = permissionsReducer(initialState, action)
 
   expect(actual).toEqual(expected)
@@ -29,7 +29,7 @@ test('updatePermissions => DENIED', () => {
     ...initialState,
     camera: DENIED
   }
-  const action = updatePermissions({ camera: DENIED })
+  const action = { type: 'PERMISSIONS/UPDATE_PERMISSIONS', data: { camera: DENIED } }
   const actual = permissionsReducer(initialState, action)
 
   expect(actual).toEqual(expected)
@@ -40,7 +40,7 @@ test('updatePermissions => RESTRICTED', () => {
     ...initialState,
     camera: RESTRICTED
   }
-  const action = updatePermissions({ camera: RESTRICTED })
+  const action = { type: 'PERMISSIONS/UPDATE_PERMISSIONS', data: { camera: RESTRICTED } }
   const actual = permissionsReducer(initialState, action)
 
   expect(actual).toEqual(expected)
@@ -53,11 +53,14 @@ test('updatePermissions => MULTI', () => {
     camera: RESTRICTED,
     contacts: AUTHORIZED
   }
-  const action = updatePermissions({
-    bluetooth: AUTHORIZED,
-    camera: RESTRICTED,
-    contacts: AUTHORIZED
-  })
+  const action = {
+    type: 'PERMISSIONS/UPDATE_PERMISSIONS',
+    data: {
+      bluetooth: AUTHORIZED,
+      camera: RESTRICTED,
+      contacts: AUTHORIZED
+    }
+  }
   const actual = permissionsReducer(initialState, action)
 
   expect(actual).toEqual(expected)
