@@ -33,6 +33,7 @@
 // import { type SettingsAction as SettingsSceneAction } from './UI/scenes/Settings/action.js'
 // import { type SpendingLimitsAction } from './UI/Settings/spendingLimits/SpendingLimitsReducer.js'
 // import { type TransactionDetailsAction } from './UI/scenes/TransactionDetails/action.js'
+// import { type TransactionListAction } from './UI/scenes/TransactionList/action.js'
 type LegacyAction = { type: string, data?: any }
 
 export type Action = LegacyAction // remove once all actions have type definitions
@@ -69,3 +70,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | SettingsSceneAction // uncomment to get flow checking
 //   | SpendingLimitsAction // uncomment to get flow checking
 // | TransactionDetailsAction // uncomment to get flow checking
+// | TransactionListAction // uncomment to get flow checking

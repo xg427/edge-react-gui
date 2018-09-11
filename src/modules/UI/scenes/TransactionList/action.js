@@ -32,6 +32,62 @@ export const CHANGED_TRANSACTIONS = PREFIX + 'CHANGED_TRANSACTIONS'
 export const SUBSEQUENT_TRANSACTION_BATCH_NUMBER = 30
 export const INITIAL_TRANSACTION_BATCH_NUMBER = 10
 
+type UpdateTransactionsListAction = {
+  type: 'TRANSACTIONS_LIST/UPDATE_TRANSACTIONS_LIST'
+}
+
+type DeleteTransactionsListAction = {
+  type: 'TRANSACTIONS_LIST/DELETE_TRANSACTIONS_LIST'
+}
+
+type UpdateWalletTransactionsAction = {
+  type: 'TRANSACTIONS_LIST/UPDATE_WALLET_TRANSACTIONS'
+}
+
+type UpdateTransactionsAction = {
+  type: 'TRANSACTIONS_LIST/UPDATE_TRANSACTIONS',
+  data: {
+    numTransactions: number,
+    transactions: Array<TransactionListTx>,
+    currentCurrencyCode: string,
+    currentWalletId: string,
+    currentEndIndex: number
+  }
+}
+
+type UpdateBalanceAction = {
+  type: 'noop'
+}
+
+type TransactionsSearchVisibleAction = {
+  type: 'TRANSACTIONS_LIST/TRANSACTIONS_SEARCH_VISIBLE'
+}
+
+type TransactionsSearchHiddenAction = {
+  type: 'TRANSACTIONS_LIST/TRANSACTIONS_SEARCH_HIDDEN'
+}
+
+type UpdateContactsListAction = {
+  type: 'TRANSACTIONS_LIST/UPDATE_CONTACTS_LIST',
+  data: any
+}
+
+type UpdateSearchResultsAction = {
+  type: 'TRANSACTIONS_LIST/UPDATE_SEARCH_RESULTS',
+  data: any
+}
+
+export type TransactionListAction =
+  | UpdateTransactionsListAction
+  | DeleteTransactionsListAction
+  | UpdateWalletTransactionsAction
+  | UpdateBalanceAction
+  | UpdateTransactionsAction
+  | TransactionsSearchVisibleAction
+  | TransactionsSearchHiddenAction
+  | UpdateContactsListAction
+  | UpdateSearchResultsAction
+
 const emptyArray = []
 
 export const fetchMoreTransactions = (walletId: string, currencyCode: string, reset: boolean) => (dispatch: Dispatch, getState: GetState) => {
@@ -116,15 +172,16 @@ const getAndMergeTransactions = async (state: State, dispatch: Dispatch, walletI
         })
         key++
       }
-      dispatch(
-        updateTransactions({
-          numTransactions,
-          transactions: transactionsWithKeys,
+      dispatch({
+        type: 'TRANSACTIONS_LIST',
+        data: {
           currentCurrencyCode: currencyCode,
           currentWalletId: walletId,
-          currentEndIndex
-        })
-      )
+          currentEndIndex,
+          numTransactions,
+          transactions: transactionsWithKeys
+        }
+      })
     } catch (e) {
       console.warn('Issue with getTransactions: ', e.message)
     }
@@ -171,53 +228,4 @@ export const newTransactionsRequest = (walletId: string, edgeTransactions: Array
   dispatch(fetchTransactions(walletId, selectedCurrencyCode, options))
   if (!UTILS.isReceivedTransaction(edgeTransaction)) return
   dispatch({ type: 'TRANSACTION_ALERT/DISPLAY_TRANSACTION_ALERT', data: { edgeTransaction } })
-}
-
-export const updateTransactions = (transactionUpdate: {
-  numTransactions: number,
-  transactions: Array<TransactionListTx>,
-  currentCurrencyCode: string,
-  currentWalletId: string,
-  currentEndIndex: number
-}) => ({
-  type: UPDATE_TRANSACTIONS,
-  data: transactionUpdate
-})
-
-export const updateBalance = () => ({
-  type: 'noop'
-})
-
-export function deleteTransactionsList () {
-  return {
-    type: DELETE_TRANSACTIONS_LIST
-  }
-}
-
-export function transactionsSearchVisible () {
-  return {
-    type: TRANSACTIONS_SEARCH_VISIBLE
-  }
-}
-
-export function transactionsSearchHidden () {
-  return {
-    type: TRANSACTIONS_SEARCH_HIDDEN
-  }
-}
-
-// $FlowFixMe
-export function updateContactsList (data) {
-  return {
-    type: UPDATE_CONTACTS_LIST,
-    data
-  }
-}
-
-// $FlowFixMe
-export function updateSearchResults (data) {
-  return {
-    type: UPDATE_SEARCH_RESULTS,
-    data
-  }
 }
