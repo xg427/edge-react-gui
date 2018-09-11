@@ -5,25 +5,43 @@ import * as ACCOUNT_SETTINGS from '../../../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes'
 
-export const TOGGLE_ARCHIVE_VISIBILITY = 'TOGGLE_ARCHIVE_VISIBILITY'
+type UpdateActionWalletsOrderStart = {
+  type: 'WALLET_LIST/UPDATE_ACTIVE_WALLETS_ORDER_START',
+  data: { activeWalletIds: Array<string> }
+}
 
-export const UPDATE_ACTIVE_WALLETS_ORDER_START = 'UPDATE_ACTIVE_WALLETS_ORDER_START'
-export const UPDATE_ACTIVE_WALLETS_ORDER_SUCCESS = 'UPDATE_ACTIVE_WALLETS_ORDER_SUCCESS'
+type UpdateActionWalletsOrderSuccess = {
+  type: 'WALLET_LIST/UPDATE_ACTIVE_WALLETS_ORDER_SUCCESS',
+  data: { activeWalletIds: Array<string> }
+}
 
-export const UPDATE_ARCHIVED_WALLETS_ORDER_START = 'UPDATE_ARCHIVED_WALLETS_ORDER_START'
-export const UPDATE_ARCHIVED_WALLETS_ORDER_SUCCESS = 'UPDATE_ARCHIVED_WALLETS_ORDER_SUCCESS'
+type UpdateArchivedWalletsOrderStart = {
+  type: 'WALLET_LIST/UPDATE_ARCHIVED_WALLETS_ORDER_START',
+  data: { archivedWalletIds: Array<string> }
+}
 
-export const ADD_TOKEN = 'ADD_TOKEN'
+type UpdateArchivedWalletsOrderSuccess = {
+  type: 'WALLET_LIST/UPDATE_ARCHIVED_WALLETS_ORDER_SUCCESS',
+  data: { archivedWalletIds: Array<string> }
+}
+
+export type WalletListAction =
+  | UpdateActionWalletsOrderStart
+  | UpdateActionWalletsOrderSuccess
+  | UpdateArchivedWalletsOrderStart
+  | UpdateArchivedWalletsOrderSuccess
 
 export const updateActiveWalletsOrder = (activeWalletIds: Array<string>) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const { account } = state.core
-  dispatch(wrap(UPDATE_ACTIVE_WALLETS_ORDER_START, { activeWalletIds }))
+  dispatch({ type: 'WALLET_LIST/UPDATE_ACTIVE_WALLETS_ORDER_START', data: { activeWalletIds } })
   ACCOUNT_API.updateActiveWalletsOrderRequest(account, activeWalletIds)
     .then(() => {
-      dispatch(wrap(UPDATE_ACTIVE_WALLETS_ORDER_SUCCESS, { activeWalletIds }))
+      dispatch({ type: 'WALLET_LIST/UPDATE_ACTIVE_WALLETS_ORDER_SUCCESS', data: { activeWalletIds } })
     })
-    .catch(e => console.log(e))
+    .catch(error => {
+      console.log(error)
+    })
 }
 
 export const toggleAccountBalanceVisibility = () => (dispatch: Dispatch, getState: GetState) => {
@@ -52,13 +70,13 @@ export const updateArchivedWalletsOrder = (archivedWalletIds: Array<string>) => 
   const state = getState()
   const { account } = state.core
 
-  dispatch(wrap(UPDATE_ARCHIVED_WALLETS_ORDER_START, { archivedWalletIds }))
+  dispatch({ type: 'WALLET_LIST/UPDATE_ARCHIVED_WALLETS_ORDER_START', data: { archivedWalletIds } })
 
   ACCOUNT_API.updateArchivedWalletsOrderRequest(account, archivedWalletIds)
     .then((archivedWalletIds: Array<string>) => {
-      dispatch(wrap(UPDATE_ARCHIVED_WALLETS_ORDER_SUCCESS, { archivedWalletIds }))
+      dispatch({ type: 'WALLET_LIST/UPDATE_ARCHIVED_WALLETS_ORDER_SUCCESS', data: { archivedWalletIds } })
     })
-    .catch(e => console.log(e))
+    .catch(error => {
+      console.log(error)
+    })
 }
-
-const wrap = (type, data) => ({ type, data })

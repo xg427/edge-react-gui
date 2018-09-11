@@ -34,6 +34,7 @@
 // import { type SpendingLimitsAction } from './UI/Settings/spendingLimits/SpendingLimitsReducer.js'
 // import { type TransactionDetailsAction } from './UI/scenes/TransactionDetails/action.js'
 // import { type TransactionListAction } from './UI/scenes/TransactionList/action.js'
+// import { type WalletListAction } from './UI/scenes/WalletList/action.js'
 type LegacyAction = { type: string, data?: any }
 
 export type Action = LegacyAction // remove once all actions have type definitions
@@ -71,3 +72,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | SpendingLimitsAction // uncomment to get flow checking
 // | TransactionDetailsAction // uncomment to get flow checking
 // | TransactionListAction // uncomment to get flow checking
+// | WalletListAction // uncomment to get flow checking
