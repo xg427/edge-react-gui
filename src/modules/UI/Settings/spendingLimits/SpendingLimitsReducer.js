@@ -13,12 +13,12 @@ export type SpendingLimits = {
   }
 }
 
-export const PREFIX = 'SPENDING_LIMITS/'
-export const NEW_SPENDING_LIMITS = PREFIX + 'NEW_SPENDING_LIMITS'
-export const newSpendingLimits = (spendingLimits: SpendingLimits) => ({
-  type: NEW_SPENDING_LIMITS,
-  data: { spendingLimits }
-})
+type NewSpendingLimitsAction = {
+  type: 'SPENDING_LIMITS/NEW_SPENDING_LIMITS',
+  data: { spendingLimits: SpendingLimits }
+}
+
+export type SpendingLimitsAction = NewSpendingLimitsAction
 
 // REDUCERS
 export const initialState = {
@@ -32,7 +32,7 @@ export const isEnabled = (state: boolean = initialState.transaction.isEnabled, a
   if (!action.data) return state
   switch (action.type) {
     case ACCOUNT_INIT_COMPLETE:
-    case NEW_SPENDING_LIMITS: {
+    case 'SPENDING_LIMITS/NEW_SPENDING_LIMITS': {
       return action.data.spendingLimits.transaction.isEnabled
     }
     default:
@@ -44,7 +44,7 @@ export const amount = (state: number = initialState.transaction.amount, action: 
   if (!action.data) return state
   switch (action.type) {
     case ACCOUNT_INIT_COMPLETE:
-    case NEW_SPENDING_LIMITS: {
+    case 'SPENDING_LIMITS/NEW_SPENDING_LIMITS': {
       return action.data.spendingLimits.transaction.amount
     }
     default:

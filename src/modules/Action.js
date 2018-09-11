@@ -30,6 +30,8 @@
 // import { type ScanAction } from './UI/scenes/Scan/action.js'
 // import { type UniqueIdentifierModalAction } from './UI/scenes/SendConfirmation/components/UniqueIdentifierModal/UniqueIdentifierModalActions.js'
 // import { type SendConfirmationAction } from './UI/scenes/SendConfirmation/action.js'
+// import { type SettingsAction as SettingsSceneAction } from './UI/scenes/Settings/action.js'
+// import { type SpendingLimitsAction } from './UI/Settings/spendingLimits/SpendingLimitsReducer.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -64,3 +66,5 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | ScanAction // uncomment to get flow checking
 //   | UniqueIdentifierModalAction // uncomment to get flow checking
 //   | SendConfirmationAction // uncomment to get flow checking
+//   | SettingsSceneAction // uncomment to get flow checking
+//   | SpendingLimitsAction // uncomment to get flow checking

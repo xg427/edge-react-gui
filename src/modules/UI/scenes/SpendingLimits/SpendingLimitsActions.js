@@ -9,7 +9,6 @@ import { checkPassword } from '../../../Core/Account/api.js'
 import * as SETTINGS_API from '../../../Core/Account/settings.js'
 import { getAccount } from '../../../Core/selectors.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
-import { newSpendingLimits } from '../../Settings/spendingLimits/SpendingLimitsReducer.js'
 
 export const setSpendingLimits = (spendingLimits: SpendingLimits, password: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -21,7 +20,7 @@ export const setSpendingLimits = (spendingLimits: SpendingLimits, password: stri
       if (!isAuthorized) return Alert.alert(s.strings.password_check_incorrect_password_title)
 
       return SETTINGS_API.setSpendingLimits(account, spendingLimits).then(() => {
-        dispatch(newSpendingLimits(spendingLimits))
+        dispatch({ type: 'SPENDING_LIMITS/NEW_SPENDING_LIMITS', data: { spendingLimits } })
         Actions.pop()
       })
     })

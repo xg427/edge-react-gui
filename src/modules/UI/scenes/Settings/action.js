@@ -11,7 +11,6 @@ import s from '../../../../locales/strings.js'
 import { convertCurrency, restoreWalletsRequest } from '../../../Core/Account/api.js'
 import * as ACCOUNT_SETTINGS from '../../../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../../../Core/selectors'
-import { newSpendingLimits } from '../../Settings/spendingLimits/SpendingLimitsReducer.js'
 
 type SetDefaultFiatStartAction = {
   type: 'SET_DEFAULT_FIAT_START',
@@ -81,7 +80,7 @@ export const setDefaultFiatRequest = (defaultFiat: string) => (dispatch: Dispatc
       // update spending limits in account settings
       ACCOUNT_SETTINGS.setSpendingLimits(account, nextSpendingLimits)
       // update spending limits in settings
-      dispatch(newSpendingLimits(nextSpendingLimits))
+      dispatch({ type: 'SPENDING_LIMITS/NEW_SPENDING_LIMITS', data: { nextSpendingLimits } })
     })
     .catch(e => console.log(e))
 }

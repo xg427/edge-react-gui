@@ -1,11 +1,13 @@
+// @flow
+
 /* globals describe it expect */
-/* eslint-disable flowtype/require-valid-file-annotation */
 
 import { ACCOUNT_INIT_COMPLETE } from '../../../../constants/indexConstants.js'
-import { initialState, newSpendingLimits, spendingLimits } from './SpendingLimitsReducer.js'
+import { initialState, spendingLimits } from './SpendingLimitsReducer.js'
 
 describe('spendingLimits', () => {
   it('should render initialState', () => {
+    // $FlowExpectedError
     const actual = spendingLimits(undefined, {})
 
     expect(actual).toMatchSnapshot()
@@ -38,13 +40,18 @@ describe('spendingLimits', () => {
           amount: 0
         }
       }
-      const updateAction = newSpendingLimits({
-        transaction: {
-          isEnabled: false,
-          amount: 234
+      const action = {
+        type: 'SPENDING_LIMITS/NEW_SPENDING_LIMITS',
+        data: {
+          spendingLimits: {
+            transaction: {
+              isEnabled: false,
+              amount: 234
+            }
+          }
         }
-      })
-      const actual = spendingLimits(initialState, updateAction)
+      }
+      const actual = spendingLimits(initialState, action)
 
       expect(actual).toMatchSnapshot()
     })
@@ -56,13 +63,19 @@ describe('spendingLimits', () => {
           amount: 0
         }
       }
-      const updateAction = newSpendingLimits({
-        transaction: {
-          isEnabled: true,
-          amount: 234
+
+      const action = {
+        type: 'SPENDING_LIMITS/NEW_SPENDING_LIMITS',
+        data: {
+          spendingLimits: {
+            transaction: {
+              isEnabled: true,
+              amount: 234
+            }
+          }
         }
-      })
-      const actual = spendingLimits(initialState, updateAction)
+      }
+      const actual = spendingLimits(initialState, action)
 
       expect(actual).toMatchSnapshot()
     })
