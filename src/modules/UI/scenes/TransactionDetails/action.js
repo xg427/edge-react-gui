@@ -7,10 +7,12 @@ import * as ACCOUNT_SETTINGS from '../../../Core/Account/settings.js'
 import * as WALLET_API from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState, State } from '../../../ReduxTypes'
 
-export const SET_TRANSACTION_DETAILS = 'SET_TRANSACTION_DETAILS'
+type SetSubcategoriesAction = {
+  type: 'TRANSACTION_DETAILS/SET_TRANSACTION_SUBCATEGORIES',
+  data: { subcategories: Array<string> }
+}
 
-export const SET_TRANSACTION_SUBCATEGORIES_START = 'SET_TRANSACTION_SUBCATEGORIES_START'
-export const SET_TRANSACTION_SUBCATEGORIES = 'SET_TRANSACTION_SUBCATEGORIES'
+export type TransactionDetailsAction = SetSubcategoriesAction
 
 export const setTransactionDetails = (txid: string, currencyCode: string, edgeMetadata: EdgeMetadata) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -26,15 +28,10 @@ export const setTransactionDetails = (txid: string, currencyCode: string, edgeMe
 
 export const getSubcategories = () => (dispatch: Dispatch, getState: GetState) => {
   const { account } = getState().core
-  ACCOUNT_SETTINGS.getSyncedSubcategories(account).then(s => {
-    return dispatch(setSubcategories(s))
+  ACCOUNT_SETTINGS.getSyncedSubcategories(account).then(subcategories => {
+    return dispatch({ type: 'TRANSACTION_DETAILS/SET_SUBCATEGORIES', data: { subcategories } })
   })
 }
-
-export const setSubcategories = (subcategories: Array<string>) => ({
-  type: SET_TRANSACTION_SUBCATEGORIES,
-  data: { subcategories }
-})
 
 export const setNewSubcategory = (newSubcategory: string) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -43,10 +40,10 @@ export const setNewSubcategory = (newSubcategory: string) => (dispatch: Dispatch
   const newSubcategories = [...oldSubcats, newSubcategory]
   return ACCOUNT_SETTINGS.setSubcategoriesRequest(account, { categories: newSubcategories.sort() })
     .then(() => {
-      dispatch(setSubcategories(newSubcategories.sort()))
+      dispatch({ type: 'TRANSACTION_DETAILS/SET_SUBCATEGORIES', data: { subcategories: newSubcategories.sort() } })
     })
-    .catch(e => {
-      console.error(e)
+    .catch(error => {
+      console.error(error)
     })
 }
 
