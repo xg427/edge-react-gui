@@ -1,8 +1,7 @@
-/* eslint-disable flowtype/require-valid-file-annotation */
+// @flow
 
 /* globals test expect */
 
-import { loadContactsSuccess } from './actions.js'
 import { contactsReducer, initialState } from './contactsReducer.js'
 
 test('initialState', () => {
@@ -26,7 +25,7 @@ test('contacts loaded', () => {
     givenName: 'John'
   }
   const expected = [contact]
-  const action = loadContactsSuccess([contact])
+  const action = { type: 'CONTACTS/LOAD_CONTACTS_SUCCESS', data: { contacts: [contact] } }
   const actual = contactsReducer(undefined, action)
 
   expect(actual).toEqual(expected)

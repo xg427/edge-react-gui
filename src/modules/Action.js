@@ -37,6 +37,7 @@
 // import { type WalletListAction } from './UI/scenes/WalletList/action.js'
 // import { type WalletTransferListAction } from './UI/scenes/WalletTransferList/action.js'
 // import { type ScenesAction } from './UI/scenes/action.js'
+// import { type ContactsAction } from '../reducers/contacts/actions.js'
 type LegacyAction = { type: string, data?: any }
 
 export type Action = LegacyAction // remove once all actions have type definitions
@@ -77,3 +78,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 // | WalletListAction // uncomment to get flow checking
 // | WalletTransferListAction // uncomment to get flow checking
 // | ScenesAction // uncomment to get flow checking
+// | ContactsAction // uncomment to get flow checking
