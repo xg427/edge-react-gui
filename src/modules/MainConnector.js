@@ -7,7 +7,6 @@ import { requestPermission } from '../reducers/permissions/actions.js'
 import makeContextCallbacks from './Core/Context/callbacks'
 import Main from './Main.ui'
 import type { Dispatch } from './ReduxTypes'
-import { updateCurrentSceneKey } from './UI/scenes/action.js'
 import { selectWallet } from './UI/Wallets/action.js'
 
 const mapStateToProps = () => ({})
@@ -43,7 +42,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     })
   },
   updateCurrentSceneKey: sceneKey => {
-    return dispatch(updateCurrentSceneKey(sceneKey))
+    return dispatch({ type: 'SCENES/UPDATE_CURRENT_SCENE_KEY', data: { sceneKey } })
   },
   // commented out since it was blowing up flow && doesnt seem to be called.. TODO remove
   /* setLocaleInfo: (localeInfo) => {

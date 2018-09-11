@@ -12,7 +12,6 @@ import { passwordReminderModalReducer as passwordReminderModal } from '../compon
 import transactionAlert from '../components/TransactionAlert/reducer.js'
 import walletListModal from '../components/WalletListModal/reducer'
 import dimensions from '../dimensions/reducer'
-import * as SCENES_ACTION from './action.js'
 import changeMiningFee from './ChangeMiningFee/reducer'
 import createWallet from './CreateWallet/reducer'
 import editToken from './EditToken/reducer'
@@ -26,10 +25,12 @@ import walletList from './WalletList/reducer'
 import { walletTransferListReducer as walletTransferList } from './WalletTransferList/reducer'
 
 export const currentScene = (state: string = '', action: Action) => {
-  if (!action.data) return state
   switch (action.type) {
-    case SCENES_ACTION.UPDATE_CURRENT_SCENE_KEY:
+    case 'SCENES/UPDATE_CURRENT_SCENE_KEY': {
+      if (!action.data) throw new Error('Invalid action')
       return action.data.sceneKey
+    }
+
     default:
       return state
   }
