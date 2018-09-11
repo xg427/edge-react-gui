@@ -2,11 +2,9 @@
 
 import { combineReducers } from 'redux'
 
-import * as ACTION from './action'
-
 const walletTransferList = (state = [], action) => {
   switch (action.type) {
-    case ACTION.UPDATE_WALLET_TRANSFER_LIST:
+    case 'WALLET_TRANSFER_LIST/UPDATE_WALLET_TRANSFER_LIST':
       return action.data
     default:
       return state
@@ -15,7 +13,7 @@ const walletTransferList = (state = [], action) => {
 
 const walletListModalVisible = (state = false, action) => {
   switch (action.type) {
-    case ACTION.TOGGLE_WALLET_LIST_MODAL_VISIBILITY:
+    case 'WALLET_TRANSFER_LIST/TOGGLE_WALLET_LIST_MODAL_VISIBILITY':
       return !state
     default:
       return state

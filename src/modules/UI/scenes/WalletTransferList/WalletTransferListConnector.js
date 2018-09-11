@@ -3,7 +3,6 @@
 import { connect } from 'react-redux'
 
 import type { Dispatch, State } from '../../../ReduxTypes.js'
-import { toggleWalletListModal } from './action'
 import WalletTransferList from './WalletTransferList.ui'
 
 const mapStateToProps = (state: State) => ({
@@ -12,7 +11,7 @@ const mapStateToProps = (state: State) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  toggleWalletListModal: () => dispatch(toggleWalletListModal())
+  toggleWalletListModal: () => dispatch({ type: 'WALLET_TRANSFER_LIST/TOGGLE_WALLET_LIST_MODAL_VISIBILITY' })
 })
 
 export default connect(

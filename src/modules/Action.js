@@ -35,41 +35,43 @@
 // import { type TransactionDetailsAction } from './UI/scenes/TransactionDetails/action.js'
 // import { type TransactionListAction } from './UI/scenes/TransactionList/action.js'
 // import { type WalletListAction } from './UI/scenes/WalletList/action.js'
+// import { type WalletTransferListAction } from './UI/scenes/WalletTransferList/action.js'
 type LegacyAction = { type: string, data?: any }
 
 export type Action = LegacyAction // remove once all actions have type definitions
-//   | AccountAction // uncomment to get flow checking
-//   | ContextAction // uncomment to get flow checking
-//   | EdgeWalletsAction // uncomment to get flow checking
-//   | ExchangeRatesAction // uncomment to get flow checking
-//   | LogoutAction // uncomment to get flow checking
-//   | SendLogsAction // uncomment to get flow checking
-//   | ABAlertAction // uncomment to get flow checking
-//   | ControlPanelAction // uncomment to get flow checking
-//   | DropdownAlertAction // uncomment to get flow checking
-//   | ErrorAlertAction // uncomment to get flow checking
-//   | HelpModalAction // uncomment to get flow checking
-//   | PasswordRecoveryReminderModalAction // uncomment to get flow checking
-//   | PasswordReminderModalAction // uncomment to get flow checking
-//   | TransactionAlertAction // uncomment to get flow checking
-//   | WalletListModalAction // uncomment to get flow checking
-//   | DimensionsAction // uncomment to get flow checking
-//   | RequestAction // uncomment to get flow checking
-//   | WalletsAction // uncomment to get flow checking
-//   | SettingsAction // uncomment to get flow checking
-//   | EdgeLoginAction // uncomment to get flow checking
-//   | OtpAction // uncomment to get flow checking
-//   | AddTokenAction // uncomment to get flow checking
-//   | CreateWalletAction // uncomment to get flow checking
-//   | EditTokenAction // uncomment to get flow checking
-//   | RequestSceneAction // uncomment to get flow checking
-//   | LegacyAddressModalAction // uncomment to get flow checking
-//   | PrivateKeyModalAction // uncomment to get flow checking
-//   | ScanAction // uncomment to get flow checking
-//   | UniqueIdentifierModalAction // uncomment to get flow checking
-//   | SendConfirmationAction // uncomment to get flow checking
-//   | SettingsSceneAction // uncomment to get flow checking
-//   | SpendingLimitsAction // uncomment to get flow checking
+// | AccountAction // uncomment to get flow checking
+// | ContextAction // uncomment to get flow checking
+// | EdgeWalletsAction // uncomment to get flow checking
+// | ExchangeRatesAction // uncomment to get flow checking
+// | LogoutAction // uncomment to get flow checking
+// | SendLogsAction // uncomment to get flow checking
+// | ABAlertAction // uncomment to get flow checking
+// | ControlPanelAction // uncomment to get flow checking
+// | DropdownAlertAction // uncomment to get flow checking
+// | ErrorAlertAction // uncomment to get flow checking
+// | HelpModalAction // uncomment to get flow checking
+// | PasswordRecoveryReminderModalAction // uncomment to get flow checking
+// | PasswordReminderModalAction // uncomment to get flow checking
+// | TransactionAlertAction // uncomment to get flow checking
+// | WalletListModalAction // uncomment to get flow checking
+// | DimensionsAction // uncomment to get flow checking
+// | RequestAction // uncomment to get flow checking
+// | WalletsAction // uncomment to get flow checking
+// | SettingsAction // uncomment to get flow checking
+// | EdgeLoginAction // uncomment to get flow checking
+// | OtpAction // uncomment to get flow checking
+// | AddTokenAction // uncomment to get flow checking
+// | CreateWalletAction // uncomment to get flow checking
+// | EditTokenAction // uncomment to get flow checking
+// | RequestSceneAction // uncomment to get flow checking
+// | LegacyAddressModalAction // uncomment to get flow checking
+// | PrivateKeyModalAction // uncomment to get flow checking
+// | ScanAction // uncomment to get flow checking
+// | UniqueIdentifierModalAction // uncomment to get flow checking
+// | SendConfirmationAction // uncomment to get flow checking
+// | SettingsSceneAction // uncomment to get flow checking
+// | SpendingLimitsAction // uncomment to get flow checking
 // | TransactionDetailsAction // uncomment to get flow checking
 // | TransactionListAction // uncomment to get flow checking
 // | WalletListAction // uncomment to get flow checking
+// | WalletTransferListAction // uncomment to get flow checking
