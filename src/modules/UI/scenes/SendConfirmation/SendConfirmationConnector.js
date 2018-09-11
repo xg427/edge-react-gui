@@ -8,7 +8,7 @@ import type { Dispatch, State } from '../../../ReduxTypes'
 import { convertNativeToExchange } from '../../../utils'
 import { getExchangeDenomination, getSelectedCurrencyCode, getSelectedWallet } from '../../selectors.js'
 import { getDisplayDenomination, getExchangeDenomination as settingsGetExchangeDenomination } from '../../Settings/selectors.js'
-import { newPin, reset, signBroadcastAndSave, uniqueIdentifierUpdated, updateAmount, updateSpendPending } from './action.js'
+import { signBroadcastAndSave, uniqueIdentifierUpdated, updateAmount } from './action.js'
 import { getError, getForceUpdateGuiCounter, getKeyboardIsVisible, getPending, getPublicAddress, getTransaction } from './selectors'
 import { SendConfirmation } from './SendConfirmation.ui'
 import type { SendConfirmationDispatchProps, SendConfirmationStateProps } from './SendConfirmation.ui'
@@ -89,10 +89,10 @@ const mapDispatchToProps = (dispatch: Dispatch): SendConfirmationDispatchProps =
     return dispatch(updateAmount(nativeAmount, exchangeAmount, fiatPerCrypto))
   },
   uniqueIdentifierUpdated: uniqueIdentifier => dispatch(uniqueIdentifierUpdated({ uniqueIdentifier })),
-  reset: () => dispatch(reset()),
-  updateSpendPending: (pending: boolean): any => dispatch(updateSpendPending(pending)),
+  reset: () => dispatch({ type: 'SEND_CONFIRMATION/RESET' }),
+  updateSpendPending: (pending: boolean): any => dispatch({ type: 'SEND_CONFIRMATION/UPDATE_SPEND_PENDING', data: { pending } }),
   signBroadcastAndSave: (): any => dispatch(signBroadcastAndSave()),
-  onChangePin: (pin: string) => dispatch(newPin(pin)),
+  onChangePin: (pin: string) => dispatch({ type: 'SEND_CONFIRMATION/NEW_PIN', data: { pin } }),
   uniqueIdentifierButtonPressed: () => {
     dispatch({ type: 'UNIQUE_IDENTIFIER_MODAL/ACTIVATED' })
   }

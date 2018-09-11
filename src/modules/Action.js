@@ -29,6 +29,7 @@
 // import { type PrivateKeyModalAction } from './UI/scenes/Scan/PrivateKeyModal/PrivateKeyModalActions.js'
 // import { type ScanAction } from './UI/scenes/Scan/action.js'
 // import { type UniqueIdentifierModalAction } from './UI/scenes/SendConfirmation/components/UniqueIdentifierModal/UniqueIdentifierModalActions.js'
+// import { type SendConfirmationAction } from './UI/scenes/SendConfirmation/action.js'
 
 type LegacyAction = { type: string, data?: any }
 
@@ -62,3 +63,4 @@ export type Action = LegacyAction // remove once all actions have type definitio
 //   | PrivateKeyModalAction // uncomment to get flow checking
 //   | ScanAction // uncomment to get flow checking
 //   | UniqueIdentifierModalAction // uncomment to get flow checking
+//   | SendConfirmationAction // uncomment to get flow checking
