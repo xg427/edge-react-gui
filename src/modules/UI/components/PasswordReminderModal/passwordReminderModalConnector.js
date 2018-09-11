@@ -4,7 +4,6 @@ import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 
 import { CHANGE_PASSWORD } from '../../../../constants/indexConstants.js'
-import { postponePasswordReminder } from '../../../../reducers/passwordReminder/indexPasswordReminder.js'
 import type { PasswordReminder } from '../../../../types.js'
 import type { Dispatch, State } from '../../../ReduxTypes.js'
 import { checkPassword, setPasswordReminder } from './indexPasswordReminderModal.js'
@@ -22,7 +21,7 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
     Actions[CHANGE_PASSWORD]()
     dispatch({ type: 'PASSWORD_REMINDER_MODAL/REQUEST_CHANGE_PASSWORD' })
   },
-  onPostpone: () => dispatch(postponePasswordReminder()),
+  onPostpone: () => dispatch({ type: 'PASSWORD_REMINDER/PASSWORD_REMINDER_POSTPONED' }),
   setPasswordReminder: (passwordReminder: PasswordReminder) => dispatch(setPasswordReminder(passwordReminder))
 })
 

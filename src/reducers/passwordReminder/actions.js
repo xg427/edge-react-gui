@@ -1,8 +1,7 @@
 // @flow
 
-const PREFIX = 'PASSWORD_REMINDER/'
+type PasswordReminderPostponedAction = {
+  type: 'PASSWORD_REMINDER/PASSWORD_REMINDER_POSTPONED'
+}
 
-export const PASSWORD_REMINDER_POSTPONED = PREFIX + 'PASSWORD_REMINDER_POSTPONED'
-export const postponePasswordReminder = () => ({
-  type: PASSWORD_REMINDER_POSTPONED
-})
+export type PasswordReminderAction = PasswordReminderPostponedAction
