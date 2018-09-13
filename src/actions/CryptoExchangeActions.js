@@ -78,7 +78,7 @@ function setShapeTransaction (
 export const changeFee = (feeSetting: string) => async (dispatch: Dispatch, getState: GetState) => {
   const data = { feeSetting }
   dispatch({
-    type: Constants.CHANGE_EXCHANGE_FEE,
+    type: 'CHANGE_EXCHANGE_FEE',
     data
   })
   const state = getState()
@@ -222,31 +222,31 @@ const processMakeSpendError = e => (dispatch: Dispatch, getState: GetState) => {
     dispatch(actions.dispatchAction('receivedInsufficentFundsError'))
     return
   }
-  dispatch(actions.dispatchActionString(Constants.GENERIC_SHAPE_SHIFT_ERROR, e.message))
+  dispatch(actions.dispatchActionString('genericShapeShiftError', e.message))
 }
 
 export const shiftCryptoCurrency = () => async (dispatch: Dispatch, getState: GetState) => {
-  dispatch(actions.dispatchAction(Constants.START_SHIFT_TRANSACTION))
+  dispatch(actions.dispatchAction('START_SHIFT_TRANSACTION'))
   const state = getState()
   const fromWallet = state.cryptoExchange.fromWallet
   const toWallet = state.cryptoExchange.toWallet
   if (!fromWallet || !toWallet) {
-    dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
+    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
     return
   }
   const srcWallet: EdgeCurrencyWallet = CORE_SELECTORS.getWallet(state, fromWallet.id)
 
   if (!srcWallet) {
-    dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
+    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
     return
   }
   if (!state.cryptoExchange.transaction) {
     getShiftTransaction(fromWallet, toWallet)
-    dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
+    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
     return
   }
   if (holderObject.status !== 'finished') {
-    dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
+    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
     return
   }
   if (srcWallet) {
@@ -291,7 +291,7 @@ export const shiftCryptoCurrency = () => async (dispatch: Dispatch, getState: Ge
 
       dispatch(actions.dispatchAction('shiftComplete'))
       console.log(broadcastedTransaction)
-      dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
+      dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
       setTimeout(() => {
         Alert.alert(s.strings.exchange_succeeded, s.strings.exchanges_may_take_minutes)
       }, 1)
@@ -299,7 +299,7 @@ export const shiftCryptoCurrency = () => async (dispatch: Dispatch, getState: Ge
     } catch (error) {
       global.firebase && global.firebase.analytics().logEvent(`Exchange_Shift_Failed`)
       dispatch(actions.dispatchActionString('shiftError', error.message))
-      dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
+      dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
       setTimeout(() => {
         Alert.alert(s.strings.exchange_failed, error.message)
       }, 1)
@@ -365,7 +365,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     holderObject.processingCounter++
     holderObject.status = 'finished'
     dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
-    dispatch(actions.dispatchActionString(Constants.GENERIC_SHAPE_SHIFT_ERROR, errorMessage))
+    dispatch(actions.dispatchActionString('genericShapeShiftError', errorMessage))
     return
   }
   if (isBelowLimit) {
@@ -378,7 +378,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     holderObject.status = 'finished'
     console.log(`getShiftTransaction:below limit`)
     dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
-    dispatch(actions.dispatchActionString(Constants.GENERIC_SHAPE_SHIFT_ERROR, errorMessage))
+    dispatch(actions.dispatchActionString('genericShapeShiftError', errorMessage))
     return
   }
 
@@ -548,9 +548,9 @@ export const getShapeShiftTokens = () => async (dispatch: Dispatch, getState: Ge
   const context = CORE_SELECTORS.getContext(state)
   try {
     const response = await context.getAvailableExchangeTokens() // await fetch('https://shapeshift.io/getcoins',
-    dispatch(actions.dispatchActionArray(Constants.ON_AVAILABLE_SHAPE_SHIFT_TOKENS, response))
+    dispatch(actions.dispatchActionArray('onAvailableShapeShiftTokens', response))
   } catch (e) {
-    dispatch(actions.dispatchActionArray(Constants.ON_AVAILABLE_SHAPE_SHIFT_TOKENS, []))
+    dispatch(actions.dispatchActionArray('onAvailableShapeShiftTokens', []))
   }
 }
 

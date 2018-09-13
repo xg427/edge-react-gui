@@ -35,6 +35,11 @@ type ActionType =
   | 'setCryptoExchangeAmounts'
   | 'receivedTRansactionError'
   | 'receivedInsufficentFundsError'
+  | 'genericShapeShiftError'
+  | 'CHANGE_EXCHANGE_FEE'
+  | 'onAvailableShapeShiftTokens'
+  | 'START_SHIFT_TRANSACTION'
+  | 'DONE_SHIFT_TRANSACTION'
   | string
 
 type LegacyAction = {

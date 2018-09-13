@@ -229,19 +229,22 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
     }
 
-    case Constants.GENERIC_SHAPE_SHIFT_ERROR:
+    case 'genericShapeShiftError': {
       return {
         ...state,
         transaction: null,
         genericShapeShiftError: action.data,
         shiftTransactionError: null
       }
-    case Constants.CHANGE_EXCHANGE_FEE:
+    }
+
+    case 'CHANGE_EXCHANGE_FEE': {
       return {
         ...state,
         feeSetting: action.data.feeSetting,
         forceUpdateGuiCounter: state.forceUpdateGuiCounter + 1
       }
+    }
 
     case 'startMakeSpendCrypto': {
       return {
@@ -254,8 +257,12 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
     }
 
-    case Constants.ON_AVAILABLE_SHAPE_SHIFT_TOKENS:
-      return { ...state, availableShapeShiftTokens: action.data }
+    case 'onAvailableShapeShiftTokens': {
+      return {
+        ...state,
+        availableShapeShiftTokens: action.data
+      }
+    }
 
     case 'doneMakeSpendCrypto': {
       return {
@@ -264,10 +271,20 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
     }
 
-    case Constants.START_SHIFT_TRANSACTION:
-      return { ...state, shiftPendingTransaction: true }
-    case Constants.DONE_SHIFT_TRANSACTION:
-      return { ...state, shiftPendingTransaction: false }
+    case 'START_SHIFT_TRANSACTION': {
+      return {
+        ...state,
+        shiftPendingTransaction: true
+      }
+    }
+
+    case 'DONE_SHIFT_TRANSACTION': {
+      return {
+        ...state,
+        shiftPendingTransaction: false
+      }
+    }
+
     default:
       return state
   }
