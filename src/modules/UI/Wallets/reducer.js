@@ -6,7 +6,6 @@ import { combineReducers } from 'redux'
 
 import type { GuiWallet } from '../../../types.js'
 import type { Action } from '../../ReduxTypes.js'
-import * as ADD_TOKEN_ACTION from '../scenes/AddToken/action.js'
 import * as ACTION from './action'
 
 export type WalletId = string
@@ -71,7 +70,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
       }
     }
 
-    case ADD_TOKEN_ACTION.ADD_NEW_CUSTOM_TOKEN_SUCCESS: {
+    case 'ADD_NEW_CUSTOM_TOKEN_SUCCESS': {
       const { enabledTokens, walletId } = action.data
       if (state[walletId] !== undefined) {
         return {
@@ -271,17 +270,23 @@ export const selectedCurrencyCode = (state: string = '', action: Action) => {
 }
 
 export const addTokenPending = (state: boolean = false, action: Action) => {
-  // if (!action.data) return state
-  const type = action.type
-  switch (type) {
-    case ADD_TOKEN_ACTION.ADD_TOKEN_START:
+  switch (action.type) {
+    case 'ADD_TOKEN_START': {
       return true
-    case ADD_TOKEN_ACTION.ADD_TOKEN_SUCCESS:
+    }
+
+    case 'ADD_TOKEN_SUCCESS': {
       return false
-    case ADD_TOKEN_ACTION.ADD_NEW_CUSTOM_TOKEN_SUCCESS:
+    }
+
+    case 'ADD_NEW_CUSTOM_TOKEN_SUCCESS': {
       return false
-    case ADD_TOKEN_ACTION.ADD_NEW_CUSTOM_TOKEN_FAILURE:
+    }
+
+    case 'ADD_NEW_CUSTOM_TOKEN_FAILURE': {
       return false
+    }
+
     default:
       return state
   }

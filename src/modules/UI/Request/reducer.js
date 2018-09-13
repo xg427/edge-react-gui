@@ -37,12 +37,9 @@ export const request = (state: RequestState = initialState, action: Action): Req
   let amountSatoshi
   let amountFiat
 
-  if (!action.data) {
-    return state
-  }
-
   switch (action.type) {
     case 'UPDATE_RECEIVE_ADDRESS_SUCCESS': {
+      if (!action.data) throw new Error('Invalid action')
       receiveAddress = action.data.receiveAddress
       return {
         ...state,
@@ -50,7 +47,8 @@ export const request = (state: RequestState = initialState, action: Action): Req
       }
     }
 
-    case 'UPDATE_AMOUNT_REQUESTED_IN_CRYPTO':
+    case 'UPDATE_AMOUNT_REQUESTED_IN_CRYPTO': {
+      if (!action.data) throw new Error('Invalid action')
       amountSatoshi = action.data.amountSatoshi
       return {
         ...state,
@@ -59,7 +57,10 @@ export const request = (state: RequestState = initialState, action: Action): Req
           amountSatoshi
         }
       }
-    case 'UPDATE_AMOUNT_REQUESTED_IN_FIAT':
+    }
+
+    case 'UPDATE_AMOUNT_REQUESTED_IN_FIAT': {
+      if (!action.data) throw new Error('Invalid action')
       amountFiat = action.data.amountFiat
       return {
         ...state,
@@ -71,6 +72,8 @@ export const request = (state: RequestState = initialState, action: Action): Req
           }
         }
       }
+    }
+
     default:
       return state
   }
