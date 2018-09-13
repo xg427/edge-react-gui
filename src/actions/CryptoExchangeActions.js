@@ -52,7 +52,7 @@ type SetCryptoExchangeAmounts = {
 
 function setCryptoExchangeAmounts (setAmounts: SetCryptoExchangeAmounts) {
   return {
-    type: Constants.SET_CRYPTO_EXCHANGE_AMOUNTS,
+    type: 'setCryptoExchangeAmounts',
     data: setAmounts
   }
 }
@@ -215,11 +215,11 @@ async function makeShiftTransaction (dispatch: Dispatch, fromWallet: GuiWallet |
 }
 const processMakeSpendError = e => (dispatch: Dispatch, getState: GetState) => {
   console.log(e)
-  dispatch(actions.dispatchAction(Constants.DONE_MAKE_SPEND))
+  dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
   // holderObject.status = 'finished'
   // holderObject.processingAmount = ''
   if (e.name === errorNames.InsufficientFundsError || e.message === Constants.INSUFFICIENT_FUNDS) {
-    dispatch(actions.dispatchAction(Constants.RECEIVED_INSUFFICIENT_FUNDS_ERROR))
+    dispatch(actions.dispatchAction('receivedInsufficentFundsError'))
     return
   }
   dispatch(actions.dispatchActionString(Constants.GENERIC_SHAPE_SHIFT_ERROR, e.message))
@@ -364,7 +364,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     console.log(`getShiftTransaction:above limit`)
     holderObject.processingCounter++
     holderObject.status = 'finished'
-    dispatch(actions.dispatchAction(Constants.DONE_MAKE_SPEND))
+    dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
     dispatch(actions.dispatchActionString(Constants.GENERIC_SHAPE_SHIFT_ERROR, errorMessage))
     return
   }
@@ -377,7 +377,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     holderObject.processingCounter++
     holderObject.status = 'finished'
     console.log(`getShiftTransaction:below limit`)
-    dispatch(actions.dispatchAction(Constants.DONE_MAKE_SPEND))
+    dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
     dispatch(actions.dispatchActionString(Constants.GENERIC_SHAPE_SHIFT_ERROR, errorMessage))
     return
   }
@@ -391,7 +391,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
   //   // there is no new typing from when we returned.
   //   return
   // }
-  dispatch(actions.dispatchAction(Constants.START_MAKE_SPEND))
+  dispatch(actions.dispatchAction('startMakeSpendCrypto'))
 
   let delay = KEYSTROKE_DELAY
 
@@ -441,7 +441,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
   const edgeTransaction = edgeCoinExchangeQuote.edgeTransacton
   holderObject.status = 'finished'
   console.log(`getShiftTransaction:finished counter=${processingCounter} !!`)
-  dispatch(actions.dispatchAction(Constants.DONE_MAKE_SPEND))
+  dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
   const fromPrimaryInfo = state.cryptoExchange.fromWalletPrimaryInfo
   const toPrimaryInfo = state.cryptoExchange.toWalletPrimaryInfo
   const ratio = fromPrimaryInfo.displayDenomination.multiplier.toString()

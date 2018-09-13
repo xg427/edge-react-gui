@@ -1,11 +1,6 @@
 // @flow
 
 // Crypto Exchange
-export const START_MAKE_SPEND = 'startMakeSpendCrypto'
-export const DONE_MAKE_SPEND = 'doneMakeSpendCrypto'
-export const SET_CRYPTO_EXCHANGE_AMOUNTS = 'setCryptoExchangeAmounts'
-export const RECEIVED_TRANSACTION_ERROR = 'receivedTRansactionError'
-export const RECEIVED_INSUFFICIENT_FUNDS_ERROR = 'receivedInsufficentFundsError'
 export const GENERIC_SHAPE_SHIFT_ERROR = 'genericShapeShiftError'
 export const CHANGE_EXCHANGE_FEE = 'CHANGE_EXCHANGE_FEE'
 export const ON_AVAILABLE_SHAPE_SHIFT_TOKENS = 'onAvailableShapeShiftTokens'

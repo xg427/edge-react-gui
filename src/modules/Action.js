@@ -30,6 +30,11 @@ type ActionType =
   | 'shiftError'
   | 'openCryptoExecConfModal'
   | 'closeCryptoExecConfModal'
+  | 'startMakeSpendCrypto'
+  | 'doneMakeSpendCrypto'
+  | 'setCryptoExchangeAmounts'
+  | 'receivedTRansactionError'
+  | 'receivedInsufficentFundsError'
   | string
 
 type LegacyAction = {

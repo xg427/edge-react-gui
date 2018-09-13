@@ -199,7 +199,7 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
     }
 
-    case Constants.SET_CRYPTO_EXCHANGE_AMOUNTS:
+    case 'setCryptoExchangeAmounts': {
       forceUpdateGuiCounter = state.forceUpdateGuiCounter
       if (action.data.forceUpdateGui) {
         forceUpdateGuiCounter++
@@ -217,7 +217,9 @@ function cryptoExchangerReducer (state = initialState, action) {
         fromDisplayAmount,
         forceUpdateGuiCounter
       }
-    case Constants.RECEIVED_INSUFFICIENT_FUNDS_ERROR:
+    }
+
+    case 'receivedInsufficentFundsError': {
       return {
         ...state,
         transaction: null,
@@ -225,6 +227,8 @@ function cryptoExchangerReducer (state = initialState, action) {
         genericShapeShiftError: null,
         shiftTransactionError: null
       }
+    }
+
     case Constants.GENERIC_SHAPE_SHIFT_ERROR:
       return {
         ...state,
@@ -238,7 +242,8 @@ function cryptoExchangerReducer (state = initialState, action) {
         feeSetting: action.data.feeSetting,
         forceUpdateGuiCounter: state.forceUpdateGuiCounter + 1
       }
-    case Constants.START_MAKE_SPEND:
+
+    case 'startMakeSpendCrypto': {
       return {
         ...state,
         gettingTransaction: true,
@@ -247,10 +252,18 @@ function cryptoExchangerReducer (state = initialState, action) {
         shiftTransactionError: null,
         quoteExpireDate: null
       }
+    }
+
     case Constants.ON_AVAILABLE_SHAPE_SHIFT_TOKENS:
       return { ...state, availableShapeShiftTokens: action.data }
-    case Constants.DONE_MAKE_SPEND:
-      return { ...state, gettingTransaction: false }
+
+    case 'doneMakeSpendCrypto': {
+      return {
+        ...state,
+        gettingTransaction: false
+      }
+    }
+
     case Constants.START_SHIFT_TRANSACTION:
       return { ...state, shiftPendingTransaction: true }
     case Constants.DONE_SHIFT_TRANSACTION:
