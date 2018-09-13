@@ -36,7 +36,7 @@ export const mapStateToProps = (state: State) => {
     key: useLegacyAddress ? s.strings.title_use_regular_address : s.strings.title_use_legacy_address,
     value: {
       title: useLegacyAddress ? s.strings.title_use_regular_address : s.strings.title_use_legacy_address,
-      value: useLegacyAddress ? Constants.USE_REGULAR_REQUEST_ADDRESS : Constants.USE_LEGACY_REQUEST_ADDRESS
+      value: useLegacyAddress ? 'useRegularRequestAddress' : 'useLegacyRequestAddress'
     }
   }
   const dropDownButtons = uniqueLegacyAddress ? [addressToggle, help] : helpArray
@@ -50,12 +50,16 @@ export const mapStateToProps = (state: State) => {
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSelect: (value: Object) => {
     switch (value.value) {
-      case Constants.USE_REGULAR_REQUEST_ADDRESS:
-        dispatch(dispatchActionOnly(Constants.USE_REGULAR_REQUEST_ADDRESS))
+      case 'useRegularRequestAddress': {
+        dispatch(dispatchActionOnly('useRegularRequestAddress'))
         break
-      case Constants.USE_LEGACY_REQUEST_ADDRESS:
-        dispatch(dispatchActionOnly(Constants.USE_LEGACY_REQUEST_ADDRESS))
+      }
+
+      case 'useLegacyRequestAddress': {
+        dispatch(dispatchActionOnly('useLegacyRequestAddress'))
         break
+      }
+
       case Constants.HELP_VALUE:
         dispatch(openHelpModal())
         break

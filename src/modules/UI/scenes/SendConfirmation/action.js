@@ -5,7 +5,7 @@ import type { EdgeMetadata, EdgeParsedUri, EdgeSpendInfo, EdgeTransaction } from
 import { Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
-import { OPEN_AB_ALERT, SEND_CONFIRMATION } from '../../../../constants/indexConstants'
+import { SEND_CONFIRMATION } from '../../../../constants/indexConstants'
 import s from '../../../../locales/strings.js'
 import { checkPin } from '../../../Core/Account/api.js'
 import { getAccount, getWallet } from '../../../Core/selectors.js'
@@ -149,7 +149,7 @@ export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: G
       title: 'Transaction Sent',
       message: 'Your transaction has been successfully sent.'
     }
-    dispatch(openABAlert(OPEN_AB_ALERT, successInfo))
+    dispatch(openABAlert('OPEN_AB_ALERT', successInfo))
   } catch (e) {
     dispatch(updateSpendPending(false))
     const errorInfo = {
@@ -158,7 +158,7 @@ export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: G
       message: e.message
     }
     dispatch(updateTransaction(edgeSignedTransaction, null, true, new Error('broadcastError')))
-    dispatch(openABAlert(OPEN_AB_ALERT, errorInfo))
+    dispatch(openABAlert('OPEN_AB_ALERT', errorInfo))
   }
 }
 

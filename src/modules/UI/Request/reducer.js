@@ -1,6 +1,5 @@
 // @flow
 
-import * as Constants from '../../../constants/indexConstants.js'
 import type { Action } from '../../ReduxTypes.js'
 
 export type RequestState = {
@@ -43,12 +42,14 @@ export const request = (state: RequestState = initialState, action: Action): Req
   }
 
   switch (action.type) {
-    case Constants.UPDATE_RECEIVE_ADDRESS_SUCCESS:
+    case 'UPDATE_RECEIVE_ADDRESS_SUCCESS': {
       receiveAddress = action.data.receiveAddress
       return {
         ...state,
         receiveAddress
       }
+    }
+
     case 'UPDATE_AMOUNT_REQUESTED_IN_CRYPTO':
       amountSatoshi = action.data.amountSatoshi
       return {

@@ -1,13 +1,6 @@
 // @flow
 
-// Alert
-export const OPEN_AB_ALERT = 'OPEN_AB_ALERT'
-export const CLOSE_AB_ALERT = 'CLOSE_AB_ALERT'
-
 // Request
-export const USE_LEGACY_REQUEST_ADDRESS = 'useLegacyRequestAddress'
-export const USE_REGULAR_REQUEST_ADDRESS = 'useRegularRequestAddress'
-export const UPDATE_RECEIVE_ADDRESS_SUCCESS = 'UPDATE_RECEIVE_ADDRESS_SUCCESS'
 export const NEW_RECEIVE_ACCRESS = 'newReceiveAddress'
 
 // edgelogin

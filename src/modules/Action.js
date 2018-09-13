@@ -40,6 +40,11 @@ type ActionType =
   | 'onAvailableShapeShiftTokens'
   | 'START_SHIFT_TRANSACTION'
   | 'DONE_SHIFT_TRANSACTION'
+  | 'OPEN_AB_ALERT'
+  | 'CLOSE_AB_ALERT'
+  | 'useLegacyRequestAddress'
+  | 'useRegularRequestAddress'
+  | 'UPDATE_RECEIVE_ADDRESS_SUCCESS'
   | string
 
 type LegacyAction = {

@@ -1,6 +1,5 @@
 // @flow
 
-import * as Constants from '../../../../constants/indexConstants.js'
 import * as CORE_SELECTORS from '../../../Core/selectors.js'
 import * as WALLET_API from '../../../Core/Wallets/api.js'
 import type { Dispatch, GetState } from '../../../ReduxTypes.js'
@@ -54,7 +53,7 @@ export const saveReceiveAddress = (receiveAddress: Object) => (dispatch: Dispatc
 }
 
 export const updateReceiveAddressSuccess = (receiveAddress: Object) => ({
-  type: Constants.UPDATE_RECEIVE_ADDRESS_SUCCESS,
+  type: 'UPDATE_RECEIVE_ADDRESS_SUCCESS',
   data: { receiveAddress }
 })
 

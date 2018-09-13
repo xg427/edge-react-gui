@@ -1,6 +1,5 @@
 // @flow
 
-import * as Constants from '../../../../constants/indexConstants.js'
 import type { GuiReceiveAddress } from '../../../../types.js'
 import type { Action } from '../../../ReduxTypes.js'
 import * as ACTION from './action'
@@ -23,7 +22,7 @@ const initialState: RequestSceneState = {
 
 export const request = (state: RequestSceneState = initialState, action: Action): RequestSceneState => {
   switch (action.type) {
-    case Constants.UPDATE_RECEIVE_ADDRESS_SUCCESS: {
+    case 'UPDATE_RECEIVE_ADDRESS_SUCCESS': {
       if (!action.data) {
         return state
       }
