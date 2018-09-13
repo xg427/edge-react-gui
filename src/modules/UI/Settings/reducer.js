@@ -6,7 +6,6 @@ import _ from 'lodash'
 import * as Constants from '../../../constants/indexConstants.js'
 import type { CustomTokenInfo } from '../../../types'
 import { CORE_DEFAULTS, LOCAL_ACCOUNT_DEFAULTS, SYNCED_ACCOUNT_DEFAULTS } from '../../Core/Account/settings.js'
-import { SEND_LOGS_FAILURE, SEND_LOGS_PENDING, SEND_LOGS_REQUEST, SEND_LOGS_SUCCESS } from '../../Logs/action'
 import type { Action } from '../../ReduxTypes'
 import { UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL } from '../components/PasswordRecoveryReminderModal/PasswordRecoveryReminderModalActions.js'
 import * as ADD_TOKEN_ACTION from '../scenes/AddToken/action.js'
@@ -430,28 +429,33 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
-    case SEND_LOGS_REQUEST: {
+    case 'Logs/SEND_LOGS_REQUEST': {
       return {
         ...state,
         sendLogsStatus: Constants.REQUEST_STATUS.LOADING
       }
     }
-    case SEND_LOGS_FAILURE:
+
+    case 'Logs/SEND_LOGS_FAILURE': {
       return {
         ...state,
         sendLogsStatus: Constants.REQUEST_STATUS.FAILURE
       }
+    }
 
-    case SEND_LOGS_SUCCESS:
+    case 'Logs/SEND_LOGS_SUCCESS': {
       return {
         ...state,
         sendLogsStatus: Constants.REQUEST_STATUS.SUCCESS
       }
-    case SEND_LOGS_PENDING:
+    }
+
+    case 'Logs/SEND_LOGS_PENDING': {
       return {
         ...state,
         sendLogsStatus: Constants.REQUEST_STATUS.PENDING
       }
+    }
 
     case ACTION.SET_DEFAULT_FIAT: {
       const { defaultFiat } = data

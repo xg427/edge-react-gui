@@ -43,6 +43,7 @@ export const context = (state: State = initialState, action: Action) => {
         usernames
       }
     }
+
     case 'deepLinkReceived':
     case 'LOGOUT': {
       if (!data) {

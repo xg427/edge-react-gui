@@ -60,6 +60,12 @@ type ActionType =
   | 'Core/Context/DELETE_LOCAL_ACCOUNT_REQUEST'
   | 'Core/Context/DELETE_LOCAL_ACCOUNT_SUCCESS'
   | 'Core/Context/DELETE_LOCAL_ACCOUNT_ERROR'
+  | 'Core/Wallets/UPDATE_WALLETS'
+  | 'ExchangeRates/UPDATE_EXCHANGE_RATES'
+  | 'Logs/SEND_LOGS_PENDING'
+  | 'Logs/SEND_LOGS_REQUEST'
+  | 'Logs/SEND_LOGS_SUCCESS'
+  | 'Logs/SEND_LOGS_FAILURE'
   | string
 
 type LegacyAction = {
