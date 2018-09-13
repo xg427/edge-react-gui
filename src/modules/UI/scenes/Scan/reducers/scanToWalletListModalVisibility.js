@@ -1,7 +1,6 @@
 // @flow
 
 import type { Action } from '../../../../ReduxTypes.js'
-import * as ACTION from '../action'
 
 export const initialState = false
 export type State = boolean
@@ -19,8 +18,9 @@ export const scanToWalletListModalVisibility = (state: State = initialState, act
       return false
     }
 
-    case ACTION.TOGGLE_ADDRESS_MODAL_VISIBILITY:
+    case 'TOGGLE_ADDRESS_MODAL_VISIBILITY': {
       return false
+    }
 
     case 'DISABLE_WALLET_LIST_MODAL_VISIBILITY': {
       return false
