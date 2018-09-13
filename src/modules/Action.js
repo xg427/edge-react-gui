@@ -80,6 +80,14 @@ type ActionType =
   | 'CLOSE_HELP_MODAL'
   | 'SHOW_PASSWORD_RECOVERY_MODAL'
   | 'HIDE_PASSWORD_RECOVERY_MODAL'
+  | 'PasswordReminderModal/CHECK_PASSWORD_START'
+  | 'PasswordReminderModal/CHECK_PASSWORD_SUCCESS'
+  | 'PasswordReminderModal/CHECK_PASSWORD_FAIL'
+  | 'PasswordReminderModal/REQUEST_CHANGE_PASSWORD'
+  | 'PasswordReminderModal/PASSWORD_REMINDER_POSTPONED'
+  | 'PasswordReminderModal/SET_PASSWORD_REMINDER_START'
+  | 'PasswordReminderModal/SET_PASSWORD_REMINDER_SUCCESS'
+  | 'PasswordReminderModal/SET_PASSWORD_REMINDER_FAIL'
   | string
 
 type LegacyAction = {

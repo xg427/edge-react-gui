@@ -1,7 +1,6 @@
 // @flow
 
 import type { Action } from '../../modules/ReduxTypes.js'
-import { CHECK_PASSWORD_SUCCESS, REQUEST_CHANGE_PASSWORD } from '../../modules/UI/components/PasswordReminderModal/indexPasswordReminderModal.js'
 import { SET_SETTINGS_LOCK } from '../../modules/UI/Settings/action.js'
 import { MILLISECONDS_PER_DAY, daysBetween } from '../../modules/utils.js'
 import { PASSWORD_REMINDER_POSTPONED } from './indexPasswordReminder.js'
@@ -246,7 +245,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
       }
     }
   }
-  if (action.type === CHECK_PASSWORD_SUCCESS) {
+  if (action.type === 'PasswordReminderModal/CHECK_PASSWORD_SUCCESS') {
     translatedAction = {
       type: 'PASSWORD_USED',
       data: {
@@ -262,7 +261,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
     }
   }
 
-  if (action.type === REQUEST_CHANGE_PASSWORD) {
+  if (action.type === 'PasswordReminderModal/REQUEST_CHANGE_PASSWORD') {
     translatedAction = {
       type: 'REQUEST_CHANGE_PASSWORD',
       data: {}
