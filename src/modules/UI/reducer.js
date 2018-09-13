@@ -25,7 +25,7 @@ export const uiReducer = combineReducers({
 })
 
 export const ui = (state: $PropertyType<State, 'ui'>, action: any) => {
-  if (action.type === Constants.LOGOUT || action.type === Constants.DEEP_LINK_RECEIVED) {
+  if (action.type === Constants.LOGOUT || action.type === 'deepLinkReceived') {
     return uiReducer(undefined, ({ type: 'DUMMY_ACTION_PLEASE_IGNORE' }: any))
   }
 

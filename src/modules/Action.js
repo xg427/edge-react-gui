@@ -45,6 +45,11 @@ type ActionType =
   | 'useLegacyRequestAddress'
   | 'useRegularRequestAddress'
   | 'UPDATE_RECEIVE_ADDRESS_SUCCESS'
+  | 'newReceiveAddress'
+  | 'saveEdgeLobby'
+  | 'invalidateEdgeLobby'
+  | 'setLobbyError'
+  | 'eraseDeepLink'
   | string
 
 type LegacyAction = {

@@ -1,6 +1,5 @@
 // @flow
 
-import * as Constants from '../constants/indexConstants.js'
 import type { Action } from '../modules/ReduxTypes.js'
 
 type RequestType = {
@@ -13,7 +12,7 @@ const initialState: RequestType = {
 }
 const requestType = (state: RequestType = initialState, action: Action): RequestType => {
   switch (action.type) {
-    case Constants.NEW_RECEIVE_ACCRESS:
+    case 'newReceiveAddress':
     case 'UPDATE_RECEIVE_ADDRESS_SUCCESS': {
       if (!action.data) return state
       let uniqueLegacy = true

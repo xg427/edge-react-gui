@@ -27,7 +27,7 @@ const byId = (state = initialState, action) => {
 }
 
 export const wallets = (state: WalletState, action: Action) => {
-  if (action.type === Constants.LOGOUT || action.type === Constants.DEEP_LINK_RECEIVED) {
+  if (action.type === Constants.LOGOUT || action.type === 'deepLinkReceived') {
     state = undefined
   }
 

@@ -45,7 +45,7 @@ export const context = (state: State = initialState, action: Action) => {
         usernames
       }
     }
-    case Constants.DEEP_LINK_RECEIVED:
+    case 'deepLinkReceived':
     case Constants.LOGOUT: {
       if (!data) {
         return state

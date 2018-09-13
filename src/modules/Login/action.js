@@ -229,8 +229,8 @@ export const deepLinkLogout = (backupKey: string) => (dispatch: Dispatch, getSta
   const account = CORE_SELECTORS.getAccount(state)
   const username = account.username
   Actions.popTo(Constants.LOGIN, { username })
-  dispatch(actions.dispatchActionString(Constants.DEEP_LINK_RECEIVED, backupKey))
-  // dispatch(logout(Constants.DEEP_LINK_RECEIVED))
+  dispatch(actions.dispatchActionString('deepLinkReceived', backupKey))
+  // dispatch(logout('deepLinkReceived'))
   if (!account) {
     account.logout()
   }
