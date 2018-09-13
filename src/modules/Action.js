@@ -196,6 +196,21 @@ type ActionType =
   | 'UI/SendConfimation/UPDATE_TRANSACTION'
   | 'UI/SendConfimation/UPDATE_SPEND_PENDING'
   | 'UI/SendConfimation/NEW_PIN'
+  | 'UI/Scenes/Settings/SET_PIN_MODE_START'
+  | 'UI/Scenes/Settings/SET_PIN_START'
+  | 'UI/Scenes/Settings/SET_DEFAULT_FIAT_START'
+  | 'UI/Scenes/Settings/SET_MERCHANT_MODE_START'
+  | 'UI/Scenes/Settings/SET_BLUETOOTH_MODE_START'
+  | 'UI/Scenes/Settings/SET_BITCOIN_OVERRIDE_SERVER_START'
+  | 'UI/Scenes/Settings/SELECT_DEFAULT_FIAT'
+  | 'SET_TRANSACTION_SUBCATEGORIES'
+  | 'UI/Scenes/TransactionList/UPDATE_TRANSACTIONS'
+  | 'noop'
+  | 'UI/Scenes/TransactionList/DELETE_TRANSACTIONS_LIST'
+  | 'UI/Scenes/TransactionList/TRANSACTIONS_SEARCH_VISIBLE'
+  | 'UI/Scenes/TransactionList/TRANSACTIONS_SEARCH_HIDDEN'
+  | 'UI/Scenes/TransactionList/UPDATE_CONTACTS_LIST'
+  | 'UI/Scenes/TransactionList/UPDATE_SEARCH_RESULTS'
   | string
 
 type LegacyAction = {

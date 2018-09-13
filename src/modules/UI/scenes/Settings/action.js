@@ -14,16 +14,35 @@ import { displayErrorAlert } from '../../components/ErrorAlert/actions.js'
 import * as SETTINGS_ACTIONS from '../../Settings/action.js'
 import { newSpendingLimits } from '../../Settings/spendingLimits/SpendingLimitsReducer.js'
 
-const SET_PIN_MODE_START = 'UI/Scenes/Settings/SET_PIN_MODE_START'
-const SET_PIN_START = 'UI/Scenes/Settings/SET_PIN_START'
+const setPINModeStart = (pinMode: boolean) => ({
+  type: 'UI/Scenes/Settings/SET_PIN_MODE_START',
+  data: { pinMode }
+})
 
-const SET_DEFAULT_FIAT_START = 'UI/Scenes/Settings/SET_DEFAULT_FIAT_START'
-const SET_MERCHANT_MODE_START = 'UI/Scenes/Settings/SET_MERCHANT_MODE_START'
+const setPINStart = (pin: string) => ({
+  type: 'UI/Scenes/Settings/SET_PIN_START',
+  data: { pin }
+})
 
-const SET_BLUETOOTH_MODE_START = 'UI/Scenes/Settings/SET_BLUETOOTH_MODE_START'
-const SET_BITCOIN_OVERRIDE_SERVER_START = 'UI/Scenes/Settings/SET_BITCOIN_OVERRIDE_SERVER_START'
+const setDefaultFiatStart = (defaultFiat: string) => ({
+  type: 'UI/Scenes/Settings/SET_DEFAULT_FIAT_START',
+  data: { defaultFiat }
+})
 
-export const SELECT_DEFAULT_FIAT = 'UI/Scenes/Settings/SELECT_DEFAULT_FIAT'
+const setMerchantModeStart = (merchantMode: boolean) => ({
+  type: 'UI/Scenes/Settings/SET_MERCHANT_MODE_START',
+  data: { merchantMode }
+})
+
+const setBluetoothModeStart = (bluetoothMode: boolean) => ({
+  type: 'UI/Scenes/Settings/SET_BLUETOOTH_MODE_START',
+  data: { bluetoothMode }
+})
+
+const setBitcoinOverrideServerStart = (overrideServer: string) => ({
+  type: 'UI/Scenes/Settings/SET_BITCOIN_OVERRIDE_SERVER_START',
+  data: { overrideServer }
+})
 
 export const setPINModeRequest = (pinMode: boolean) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(setPINModeStart(pinMode))
@@ -180,36 +199,6 @@ export const restoreWallets = () => (dispatch: Dispatch, getState: GetState) => 
   restoreWalletsRequest(account).then(Actions.walletList)
 }
 
-const setPINModeStart = (pinMode: boolean) => ({
-  type: SET_PIN_MODE_START,
-  data: { pinMode }
-})
-
-const setPINStart = (pin: string) => ({
-  type: SET_PIN_START,
-  data: { pin }
-})
-
-const setDefaultFiatStart = (defaultFiat: string) => ({
-  type: SET_DEFAULT_FIAT_START,
-  data: { defaultFiat }
-})
-
-const setMerchantModeStart = (merchantMode: boolean) => ({
-  type: SET_MERCHANT_MODE_START,
-  data: { merchantMode }
-})
-
-const setBluetoothModeStart = (bluetoothMode: boolean) => ({
-  type: SET_BLUETOOTH_MODE_START,
-  data: { bluetoothMode }
-})
-
-const setBitcoinOverrideServerStart = (overrideServer: string) => ({
-  type: SET_BITCOIN_OVERRIDE_SERVER_START,
-  data: { overrideServer }
-})
-
 export function togglePinLoginEnabled (pinLoginEnabled: boolean) {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState()
@@ -227,34 +216,3 @@ export function togglePinLoginEnabled (pinLoginEnabled: boolean) {
     })
   }
 }
-
-// Settings
-
-// Account Settings
-// pinLoginEnabled         (boolean)
-// fingerprintLoginEnabled (boolean)
-// pinLoginCount           (integer)
-// minutesAutoLogout       (integer)
-// secondsAutoLogout       (integer)
-// recoveryReminderCount   (integer)
-
-// Requests Settings
-// nameOnPayments (boolean)
-// firstName      (string)
-// lastName       (string)
-// nickName       (string)
-
-// Spend Limits
-// spendRequirePinEnabled  (boolean)
-// spendRequirePinSatoshis (integer)
-// dailySpendLimitEnabled  (boolean)
-// dailySpendLimitSatoshi  (integer)
-
-// Currency Settings
-// advancedFeatures          (boolean)
-// bitcoinDenomination       (Value)?
-// exchangeRateSource        (string)
-// language                  (string)
-// numCurrency?              (integer)
-// overrideBitcoinServers    (boolean)
-// overrideBitcoinServerList (string)
