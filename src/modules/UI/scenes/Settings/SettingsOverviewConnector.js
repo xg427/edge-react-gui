@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   lockSettings: () => dispatch(lockSettings()),
   dispatchUpdateEnableTouchIdEnable: (arg: boolean, account: EdgeAccount) => dispatch(updateTouchIdEnabled(arg, account)),
   sendLogs: (text: string) => dispatch(sendLogs(text)),
-  resetConfirmPasswordError: (arg: Object) => dispatch(actions.dispatchActionObject(Constants.SET_CONFIRM_PASSWORD_ERROR, arg)),
+  resetConfirmPasswordError: (arg: Object) => dispatch(actions.dispatchActionObject('setConfirmPasswordError', arg)),
   resetSendLogsStatus: () => dispatch(resetSendLogsStatus()),
   onTogglePinLoginEnabled: (enableLogin: boolean) => dispatch(togglePinLoginEnabled(enableLogin)),
   onConfirmRestoreWallets: () => dispatch(restoreWallets())

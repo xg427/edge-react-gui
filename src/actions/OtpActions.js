@@ -1,7 +1,6 @@
 // @flow
 
 import * as actions from '../actions/indexActions'
-import * as Constants from '../constants/indexConstants'
 import * as CORE_SELECTORS from '../modules/Core/selectors'
 import type { Dispatch, GetState } from '../modules/ReduxTypes'
 import * as SETTINGS_ACTIONS from '../modules/UI/Settings/action.js'
@@ -30,7 +29,7 @@ export const keepOtp = () => async (dispatch: Dispatch, getState: GetState) => {
   const account = CORE_SELECTORS.getAccount(state)
   try {
     await account.cancelOtpReset()
-    dispatch(actions.dispatchAction(Constants.DISABLE_OTP_RESET))
+    dispatch(actions.dispatchAction('disableOTPReset'))
   } catch (e) {
     console.log(e)
   }

@@ -172,7 +172,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
   const { type, data = {} } = action
 
   switch (type) {
-    case Constants.ACCOUNT_INIT_COMPLETE: {
+    case 'accountInitComplete': {
       const {
         touchIdInfo,
         account,
@@ -238,10 +238,15 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       })
       return newState
     }
-    case Constants.SET_CONFIRM_PASSWORD_ERROR: {
+
+    case 'setConfirmPasswordError': {
       const { confirmPasswordError } = data
-      return { ...state, confirmPasswordError: confirmPasswordError }
+      return {
+        ...state,
+        confirmPasswordError: confirmPasswordError
+      }
     }
+
     case ACTION.SET_LOGIN_STATUS: {
       const { loginStatus } = data
       return {
@@ -382,13 +387,15 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
         }
       }
     }
-    case Constants.DISABLE_OTP_RESET: {
+
+    case 'disableOTPReset': {
       return {
         ...state,
         otpResetDate: null,
         otpResetPending: false
       }
     }
+
     case ACTION.UPDATE_SETTINGS: {
       const { settings } = data
       return settings

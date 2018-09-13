@@ -1,6 +1,5 @@
 // @flow
 
-import { ACCOUNT_INIT_COMPLETE } from '../../constants/indexConstants.js'
 import type { Action } from '../../modules/ReduxTypes.js'
 import { CHECK_PASSWORD_SUCCESS, REQUEST_CHANGE_PASSWORD } from '../../modules/UI/components/PasswordReminderModal/indexPasswordReminderModal.js'
 import { SET_SETTINGS_LOCK } from '../../modules/UI/Settings/action.js'
@@ -194,7 +193,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
   }
 
   // $FlowFixMe
-  if ((action.type === 'LOGIN' || action.type === ACCOUNT_INIT_COMPLETE) && action.data.account.newAccount) {
+  if ((action.type === 'LOGIN' || action.type === 'accountInitComplete') && action.data.account.newAccount) {
     const now = Date.now()
     translatedAction = {
       type: 'NEW_ACCOUNT_LOGIN',
@@ -206,7 +205,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
   }
 
   // $FlowFixMe
-  if ((action.type === 'LOGIN' || action.type === ACCOUNT_INIT_COMPLETE) && action.data.account.passwordLogin) {
+  if ((action.type === 'LOGIN' || action.type === 'accountInitComplete') && action.data.account.passwordLogin) {
     const now = Date.now()
     translatedAction = {
       type: 'PASSWORD_LOGIN',
@@ -220,7 +219,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
   }
 
   // $FlowFixMe
-  if ((action.type === 'LOGIN' || action.type === ACCOUNT_INIT_COMPLETE) && !(action.data.account.passwordLogin || action.data.account.newAccount)) {
+  if ((action.type === 'LOGIN' || action.type === 'accountInitComplete') && !(action.data.account.passwordLogin || action.data.account.newAccount)) {
     translatedAction = {
       type: 'NON_PASSWORD_LOGIN',
       data: {

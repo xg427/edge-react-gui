@@ -50,6 +50,9 @@ type ActionType =
   | 'invalidateEdgeLobby'
   | 'setLobbyError'
   | 'eraseDeepLink'
+  | 'accountInitComplete'
+  | 'disableOTPReset'
+  | 'setConfirmPasswordError'
   | string
 
 type LegacyAction = {

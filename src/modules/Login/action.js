@@ -197,7 +197,7 @@ export const initializeAccount = (account: EdgeAccount, touchIdInfo: Object) => 
     const receiveAddresses = await getReceiveAddresses(currencyWallets)
 
     dispatch(
-      actions.dispatchActionObject(Constants.ACCOUNT_INIT_COMPLETE, {
+      actions.dispatchActionObject('accountInitComplete', {
         ...accountInitObject,
         receiveAddresses
       })

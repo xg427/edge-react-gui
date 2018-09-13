@@ -4,7 +4,6 @@ import type { EdgeCurrencyWallet, EdgeDenomination, EdgeMetaToken, EdgeReceiveAd
 import _ from 'lodash'
 import { combineReducers } from 'redux'
 
-import * as Constants from '../../../constants/indexConstants.js'
 import type { GuiWallet } from '../../../types.js'
 import { UPDATE_WALLETS } from '../../Core/Wallets/action.js'
 import type { Action } from '../../ReduxTypes.js'
@@ -19,7 +18,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
   if (!action.data) return state
 
   switch (action.type) {
-    case Constants.ACCOUNT_INIT_COMPLETE: {
+    case 'accountInitComplete': {
       const wallets = action.data.currencyWallets
       const out = {}
 
@@ -179,7 +178,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
 }
 
 export const walletEnabledTokens = (state: any = {}, action: Action) => {
-  if (action.type === Constants.ACCOUNT_INIT_COMPLETE && action.data) {
+  if (action.type === 'accountInitComplete' && action.data) {
     return action.data.activeWalletIds
   }
   if (action.type === UPDATE_WALLETS && action.data) {
@@ -214,7 +213,7 @@ export const walletLoadingProgress = (state: { [string]: Number } = {}, action: 
 
 export const activeWalletIds = (state: WalletIds = [], action: Action) => {
   if (!action.data) return state
-  if (action.type === Constants.ACCOUNT_INIT_COMPLETE) {
+  if (action.type === 'accountInitComplete') {
     return action.data.activeWalletIds
   }
   if (action.type === UPDATE_WALLETS) {
@@ -226,7 +225,7 @@ export const activeWalletIds = (state: WalletIds = [], action: Action) => {
 
 export const archivedWalletIds = (state: WalletIds = [], action: Action) => {
   if (!action.data) return state
-  if (action.type === Constants.ACCOUNT_INIT_COMPLETE) {
+  if (action.type === 'accountInitComplete') {
     return action.data.archivedWalletIds
   }
   if (action.type === UPDATE_WALLETS) {
@@ -241,11 +240,14 @@ export const selectedWalletId = (state: WalletId = '', action: Action) => {
   switch (action.type) {
     case ACTION.SELECT_WALLET:
       return action.data.walletId
-    case Constants.ACCOUNT_INIT_COMPLETE:
+
+    case 'accountInitComplete': {
       if (action.data.walletId) {
         return action.data.walletId
       }
       return state
+    }
+
     default:
       return state
   }
@@ -256,11 +258,14 @@ export const selectedCurrencyCode = (state: string = '', action: Action) => {
   switch (action.type) {
     case ACTION.SELECT_WALLET:
       return action.data.currencyCode
-    case Constants.ACCOUNT_INIT_COMPLETE:
+
+    case 'accountInitComplete': {
       if (action.data.currencyCode) {
         return action.data.currencyCode
       }
       return state
+    }
+
     default:
       return state
   }

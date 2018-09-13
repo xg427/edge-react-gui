@@ -13,7 +13,7 @@ export const initialState = {}
 
 const byId = (state = initialState, action) => {
   switch (action.type) {
-    case Constants.ACCOUNT_INIT_COMPLETE:
+    case 'accountInitComplete':
     case ACTION.UPDATE_WALLETS:
       const { currencyWallets } = action.data
       return {
