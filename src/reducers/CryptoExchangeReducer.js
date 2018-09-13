@@ -170,18 +170,35 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
     }
 
-    case Constants.SHIFT_COMPLETE:
-      return { ...initialState, availableShapeShiftTokens: state.availableShapeShiftTokens }
-    case Constants.SHIFT_ERROR:
+    case 'shiftComplete': {
+      return {
+        ...initialState,
+        availableShapeShiftTokens: state.availableShapeShiftTokens
+      }
+    }
+
+    case 'shiftError': {
       return {
         ...state,
         confirmTransactionModalVisible: false,
         shiftTransactionError: action.data
       }
-    case Constants.CLOSE_CRYPTO_EXC_CONF_MODAL:
-      return { ...state, confirmTransactionModalVisible: false }
-    case Constants.OPEN_CRYPTO_EXC_CONF_MODAL:
-      return { ...state, confirmTransactionModalVisible: true }
+    }
+
+    case 'closeCryptoExecConfModal': {
+      return {
+        ...state,
+        confirmTransactionModalVisible: false
+      }
+    }
+
+    case 'openCryptoExecConfModal': {
+      return {
+        ...state,
+        confirmTransactionModalVisible: true
+      }
+    }
+
     case Constants.SET_CRYPTO_EXCHANGE_AMOUNTS:
       forceUpdateGuiCounter = state.forceUpdateGuiCounter
       if (action.data.forceUpdateGui) {

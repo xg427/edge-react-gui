@@ -289,7 +289,7 @@ export const shiftCryptoCurrency = () => async (dispatch: Dispatch, getState: Ge
 
       await WALLET_API.setTransactionDetailsRequest(srcWallet, broadcastedTransaction.txid, broadcastedTransaction.currencyCode, edgeMetaData)
 
-      dispatch(actions.dispatchAction(Constants.SHIFT_COMPLETE))
+      dispatch(actions.dispatchAction('shiftComplete'))
       console.log(broadcastedTransaction)
       dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
       setTimeout(() => {
@@ -298,7 +298,7 @@ export const shiftCryptoCurrency = () => async (dispatch: Dispatch, getState: Ge
       global.firebase && global.firebase.analytics().logEvent(`Exchange_Shift_Success`)
     } catch (error) {
       global.firebase && global.firebase.analytics().logEvent(`Exchange_Shift_Failed`)
-      dispatch(actions.dispatchActionString(Constants.SHIFT_ERROR, error.message))
+      dispatch(actions.dispatchActionString('shiftError', error.message))
       dispatch(actions.dispatchAction(Constants.DONE_SHIFT_TRANSACTION))
       setTimeout(() => {
         Alert.alert(s.strings.exchange_failed, error.message)

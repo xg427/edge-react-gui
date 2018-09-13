@@ -1,10 +1,6 @@
 // @flow
 
 // Crypto Exchange
-export const SHIFT_COMPLETE = 'shiftComplete'
-export const SHIFT_ERROR = 'shiftError'
-export const OPEN_CRYPTO_EXC_CONF_MODAL = 'openCryptoExecConfModal'
-export const CLOSE_CRYPTO_EXC_CONF_MODAL = 'closeCryptoExecConfModal'
 export const START_MAKE_SPEND = 'startMakeSpendCrypto'
 export const DONE_MAKE_SPEND = 'doneMakeSpendCrypto'
 export const SET_CRYPTO_EXCHANGE_AMOUNTS = 'setCryptoExchangeAmounts'

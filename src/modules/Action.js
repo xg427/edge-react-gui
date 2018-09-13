@@ -26,6 +26,10 @@ type ActionType =
   | 'updateShiftTransactionFee'
   | 'invalidateShiftTransaction'
   | 'shiftCryptoCurrency'
+  | 'shiftComplete'
+  | 'shiftError'
+  | 'openCryptoExecConfModal'
+  | 'closeCryptoExecConfModal'
   | string
 
 type LegacyAction = {
