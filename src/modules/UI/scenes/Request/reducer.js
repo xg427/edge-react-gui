@@ -2,7 +2,6 @@
 
 import type { GuiReceiveAddress } from '../../../../types.js'
 import type { Action } from '../../../ReduxTypes.js'
-import * as ACTION from './action'
 
 export type RequestSceneState = {
   inputCurrencySelected: string,
@@ -32,7 +31,7 @@ export const request = (state: RequestSceneState = initialState, action: Action)
       }
     }
 
-    case ACTION.UPDATE_INPUT_CURRENCY_SELECTED: {
+    case 'UPDATE_INPUT_CURRENCY_SELECTED': {
       if (!action.data) {
         return state
       }
@@ -42,7 +41,7 @@ export const request = (state: RequestSceneState = initialState, action: Action)
       }
     }
 
-    case ACTION.UPDATE_AMOUNT_REQUESTED_IN_CRYPTO: {
+    case 'UPDATE_AMOUNT_REQUESTED_IN_CRYPTO': {
       const { receiveAddress } = state
       if (!action.data) {
         return state
@@ -56,7 +55,7 @@ export const request = (state: RequestSceneState = initialState, action: Action)
       }
     }
 
-    case ACTION.UPDATE_METADATA: {
+    case 'UPDATE_METADATA': {
       const { receiveAddress } = state
       const { metadata = {} } = receiveAddress
       return {
@@ -68,7 +67,7 @@ export const request = (state: RequestSceneState = initialState, action: Action)
       }
     }
 
-    case ACTION.UPDATE_AMOUNT_REQUESTED_IN_FIAT: {
+    case 'UPDATE_AMOUNT_REQUESTED_IN_FIAT': {
       const { receiveAddress } = state
       const { metadata = {} } = receiveAddress
       if (!action.data) {

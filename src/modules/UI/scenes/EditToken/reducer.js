@@ -3,14 +3,16 @@
 import { combineReducers } from 'redux'
 
 import type { Action } from '../../../ReduxTypes.js'
-import * as ACTION from './action'
 
 export const deleteTokenModalVisible = (state: boolean = false, action: Action) => {
   switch (action.type) {
-    case ACTION.SHOW_DELETE_TOKEN_MODAL:
+    case 'SHOW_DELETE_TOKEN_MODAL': {
       return true
-    case ACTION.HIDE_DELETE_TOKEN_MODAL:
+    }
+
+    case 'HIDE_DELETE_TOKEN_MODAL': {
       return false
+    }
 
     case 'DELETE_CUSTOM_TOKEN_SUCCESS': {
       return false
