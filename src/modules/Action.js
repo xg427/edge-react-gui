@@ -66,6 +66,13 @@ type ActionType =
   | 'Logs/SEND_LOGS_REQUEST'
   | 'Logs/SEND_LOGS_SUCCESS'
   | 'Logs/SEND_LOGS_FAILURE'
+  | 'OPEN_SELECT_USER'
+  | 'CLOSE_SELECT_USER'
+  | 'LIST_USER_USER_SIDE_MENU'
+  | 'SELECT_USERS_SIDE_MENU'
+  | 'REMOVE_USERS_SIDE_MENU'
+  | 'UI/components/DropdownAlert/DISPLAY_DROPDOWN_ALERT'
+  | 'UI/components/DropdownAlert/DISMISS_DROPDOWN_ALERT'
   | string
 
 type LegacyAction = {

@@ -1,11 +1,8 @@
 // @flow
 
-export const DISPLAY_DROPDOWN_ALERT = 'UI/components/DropdownAlert/DISPLAY_DROPDOWN_ALERT'
-export const DISMISS_DROPDOWN_ALERT = 'UI/components/DropdownAlert/DISMISS_DROPDOWN_ALERT'
-
 type DropdownInfo = { type?: string, title?: string, message?: string }
 export const displayDropdownAlert = ({ type = 'custom', title = '', message = '' }: DropdownInfo) => ({
-  type: DISPLAY_DROPDOWN_ALERT,
+  type: 'UI/components/DropdownAlert/DISPLAY_DROPDOWN_ALERT',
   data: {
     type,
     title,
@@ -14,6 +11,6 @@ export const displayDropdownAlert = ({ type = 'custom', title = '', message = ''
 })
 
 export const dismissDropdownAlert = () => ({
-  type: DISMISS_DROPDOWN_ALERT,
+  type: 'UI/components/DropdownAlert/DISMISS_DROPDOWN_ALERT',
   data: {}
 })
