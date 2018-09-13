@@ -7,7 +7,6 @@ import * as Constants from '../../../constants/indexConstants.js'
 import type { CustomTokenInfo } from '../../../types'
 import { CORE_DEFAULTS, LOCAL_ACCOUNT_DEFAULTS, SYNCED_ACCOUNT_DEFAULTS } from '../../Core/Account/settings.js'
 import type { Action } from '../../ReduxTypes'
-import * as WALLET_ACTION from '../Wallets/action'
 import * as ACTION from './action.js'
 import { spendingLimits } from './spendingLimits/SpendingLimitsReducer.js'
 
@@ -268,7 +267,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
-    case WALLET_ACTION.UPDATE_EXISTING_TOKEN_SUCCESS: {
+    case 'UPDATE_EXISTING_TOKEN_SUCCESS': {
       const { tokenObj } = data
       const customTokenSettings = state.customTokens
       const newCustomTokenSettings = customTokenSettings.map(item => {
@@ -286,7 +285,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       return updatedSettings
     }
 
-    case WALLET_ACTION.OVERWRITE_THEN_DELETE_TOKEN_SUCCESS: {
+    case 'OVERWRITE_THEN_DELETE_TOKEN_SUCCESS': {
       // where oldCurrencyCode is the sender, and tokenObj.currencyCode is the receiver (new code)
       const receiverCode = data.tokenObj.currencyCode
       const senderCode = data.oldCurrencyCode
@@ -318,7 +317,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       return updatedSettings
     }
 
-    case WALLET_ACTION.DELETE_CUSTOM_TOKEN_SUCCESS: {
+    case 'DELETE_CUSTOM_TOKEN_SUCCESS': {
       const { currencyCode } = data
       const customTokenSettings = state.customTokens
       const newCustomTokenSettings = customTokenSettings.map(item => {
@@ -353,7 +352,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
-    case WALLET_ACTION.ADD_NEW_TOKEN_THEN_DELETE_OLD_SUCCESS: {
+    case 'ADD_NEW_TOKEN_THEN_DELETE_OLD_SUCCESS': {
       const { tokenObj, code, setSettings, oldCurrencyCode } = data
       const customTokens = setSettings.customTokens
       const oldCurrencyCodeIndex = _.findIndex(customTokens, item => item.currencyCode === oldCurrencyCode)

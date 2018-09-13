@@ -3,7 +3,6 @@
 import { combineReducers } from 'redux'
 
 import type { Action } from '../../../ReduxTypes.js'
-import * as WALLET_ACTIONS from '../../Wallets/action'
 import * as ACTION from './action'
 
 export const deleteTokenModalVisible = (state: boolean = false, action: Action) => {
@@ -12,8 +11,11 @@ export const deleteTokenModalVisible = (state: boolean = false, action: Action) 
       return true
     case ACTION.HIDE_DELETE_TOKEN_MODAL:
       return false
-    case WALLET_ACTIONS.DELETE_CUSTOM_TOKEN_SUCCESS:
+
+    case 'DELETE_CUSTOM_TOKEN_SUCCESS': {
       return false
+    }
+
     default:
       return state
   }
@@ -21,12 +23,18 @@ export const deleteTokenModalVisible = (state: boolean = false, action: Action) 
 
 export const deleteCustomTokenProcessing = (state: boolean = false, action: Action) => {
   switch (action.type) {
-    case WALLET_ACTIONS.DELETE_CUSTOM_TOKEN_START:
+    case 'DELETE_CUSTOM_TOKEN_START': {
       return true
-    case WALLET_ACTIONS.DELETE_CUSTOM_TOKEN_SUCCESS:
+    }
+
+    case 'DELETE_CUSTOM_TOKEN_SUCCESS': {
       return false
-    case WALLET_ACTIONS.DELETE_CUSTOM_TOKEN_FAILURE:
+    }
+
+    case 'DELETE_CUSTOM_TOKEN_FAILURE': {
       return false
+    }
+
     default:
       return state
   }
@@ -34,18 +42,30 @@ export const deleteCustomTokenProcessing = (state: boolean = false, action: Acti
 
 export const editCustomTokenProcessing = (state: boolean = false, action: Action) => {
   switch (action.type) {
-    case WALLET_ACTIONS.EDIT_CUSTOM_TOKEN_START:
+    case 'EDIT_CUSTOM_TOKEN_START': {
       return true
-    case WALLET_ACTIONS.EDIT_CUSTOM_TOKEN_SUCCESS:
+    }
+
+    case 'EDIT_CUSTOM_TOKEN_SUCCESS': {
       return false
-    case WALLET_ACTIONS.EDIT_CUSTOM_TOKEN_FAILURE:
+    }
+
+    case 'EDIT_CUSTOM_TOKEN_FAILURE': {
       return false
-    case WALLET_ACTIONS.ADD_NEW_TOKEN_THEN_DELETE_OLD_SUCCESS:
+    }
+
+    case 'ADD_NEW_TOKEN_THEN_DELETE_OLD_SUCCESS': {
       return false
-    case WALLET_ACTIONS.OVERWRITE_THEN_DELETE_TOKEN_SUCCESS:
+    }
+
+    case 'OVERWRITE_THEN_DELETE_TOKEN_SUCCESS': {
       return false
-    case WALLET_ACTIONS.UPDATE_EXISTING_TOKEN_SUCCESS:
+    }
+
+    case 'UPDATE_EXISTING_TOKEN_SUCCESS': {
       return false
+    }
+
     default:
       return state
   }
