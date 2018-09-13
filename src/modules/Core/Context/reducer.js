@@ -2,9 +2,7 @@
 
 import type { DiskletFolder, EdgeContext } from 'edge-core-js'
 
-import * as Constants from '../../../constants/indexConstants.js'
 import type { Action } from '../../ReduxTypes'
-import * as ACTION from './action.js'
 
 const initialState = {
   context: {},
@@ -20,7 +18,7 @@ export const context = (state: State = initialState, action: Action) => {
   const { type, data = {} } = action
 
   switch (type) {
-    case ACTION.ADD_CONTEXT: {
+    case 'Core/Context/ADD_CONTEXT': {
       const context: EdgeContext = data.context
       const folder: DiskletFolder = data.folder
       return {
@@ -30,7 +28,7 @@ export const context = (state: State = initialState, action: Action) => {
       }
     }
 
-    case ACTION.ADD_USERNAMES: {
+    case 'Core/Context/ADD_USERNAMES': {
       const { usernames } = data
       return {
         ...state,
@@ -38,7 +36,7 @@ export const context = (state: State = initialState, action: Action) => {
       }
     }
 
-    case ACTION.DELETE_LOCAL_ACCOUNT_SUCCESS: {
+    case 'Core/Context/DELETE_LOCAL_ACCOUNT_REQUEST': {
       const { usernames } = data
       return {
         ...state,
@@ -46,7 +44,7 @@ export const context = (state: State = initialState, action: Action) => {
       }
     }
     case 'deepLinkReceived':
-    case Constants.LOGOUT: {
+    case 'LOGOUT': {
       if (!data) {
         return state
       }

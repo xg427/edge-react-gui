@@ -1,6 +1,5 @@
 // @flow
 
-import * as Constants from '../../constants/indexConstants'
 import type { Action } from '../ReduxTypes'
 import * as ACTION from './action.js'
 
@@ -17,7 +16,7 @@ const exchangeRatesReducer = (state = initialState, action) => {
 }
 
 export const exchangeRates = (state: ExchangeRateState, action: Action) => {
-  if (action.type === Constants.LOGOUT || action.type === 'deepLinkReceived') {
+  if (action.type === 'LOGOUT' || action.type === 'deepLinkReceived') {
     state = undefined
   }
 

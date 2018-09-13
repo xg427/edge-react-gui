@@ -237,6 +237,6 @@ export const deepLinkLogout = (backupKey: string) => (dispatch: Dispatch, getSta
 }
 
 export const logout = (username?: string) => ({
-  type: Constants.LOGOUT,
+  type: 'LOGOUT',
   data: { username }
 })

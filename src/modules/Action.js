@@ -53,6 +53,13 @@ type ActionType =
   | 'accountInitComplete'
   | 'disableOTPReset'
   | 'setConfirmPasswordError'
+  | 'ACCOUNT/LOGGED_IN'
+  | 'LOGOUT'
+  | 'Core/Context/ADD_CONTEXT'
+  | 'Core/Context/ADD_USERNAMES'
+  | 'Core/Context/DELETE_LOCAL_ACCOUNT_REQUEST'
+  | 'Core/Context/DELETE_LOCAL_ACCOUNT_SUCCESS'
+  | 'Core/Context/DELETE_LOCAL_ACCOUNT_ERROR'
   | string
 
 type LegacyAction = {
