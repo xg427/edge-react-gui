@@ -18,6 +18,10 @@ type ActionType =
   | 'selectFromWalletCryptoExchange'
   | 'selectToWalletCryptoExchange'
   | 'swapFromToCryptoWallets'
+  | 'openWalletSelectorModal'
+  | 'updateCryptoExchangeRate'
+  | 'updateCryptoReverseExchangeRate'
+  | 'updateCryptoExchangeInfo'
   | string
 
 type LegacyAction = {

@@ -63,9 +63,11 @@ const initialState = {
 function cryptoExchangerReducer (state = initialState, action) {
   let forceUpdateGuiCounter
   switch (action.type) {
-    case 'swapFromToCryptoWallets':
+    case 'swapFromToCryptoWallets': {
       return deepCopyState(state)
-    case 'selectFromWalletCryptoExchange':
+    }
+
+    case 'selectFromWalletCryptoExchange': {
       return {
         ...state,
         fromWallet: action.data.wallet,
@@ -84,7 +86,9 @@ function cryptoExchangerReducer (state = initialState, action) {
         transaction: null,
         quoteExpireDate: null
       }
-    case 'selectToWalletCryptoExchange':
+    }
+
+    case 'selectToWalletCryptoExchange': {
       return {
         ...state,
         toWallet: action.data.wallet,
@@ -103,15 +107,20 @@ function cryptoExchangerReducer (state = initialState, action) {
         transaction: null,
         quoteExpireDate: null
       }
+    }
+
     case Constants.DISABLE_WALLET_LIST_MODAL_VISIBILITY:
       return { ...state, walletListModalVisible: false }
-    case Constants.OPEN_WALLET_SELECTOR_MODAL:
+
+    case 'openWalletSelectorModal': {
       return {
         ...state,
         walletListModalVisible: true,
         changeWallet: action.data
       }
-    case Constants.UPDATE_CRYPTO_EXCHANGE_INFO: {
+    }
+
+    case 'updateCryptoExchangeInfo': {
       const result = {
         ...state,
         exchangeRate: action.data.rate,
@@ -121,6 +130,7 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
       return result
     }
+
     case Constants.UPDATE_CRYPTO_REVERSE_EXCHANGE_INFO: {
       const result = {
         ...state,

@@ -2,7 +2,6 @@
 
 import { combineReducers } from 'redux'
 
-import { OPEN_WALLET_SELECTOR_MODAL } from '../../../../constants/indexConstants'
 import { UPDATE_CURRENT_SCENE_KEY } from '../../scenes/action.js'
 import { CLOSE_ALL_WALLET_LIST_MODALS } from '../../Wallets/action.js'
 import * as ACTION from './action'
@@ -21,12 +20,19 @@ const walletListModalVisible = (state = false, action) => {
       return false
     case CLOSE_ALL_WALLET_LIST_MODALS:
       return false
-    case OPEN_WALLET_SELECTOR_MODAL:
+
+    case 'openWalletSelectorModal': {
       return true
-    case 'selectToWalletCryptoExchange':
+    }
+
+    case 'selectToWalletCryptoExchange': {
       return false
-    case 'selectFromWalletCryptoExchange':
+    }
+
+    case 'selectFromWalletCryptoExchange': {
       return false
+    }
+
     case UPDATE_CURRENT_SCENE_KEY:
       return false
     default:

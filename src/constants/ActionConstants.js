@@ -1,10 +1,6 @@
 // @flow
 
 // Crypto Exchange
-export const OPEN_WALLET_SELECTOR_MODAL = 'openWalletSelectorModal'
-export const UPDATE_CRYPTO_EXCHANGE_RATE = 'updateCryptoExchangeRate'
-export const UPDATE_CRYPTO_REVERSE_EXCHANGE_RATE = 'updateCryptoReverseExchangeRate'
-export const UPDATE_CRYPTO_EXCHANGE_INFO = 'updateCryptoExchangeInfo'
 export const UPDATE_CRYPTO_REVERSE_EXCHANGE_INFO = 'updateCryptoReverseExchangeInfo'
 export const UPDATE_SHIFT_TRANSACTION = 'updateShiftTransactionFee'
 export const INVALIDATE_SHIFT_TRANSACTION = 'invalidateShiftTransaction'
