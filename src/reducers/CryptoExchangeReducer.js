@@ -109,8 +109,12 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
     }
 
-    case Constants.DISABLE_WALLET_LIST_MODAL_VISIBILITY:
-      return { ...state, walletListModalVisible: false }
+    case 'DISABLE_WALLET_LIST_MODAL_VISIBILITY': {
+      return {
+        ...state,
+        walletListModalVisible: false
+      }
+    }
 
     case 'openWalletSelectorModal': {
       return {
