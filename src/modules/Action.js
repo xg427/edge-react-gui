@@ -15,6 +15,9 @@ type ActionType =
   | 'OPEN_SPLIT_WALLET_MODAL'
   | 'OPEN_VIEW_XPUB_WALLET_MODAL'
   | 'UNLOCK_WALLET_SEED'
+  | 'selectFromWalletCryptoExchange'
+  | 'selectToWalletCryptoExchange'
+  | 'swapFromToCryptoWallets'
   | string
 
 type LegacyAction = {

@@ -487,12 +487,12 @@ export const selectToFromWallet = (type: string, wallet: GuiWallet, currencyCode
 
   let fromCurrencyCode = state.cryptoExchange.fromCurrencyCode
   let toCurrencyCode = state.cryptoExchange.toCurrencyCode
-  if (type === Constants.SELECT_FROM_WALLET_CRYPTO_EXCHANGE) {
-    dispatch(setWallet(Constants.SELECT_FROM_WALLET_CRYPTO_EXCHANGE, data))
+  if (type === 'selectFromWalletCryptoExchange') {
+    dispatch(setWallet('selectFromWalletCryptoExchange', data))
     hasFrom = wallet
     fromCurrencyCode = cc
   } else {
-    dispatch(setWallet(Constants.SELECT_TO_WALLET_CRYPTO_EXCHANGE, data))
+    dispatch(setWallet('selectToWalletCryptoExchange', data))
     hasTo = wallet
     toCurrencyCode = cc
   }
@@ -568,10 +568,10 @@ export const selectWalletForExchange = (walletId: string, currencyCode: string) 
   const wallet = state.ui.wallets.byId[walletId]
   switch (state.cryptoExchange.changeWallet) {
     case Constants.TO:
-      dispatch(selectToFromWallet(Constants.SELECT_TO_WALLET_CRYPTO_EXCHANGE, wallet, currencyCode))
+      dispatch(selectToFromWallet('selectToWalletCryptoExchange', wallet, currencyCode))
       break
     case Constants.FROM:
-      dispatch(selectToFromWallet(Constants.SELECT_FROM_WALLET_CRYPTO_EXCHANGE, wallet, currencyCode))
+      dispatch(selectToFromWallet('selectFromWalletCryptoExchange', wallet, currencyCode))
       break
     default:
   }

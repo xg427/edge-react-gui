@@ -1,9 +1,6 @@
 // @flow
 
 // Crypto Exchange
-export const SELECT_FROM_WALLET_CRYPTO_EXCHANGE = 'selectFromWalletCryptoExchange'
-export const SELECT_TO_WALLET_CRYPTO_EXCHANGE = 'selectToWalletCryptoExchange'
-export const SWAP_FROM_TO_CRYPTO_WALLETS = 'swapFromToCryptoWallets'
 export const OPEN_WALLET_SELECTOR_MODAL = 'openWalletSelectorModal'
 export const UPDATE_CRYPTO_EXCHANGE_RATE = 'updateCryptoExchangeRate'
 export const UPDATE_CRYPTO_REVERSE_EXCHANGE_RATE = 'updateCryptoReverseExchangeRate'

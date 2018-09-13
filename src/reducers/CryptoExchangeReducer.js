@@ -63,9 +63,9 @@ const initialState = {
 function cryptoExchangerReducer (state = initialState, action) {
   let forceUpdateGuiCounter
   switch (action.type) {
-    case Constants.SWAP_FROM_TO_CRYPTO_WALLETS:
+    case 'swapFromToCryptoWallets':
       return deepCopyState(state)
-    case Constants.SELECT_FROM_WALLET_CRYPTO_EXCHANGE:
+    case 'selectFromWalletCryptoExchange':
       return {
         ...state,
         fromWallet: action.data.wallet,
@@ -84,7 +84,7 @@ function cryptoExchangerReducer (state = initialState, action) {
         transaction: null,
         quoteExpireDate: null
       }
-    case Constants.SELECT_TO_WALLET_CRYPTO_EXCHANGE:
+    case 'selectToWalletCryptoExchange':
       return {
         ...state,
         toWallet: action.data.wallet,
