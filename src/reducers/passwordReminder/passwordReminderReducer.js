@@ -1,9 +1,7 @@
 // @flow
 
 import type { Action } from '../../modules/ReduxTypes.js'
-import { SET_SETTINGS_LOCK } from '../../modules/UI/Settings/action.js'
 import { MILLISECONDS_PER_DAY, daysBetween } from '../../modules/utils.js'
-import { PASSWORD_REMINDER_POSTPONED } from './indexPasswordReminder.js'
 
 export const INITIAL_NON_PASSWORD_DAYS_LIMIT = 2
 export const INITIAL_NON_PASSWORD_LOGINS_LIMIT = 2
@@ -229,7 +227,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
     }
   }
 
-  if (action.type === SET_SETTINGS_LOCK && action.data === false) {
+  if (action.type === 'UI/Settings/SET_SETTINGS_LOCK' && action.data === false) {
     translatedAction = {
       type: 'PASSWORD_USED',
       data: {
@@ -254,7 +252,7 @@ export const translate = (reducer: typeof untranslatedReducer) => (state: Passwo
     }
   }
 
-  if (action.type === PASSWORD_REMINDER_POSTPONED) {
+  if (action.type === 'PASSWORD_REMINDER/PASSWORD_REMINDER_POSTPONED') {
     translatedAction = {
       type: 'PASSWORD_REMINDER_POSTPONED',
       data: {}

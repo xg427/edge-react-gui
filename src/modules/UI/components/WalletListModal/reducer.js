@@ -2,8 +2,6 @@
 
 import { combineReducers } from 'redux'
 
-import { UPDATE_CURRENT_SCENE_KEY } from '../../scenes/action.js'
-
 const walletListModalVisible = (state = false, action) => {
   switch (action.type) {
     case 'TOGGLE_WALLET_LIST_MODAL_VISIBILITY': {
@@ -42,8 +40,10 @@ const walletListModalVisible = (state = false, action) => {
       return false
     }
 
-    case UPDATE_CURRENT_SCENE_KEY:
+    case 'UPDATE_CURRENT_SCENE_KEY': {
       return false
+    }
+
     default:
       return state
   }
