@@ -24,11 +24,41 @@ import { getSelectedWalletId } from '../../selectors.js'
 import { getAuthRequired, getSpendInfo, getTransaction } from './selectors'
 import type { AuthType, GuiMakeSpendInfo } from './selectors'
 
-export const UPDATE_IS_KEYBOARD_VISIBLE = 'UI/SendConfimation/UPDATE_IS_KEYBOARD_VISIBLE'
-export const UPDATE_SPEND_PENDING = 'UI/SendConfimation/UPDATE_SPEND_PENDING'
-export const RESET = 'UI/SendConfimation/RESET'
-export const UPDATE_PAYMENT_PROTOCOL_TRANSACTION = 'UI/SendConfimation/UPDATE_PAYMENT_PROTOCOL_TRANSACTION'
-export const UPDATE_TRANSACTION = 'UI/SendConfimation/UPDATE_TRANSACTION'
+// add empty string if there is an error but we don't need text feedback to the user
+export const makeSpendFailed = (error: Error | null) => ({
+  type: 'UI/SendConfimation/MAKE_SPEND_FAILED',
+  data: { error }
+})
+
+export const newSpendInfo = (spendInfo: EdgeSpendInfo, authRequired: AuthType) => ({
+  type: 'UI/SendConfimation/NEW_SPEND_INFO',
+  data: { spendInfo, authRequired }
+})
+
+export const reset = () => ({
+  type: 'UI/SendConfimation/RESET',
+  data: {}
+})
+
+export const updatePaymentProtocolTransaction = (transaction: EdgeTransaction) => ({
+  type: 'UI/SendConfimation/UPDATE_PAYMENT_PROTOCOL_TRANSACTION',
+  data: { transaction }
+})
+
+export const updateTransaction = (transaction: ?EdgeTransaction, parsedUri: ?EdgeParsedUri, forceUpdateGui: ?boolean, error: ?Error) => ({
+  type: 'UI/SendConfimation/UPDATE_TRANSACTION',
+  data: { transaction, parsedUri, forceUpdateGui, error }
+})
+
+export const updateSpendPending = (pending: boolean) => ({
+  type: 'UI/SendConfimation/UPDATE_SPEND_PENDING',
+  data: { pending }
+})
+
+export const newPin = (pin: string) => ({
+  type: 'UI/SendConfimation/NEW_PIN',
+  data: { pin }
+})
 
 export const updateAmount = (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string) => (dispatch: Dispatch, getState: GetState) => {
   const amountFiatString: string = bns.mul(exchangeAmount, fiatPerCrypto)
@@ -70,19 +100,6 @@ export const paymentProtocolUriReceived = ({ paymentProtocolURL }: EdgePaymentPr
       )
     })
 }
-
-export const MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED = 'UI/SendConfimation/MAKE_SPEND_FAILED'
-// add empty string if there is an error but we don't need text feedback to the user
-export const makeSpendFailed = (error: Error | null) => ({
-  type: MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED,
-  data: { error }
-})
-
-export const NEW_SPEND_INFO = 'UI/SendConfimation/NEW_SPEND_INFO'
-export const newSpendInfo = (spendInfo: EdgeSpendInfo, authRequired: AuthType) => ({
-  type: NEW_SPEND_INFO,
-  data: { spendInfo, authRequired }
-})
 
 export const createTX = (parsedUri: GuiMakeSpendInfo | EdgeParsedUri, forceUpdateGui?: boolean = true) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
@@ -161,34 +178,6 @@ export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: G
     dispatch(openABAlert('OPEN_AB_ALERT', errorInfo))
   }
 }
-
-export const reset = () => ({
-  type: RESET,
-  data: {}
-})
-
-export const updatePaymentProtocolTransaction = (transaction: EdgeTransaction) => ({
-  type: UPDATE_PAYMENT_PROTOCOL_TRANSACTION,
-  data: { transaction }
-})
-
-export const updateTransaction = (transaction: ?EdgeTransaction, parsedUri: ?EdgeParsedUri, forceUpdateGui: ?boolean, error: ?Error) => {
-  return {
-    type: UPDATE_TRANSACTION,
-    data: { transaction, parsedUri, forceUpdateGui, error }
-  }
-}
-
-export const updateSpendPending = (pending: boolean) => ({
-  type: UPDATE_SPEND_PENDING,
-  data: { pending }
-})
-
-export const NEW_PIN = 'UI/SendConfimation/NEW_PIN'
-export const newPin = (pin: string) => ({
-  type: NEW_PIN,
-  data: { pin }
-})
 
 export { createTX as updateMiningFees, createTX as updateParsedURI, createTX as uniqueIdentifierUpdated }
 
