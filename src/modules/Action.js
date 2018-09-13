@@ -22,6 +22,10 @@ type ActionType =
   | 'updateCryptoExchangeRate'
   | 'updateCryptoReverseExchangeRate'
   | 'updateCryptoExchangeInfo'
+  | 'updateCryptoReverseExchangeInfo'
+  | 'updateShiftTransactionFee'
+  | 'invalidateShiftTransaction'
+  | 'shiftCryptoCurrency'
   | string
 
 type LegacyAction = {

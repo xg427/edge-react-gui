@@ -460,7 +460,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     toDisplayAmount: toDisplayAmount,
     quoteExpireDate: edgeCoinExchangeQuote.expiration
   }
-  dispatch(setShapeTransaction(Constants.UPDATE_SHIFT_TRANSACTION, returnObject))
+  dispatch(setShapeTransaction('updateShiftTransactionFee', returnObject))
 }
 
 export const selectToFromWallet = (type: string, wallet: GuiWallet, currencyCode?: string) => async (dispatch: Dispatch, getState: GetState) => {
@@ -506,7 +506,7 @@ export const selectToFromWallet = (type: string, wallet: GuiWallet, currencyCode
       await dispatch(getShiftTransaction(hasFrom, hasTo))
     } catch (e) {
       console.log(e)
-      dispatch(actions.dispatchAction(Constants.INVALIDATE_SHIFT_TRANSACTION))
+      dispatch(actions.dispatchAction('invalidateShiftTransaction'))
     }
   }
 }
@@ -535,7 +535,7 @@ export const getCryptoExchangeRate = (fromCurrencyCode: string, toCurrencyCode: 
 
   CONTEXT_API.getExchangeSwapInfo(context, toCurrencyCode, fromCurrencyCode)
     .then(response => {
-      dispatch(actions.dispatchActionObject(Constants.UPDATE_CRYPTO_REVERSE_EXCHANGE_INFO, response))
+      dispatch(actions.dispatchActionObject('updateCryptoReverseExchangeInfo', response))
       return response
     })
     .catch(e => {

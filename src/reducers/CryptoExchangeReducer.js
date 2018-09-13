@@ -131,7 +131,7 @@ function cryptoExchangerReducer (state = initialState, action) {
       return result
     }
 
-    case Constants.UPDATE_CRYPTO_REVERSE_EXCHANGE_INFO: {
+    case 'updateCryptoReverseExchangeInfo': {
       const result = {
         ...state,
         reverseExchange: action.data.rate,
@@ -141,7 +141,8 @@ function cryptoExchangerReducer (state = initialState, action) {
       }
       return result
     }
-    case Constants.UPDATE_SHIFT_TRANSACTION:
+
+    case 'updateShiftTransactionFee': {
       return {
         ...state,
         transaction: action.data.edgeTransaction,
@@ -157,7 +158,9 @@ function cryptoExchangerReducer (state = initialState, action) {
         insufficientError: false,
         genericShapeShiftError: null
       }
-    case Constants.INVALIDATE_SHIFT_TRANSACTION:
+    }
+
+    case 'invalidateShiftTransaction': {
       return {
         ...state,
         transaction: null,
@@ -165,6 +168,8 @@ function cryptoExchangerReducer (state = initialState, action) {
         genericShapeShiftError: null,
         quoteExpireDate: null
       }
+    }
+
     case Constants.SHIFT_COMPLETE:
       return { ...initialState, availableShapeShiftTokens: state.availableShapeShiftTokens }
     case Constants.SHIFT_ERROR:

@@ -1,10 +1,6 @@
 // @flow
 
 // Crypto Exchange
-export const UPDATE_CRYPTO_REVERSE_EXCHANGE_INFO = 'updateCryptoReverseExchangeInfo'
-export const UPDATE_SHIFT_TRANSACTION = 'updateShiftTransactionFee'
-export const INVALIDATE_SHIFT_TRANSACTION = 'invalidateShiftTransaction'
-export const SHIFT_CRYPTO_CURRENCY = 'shiftCryptoCurrency'
 export const SHIFT_COMPLETE = 'shiftComplete'
 export const SHIFT_ERROR = 'shiftError'
 export const OPEN_CRYPTO_EXC_CONF_MODAL = 'openCryptoExecConfModal'
