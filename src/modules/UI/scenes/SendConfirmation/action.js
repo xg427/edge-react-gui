@@ -24,13 +24,11 @@ import { getSelectedWalletId } from '../../selectors.js'
 import { getAuthRequired, getSpendInfo, getTransaction } from './selectors'
 import type { AuthType, GuiMakeSpendInfo } from './selectors'
 
-const PREFIX = 'UI/SendConfimation/'
-
-export const UPDATE_IS_KEYBOARD_VISIBLE = PREFIX + 'UPDATE_IS_KEYBOARD_VISIBLE'
-export const UPDATE_SPEND_PENDING = PREFIX + 'UPDATE_SPEND_PENDING'
-export const RESET = PREFIX + 'RESET'
-export const UPDATE_PAYMENT_PROTOCOL_TRANSACTION = PREFIX + 'UPDATE_PAYMENT_PROTOCOL_TRANSACTION'
-export const UPDATE_TRANSACTION = PREFIX + 'UPDATE_TRANSACTION'
+export const UPDATE_IS_KEYBOARD_VISIBLE = 'UI/SendConfimation/UPDATE_IS_KEYBOARD_VISIBLE'
+export const UPDATE_SPEND_PENDING = 'UI/SendConfimation/UPDATE_SPEND_PENDING'
+export const RESET = 'UI/SendConfimation/RESET'
+export const UPDATE_PAYMENT_PROTOCOL_TRANSACTION = 'UI/SendConfimation/UPDATE_PAYMENT_PROTOCOL_TRANSACTION'
+export const UPDATE_TRANSACTION = 'UI/SendConfimation/UPDATE_TRANSACTION'
 
 export const updateAmount = (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string) => (dispatch: Dispatch, getState: GetState) => {
   const amountFiatString: string = bns.mul(exchangeAmount, fiatPerCrypto)
@@ -73,14 +71,14 @@ export const paymentProtocolUriReceived = ({ paymentProtocolURL }: EdgePaymentPr
     })
 }
 
-export const MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED = PREFIX + 'MAKE_SPEND_FAILED'
+export const MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED = 'UI/SendConfimation/MAKE_SPEND_FAILED'
 // add empty string if there is an error but we don't need text feedback to the user
 export const makeSpendFailed = (error: Error | null) => ({
   type: MAKE_PAYMENT_PROTOCOL_TRANSACTION_FAILED,
   data: { error }
 })
 
-export const NEW_SPEND_INFO = PREFIX + 'NEW_SPEND_INFO'
+export const NEW_SPEND_INFO = 'UI/SendConfimation/NEW_SPEND_INFO'
 export const newSpendInfo = (spendInfo: EdgeSpendInfo, authRequired: AuthType) => ({
   type: NEW_SPEND_INFO,
   data: { spendInfo, authRequired }
@@ -186,7 +184,7 @@ export const updateSpendPending = (pending: boolean) => ({
   data: { pending }
 })
 
-export const NEW_PIN = PREFIX + 'NEW_PIN'
+export const NEW_PIN = 'UI/SendConfimation/NEW_PIN'
 export const newPin = (pin: string) => ({
   type: NEW_PIN,
   data: { pin }

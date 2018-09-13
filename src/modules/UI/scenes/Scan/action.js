@@ -14,8 +14,6 @@ import { paymentProtocolUriReceived, updateParsedURI } from '../SendConfirmation
 import { activated as legacyAddressModalActivated, deactivated as legacyAddressModalDeactivated } from './LegacyAddressModal/LegacyAddressModalActions.js'
 import { activated as privateKeyModalActivated } from './PrivateKeyModal/PrivateKeyModalActions.js'
 
-export const PREFIX = 'SCAN/'
-
 export const UPDATE_RECIPIENT_ADDRESS = 'UPDATE_RECIPIENT_ADDRESS'
 
 export const TOGGLE_ENABLE_TORCH = 'TOGGLE_ENABLE_TORCH'

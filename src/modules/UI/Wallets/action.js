@@ -18,14 +18,12 @@ import * as UI_SELECTORS from '../selectors.js'
 import { updateSettings } from '../Settings/action'
 import * as SETTINGS_SELECTORS from '../Settings/selectors'
 
-export const PREFIX = 'UI/Wallets/'
+export const UPSERT_WALLETS = 'UI/Wallets/UPSERT_WALLETS'
 
-export const UPSERT_WALLETS = PREFIX + 'UPSERT_WALLETS'
+export const ACTIVATE_WALLET_ID = 'UI/Wallets/ACTIVATE_WALLET_ID'
+export const ARCHIVE_WALLET_ID = 'UI/Wallets/ARCHIVE_WALLET_ID'
 
-export const ACTIVATE_WALLET_ID = PREFIX + 'ACTIVATE_WALLET_ID'
-export const ARCHIVE_WALLET_ID = PREFIX + 'ARCHIVE_WALLET_ID'
-
-export const SELECT_WALLET = PREFIX + 'SELECT_WALLET'
+export const SELECT_WALLET = 'UI/Wallets/SELECT_WALLET'
 
 export const MANAGE_TOKENS = 'MANAGE_TOKENS'
 export const MANAGE_TOKENS_START = 'MANAGE_TOKENS_START'
@@ -56,7 +54,7 @@ export const refreshReceiveAddressRequest = (walletId: string) => (dispatch: Dis
   }
 }
 
-export const REFRESH_RECEIVE_ADDRESS = PREFIX + 'REFRESH_RECEIVE_ADDRESS'
+export const REFRESH_RECEIVE_ADDRESS = 'UI/Wallets/REFRESH_RECEIVE_ADDRESS'
 export const refreshReceiveAddress = (walletId: string, receiveAddress: EdgeReceiveAddress) => ({
   type: REFRESH_RECEIVE_ADDRESS,
   data: {
@@ -496,17 +494,17 @@ export function insertWalletIdsForProgress (activeWalletIds: Array<string>) {
   }
 }
 
-export const CREATE_WALLET_START = PREFIX + 'CREATE_WALLET_START'
+export const CREATE_WALLET_START = 'UI/Wallets/CREATE_WALLET_START'
 export const createWalletStart = () => ({
   type: CREATE_WALLET_START
 })
 
-export const CREATE_WALLET_SUCCESS = PREFIX + 'CREATE_WALLET_SUCCESS'
+export const CREATE_WALLET_SUCCESS = 'UI/Wallets/CREATE_WALLET_SUCCESS'
 export const createWalletSuccess = () => ({
   type: CREATE_WALLET_SUCCESS
 })
 
-export const CREATE_WALLET_FAILURE = PREFIX + 'CREATE_WALLET_FAILURE'
+export const CREATE_WALLET_FAILURE = 'UI/Wallets/CREATE_WALLET_FAILURE'
 export const createWalletFailure = () => ({
   type: CREATE_WALLET_FAILURE
 })

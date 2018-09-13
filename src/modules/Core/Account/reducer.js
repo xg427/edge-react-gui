@@ -5,9 +5,7 @@ import type { EdgeAccount } from 'edge-core-js'
 import * as Constants from '../../../constants/indexConstants.js'
 import type { Action } from '../../ReduxTypes.js'
 
-export const PREFIX = 'ACCOUNT/'
-
-export const LOGGED_IN = PREFIX + 'LOGGED_IN'
+export const LOGGED_IN = 'ACCOUNT/LOGGED_IN'
 export const loggedIn = (account: EdgeAccount) => ({
   type: LOGGED_IN,
   data: { account }

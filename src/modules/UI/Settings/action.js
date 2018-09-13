@@ -4,49 +4,47 @@ import type { EdgeCurrencyPlugin } from 'edge-core-js'
 
 import type { CustomTokenInfo, GuiTouchIdInfo } from '../../../types.js'
 
-const PREFIX = 'UI/Settings/'
+export const SET_LOGIN_STATUS = 'UI/Settings/SET_LOGIN_STATUS'
 
-export const SET_LOGIN_STATUS = PREFIX + 'SET_LOGIN_STATUS'
+export const ADD_EXCHANGE_TIMER = 'UI/Settings/ADD_EXCHANGE_TIMER'
 
-export const ADD_EXCHANGE_TIMER = PREFIX + 'ADD_EXCHANGE_TIMER'
-
-export const UPDATE_SETTINGS = PREFIX + 'UPDATE_SETTINGS'
-export const LOAD_SETTINGS = PREFIX + 'LOAD_SETTINGS'
-export const TOUCH_ID_SETTINGS = PREFIX + 'TOUCH_ID_SETTINGS'
-export const OTP_SETTINGS = PREFIX + 'OTP_SETTINGS'
-export const CHANGE_TOUCH_ID_SETTINGS = PREFIX + 'CHANGE_TOUCH_ID_SETTINGS'
+export const UPDATE_SETTINGS = 'UI/Settings/UPDATE_SETTINGS'
+export const LOAD_SETTINGS = 'UI/Settings/LOAD_SETTINGS'
+export const TOUCH_ID_SETTINGS = 'UI/Settings/TOUCH_ID_SETTINGS'
+export const OTP_SETTINGS = 'UI/Settings/OTP_SETTINGS'
+export const CHANGE_TOUCH_ID_SETTINGS = 'UI/Settings/CHANGE_TOUCH_ID_SETTINGS'
 
 // Core Settings
-export const SET_PIN_MODE = PREFIX + 'SET_PIN_MODE'
-export const SET_PIN = PREFIX + 'SET_PIN'
-export const SET_OTP_MODE = PREFIX + 'SET_OTP_MODE'
-export const SET_OTP = PREFIX + 'SET_OTP'
-export const TOGGLE_PIN_LOGIN_ENABLED = PREFIX + 'TOGGLE_PIN_LOGIN_ENABLED'
+export const SET_PIN_MODE = 'UI/Settings/SET_PIN_MODE'
+export const SET_PIN = 'UI/Settings/SET_PIN'
+export const SET_OTP_MODE = 'UI/Settings/SET_OTP_MODE'
+export const SET_OTP = 'UI/Settings/SET_OTP'
+export const TOGGLE_PIN_LOGIN_ENABLED = 'UI/Settings/TOGGLE_PIN_LOGIN_ENABLED'
 
 // Synced Account Settings
-export const SET_AUTO_LOGOUT_TIME = PREFIX + 'SET_AUTO_LOGOUT_TIME'
-export const SET_DEFAULT_FIAT = PREFIX + 'SET_DEFAULT_FIAT'
-export const SET_MERCHANT_MODE = PREFIX + 'SET_MERCHANT_MODE'
+export const SET_AUTO_LOGOUT_TIME = 'UI/Settings/SET_AUTO_LOGOUT_TIME'
+export const SET_DEFAULT_FIAT = 'UI/Settings/SET_DEFAULT_FIAT'
+export const SET_MERCHANT_MODE = 'UI/Settings/SET_MERCHANT_MODE'
 
 // Lock account
-export const SET_SETTINGS_LOCK = PREFIX + 'SET_SETTINGS_LOCK'
+export const SET_SETTINGS_LOCK = 'UI/Settings/SET_SETTINGS_LOCK'
 
 // Local Account Settings
-export const SET_BLUETOOTH_MODE = PREFIX + 'SET_BLUETOOTH_MODE'
-export const SET_ACCOUNT_BALANCE_VISIBILITY = PREFIX + 'SET_ACCOUNT_BALANCE_VISIBILITY'
+export const SET_BLUETOOTH_MODE = 'UI/Settings/SET_BLUETOOTH_MODE'
+export const SET_ACCOUNT_BALANCE_VISIBILITY = 'UI/Settings/SET_ACCOUNT_BALANCE_VISIBILITY'
 export const UPDATE_WALLET_FIAT_BALANCE_VISIBILITY = 'UPDATE_WALLET_FIAT_BALANCE_VISIBILITY'
 
 // Currency Settings
-export const SET_BITCOIN_OVERRIDE_SERVER = PREFIX + 'SET_BITCOIN_OVERRIDE_SERVER'
+export const SET_BITCOIN_OVERRIDE_SERVER = 'UI/Settings/SET_BITCOIN_OVERRIDE_SERVER'
 
 // Denomination
-export const SET_DENOMINATION_KEY = PREFIX + 'SET_DENOMINATION_KEY'
+export const SET_DENOMINATION_KEY = 'UI/Settings/SET_DENOMINATION_KEY'
 
 // Plugins
-export const ADD_CURRENCY_PLUGIN = PREFIX + 'ADD_CURRENCY_PLUGIN'
+export const ADD_CURRENCY_PLUGIN = 'UI/Settings/ADD_CURRENCY_PLUGIN'
 
 // tokens
-export const SET_CUSTOM_TOKENS = PREFIX + 'SET_CUSTOM_TOKENS'
+export const SET_CUSTOM_TOKENS = 'UI/Settings/SET_CUSTOM_TOKENS'
 
 export const updateSettings = (settings: Object) => {
   return {

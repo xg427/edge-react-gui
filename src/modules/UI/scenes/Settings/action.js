@@ -15,18 +15,16 @@ import { displayErrorAlert } from '../../components/ErrorAlert/actions.js'
 import * as SETTINGS_ACTIONS from '../../Settings/action.js'
 import { newSpendingLimits } from '../../Settings/spendingLimits/SpendingLimitsReducer.js'
 
-const PREFIX = 'UI/Scenes/Settings/'
+const SET_PIN_MODE_START = 'UI/Scenes/Settings/SET_PIN_MODE_START'
+const SET_PIN_START = 'UI/Scenes/Settings/SET_PIN_START'
 
-const SET_PIN_MODE_START = PREFIX + 'SET_PIN_MODE_START'
-const SET_PIN_START = PREFIX + 'SET_PIN_START'
+const SET_DEFAULT_FIAT_START = 'UI/Scenes/Settings/SET_DEFAULT_FIAT_START'
+const SET_MERCHANT_MODE_START = 'UI/Scenes/Settings/SET_MERCHANT_MODE_START'
 
-const SET_DEFAULT_FIAT_START = PREFIX + 'SET_DEFAULT_FIAT_START'
-const SET_MERCHANT_MODE_START = PREFIX + 'SET_MERCHANT_MODE_START'
+const SET_BLUETOOTH_MODE_START = 'UI/Scenes/Settings/SET_BLUETOOTH_MODE_START'
+const SET_BITCOIN_OVERRIDE_SERVER_START = 'UI/Scenes/Settings/SET_BITCOIN_OVERRIDE_SERVER_START'
 
-const SET_BLUETOOTH_MODE_START = PREFIX + 'SET_BLUETOOTH_MODE_START'
-const SET_BITCOIN_OVERRIDE_SERVER_START = PREFIX + 'SET_BITCOIN_OVERRIDE_SERVER_START'
-
-export const SELECT_DEFAULT_FIAT = PREFIX + 'SELECT_DEFAULT_FIAT'
+export const SELECT_DEFAULT_FIAT = 'UI/Scenes/Settings/SELECT_DEFAULT_FIAT'
 
 export const setPINModeRequest = (pinMode: boolean) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(setPINModeStart(pinMode))

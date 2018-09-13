@@ -13,8 +13,7 @@ export type SpendingLimits = {
   }
 }
 
-export const PREFIX = 'SPENDING_LIMITS/'
-export const NEW_SPENDING_LIMITS = PREFIX + 'NEW_SPENDING_LIMITS'
+export const NEW_SPENDING_LIMITS = 'SPENDING_LIMITS/NEW_SPENDING_LIMITS'
 export const newSpendingLimits = (spendingLimits: SpendingLimits) => ({
   type: NEW_SPENDING_LIMITS,
   data: { spendingLimits }
