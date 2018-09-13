@@ -7,7 +7,6 @@ import * as Constants from '../../../constants/indexConstants.js'
 import type { CustomTokenInfo } from '../../../types'
 import { CORE_DEFAULTS, LOCAL_ACCOUNT_DEFAULTS, SYNCED_ACCOUNT_DEFAULTS } from '../../Core/Account/settings.js'
 import type { Action } from '../../ReduxTypes'
-import { UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL } from '../components/PasswordRecoveryReminderModal/PasswordRecoveryReminderModalActions.js'
 import * as ADD_TOKEN_ACTION from '../scenes/AddToken/action.js'
 import * as WALLET_ACTION from '../Wallets/action'
 import * as ACTION from './action.js'
@@ -551,7 +550,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
-    case UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL: {
+    case 'UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL': {
       const { level, wasShown } = data
       return {
         ...state,

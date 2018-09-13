@@ -73,6 +73,13 @@ type ActionType =
   | 'REMOVE_USERS_SIDE_MENU'
   | 'UI/components/DropdownAlert/DISPLAY_DROPDOWN_ALERT'
   | 'UI/components/DropdownAlert/DISMISS_DROPDOWN_ALERT'
+  | 'UI/components/ErrorAlert/DISPLAY_ERROR_ALERT'
+  | 'UI/components/ErrorAlert/DISMISS_ERROR_ALERT'
+  | 'UPDATE_EXCHANGE_RATES'
+  | 'OPEN_HELP_MODAL'
+  | 'CLOSE_HELP_MODAL'
+  | 'SHOW_PASSWORD_RECOVERY_MODAL'
+  | 'HIDE_PASSWORD_RECOVERY_MODAL'
   | string
 
 type LegacyAction = {
