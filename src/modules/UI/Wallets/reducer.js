@@ -134,7 +134,7 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
       return state
     }
 
-    case 'UPSERT_WALLETS': {
+    case 'UI/Wallets/UPSERT_WALLETS': {
       const { data } = action
       const wallets = data.wallets
       const out = { ...state }
