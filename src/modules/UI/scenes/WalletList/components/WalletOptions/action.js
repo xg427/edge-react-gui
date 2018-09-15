@@ -87,7 +87,7 @@ export const walletRowOption = (walletId: string, option: string, archived: bool
 
     case 'getSeed': {
       return (dispatch: Dispatch) => {
-        dispatch({ type: 'OPEN_GET_SEED_MODAL', data: { walletId } })
+        dispatch({ type: 'OPEN_GETSEED_WALLET_MODAL', data: { walletId } })
       }
     }
 
@@ -96,7 +96,7 @@ export const walletRowOption = (walletId: string, option: string, archived: bool
         const state = getState()
         const wallet = CORE_SELECTORS.getWallet(state, walletId)
         const xPub = wallet.getDisplayPublicSeed()
-        dispatch({ type: 'OPEN_VIEW_XPUB_MODAL', data: { xPub, walletId } })
+        dispatch({ type: 'OPEN_VIEWXPUB_WALLET_MODAL', data: { xPub, walletId } })
       }
     }
 

@@ -6,14 +6,14 @@ type ActionType =
   | 'CLOSE_RENAME_WALLET_MODAL'
   | 'CLOSE_RESYNC_WALLET_MODAL'
   | 'CLOSE_SPLIT_WALLET_MODAL'
-  | 'CLOSE_VIEW_XPUB_WALLET_MODAL'
   | 'LOCK_WALLET_SEED'
   | 'OPEN_DELETE_WALLET_MODAL'
   | 'OPEN_GETSEED_WALLET_MODAL'
   | 'OPEN_RENAME_WALLET_MODAL'
   | 'OPEN_RESYNC_WALLET_MODAL'
   | 'OPEN_SPLIT_WALLET_MODAL'
-  | 'OPEN_VIEW_XPUB_WALLET_MODAL'
+  | 'OPEN_VIEWXPUB_WALLET_MODAL'
+  | 'CLOSE_VIEWXPUB_WALLET_MODAL'
   | 'UNLOCK_WALLET_SEED'
   | 'selectFromWalletCryptoExchange'
   | 'selectToWalletCryptoExchange'
@@ -241,7 +241,17 @@ type ActionType =
   | 'CONTACTS/LOAD_CONTACTS_START'
   | 'CONTACTS/LOAD_CONTACTS_SUCCESS'
   | 'PERMISSIONS/UPDATE'
-  | string
+  | 'RENAME_WALLET_START'
+  | 'SPENDING_LIMITS/NEW_SPENDING_LIMITS'
+  | 'CREATE_WALLET_START'
+  | 'CREATE_WALLET_SUCCESS'
+  | 'UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL'
+  | 'LOGGED_OUT'
+  | 'deepLinkReceived'
+  | 'updateShiftTransactionFee'
+  | 'selectFromWalletCryptoExchange'
+  | 'selectToWalletCryptoExchange'
+// | string
 
 type LegacyAction = {
   type: ActionType,

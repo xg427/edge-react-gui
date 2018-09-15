@@ -5,7 +5,6 @@ import { disableTouchId, enableTouchId } from 'edge-login-ui-rn'
 import { Actions } from 'react-native-router-flux'
 
 import type { Dispatch, GetState } from '../../../../../src/modules/ReduxTypes.js'
-import * as actions from '../../../../actions/indexActions.js'
 import s from '../../../../locales/strings.js'
 import { convertCurrency, restoreWalletsRequest } from '../../../Core/Account/api.js'
 import * as ACCOUNT_SETTINGS from '../../../Core/Account/settings.js'
@@ -149,13 +148,13 @@ export const setBluetoothModeRequest = (bluetoothMode: boolean) => (dispatch: Di
 
 export const checkCurrentPassword = (arg: string) => async (dispatch: Dispatch, getState: GetState) => {
   const clearPasswordError = { confirmPasswordError: '' }
-  dispatch(actions.dispatchActionObject('setConfirmPasswordError', clearPasswordError))
+  dispatch({ type: 'setConfirmPasswordError', data: clearPasswordError })
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
   const isPassword = await account.checkPassword(arg)
   dispatch(SETTINGS_ACTIONS.setSettingsLock(!isPassword))
   if (!isPassword) {
-    dispatch(actions.dispatchActionObject('setConfirmPasswordError', { confirmPasswordError: s.strings.fragmet_invalid_password }))
+    dispatch({ type: 'setConfirmPasswordError', data: { confirmPasswordError: s.strings.fragmet_invalid_password } })
   }
 }
 

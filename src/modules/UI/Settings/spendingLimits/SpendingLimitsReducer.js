@@ -12,9 +12,8 @@ export type SpendingLimits = {
   }
 }
 
-export const NEW_SPENDING_LIMITS = 'SPENDING_LIMITS/NEW_SPENDING_LIMITS'
 export const newSpendingLimits = (spendingLimits: SpendingLimits) => ({
-  type: NEW_SPENDING_LIMITS,
+  type: 'SPENDING_LIMITS/NEW_SPENDING_LIMITS',
   data: { spendingLimits }
 })
 
@@ -30,7 +29,7 @@ export const isEnabled = (state: boolean = initialState.transaction.isEnabled, a
   if (!action.data) return state
   switch (action.type) {
     case 'accountInitComplete':
-    case NEW_SPENDING_LIMITS: {
+    case 'SPENDING_LIMITS/NEW_SPENDING_LIMITS': {
       return action.data.spendingLimits.transaction.isEnabled
     }
     default:
@@ -42,7 +41,7 @@ export const amount = (state: number = initialState.transaction.amount, action: 
   if (!action.data) return state
   switch (action.type) {
     case 'accountInitComplete':
-    case NEW_SPENDING_LIMITS: {
+    case 'SPENDING_LIMITS/NEW_SPENDING_LIMITS': {
       return action.data.spendingLimits.transaction.amount
     }
     default:

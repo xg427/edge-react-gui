@@ -1,7 +1,7 @@
 // @flow
 
 import { bns } from 'biggystring'
-import type { EdgeCurrencyWallet, EdgeMetadata, EdgeSpendInfo, EdgeSpendTarget, EdgeTransaction } from 'edge-core-js'
+import type { EdgeCurrencyWallet, EdgeMetadata, EdgeSpendInfo, EdgeSpendTarget } from 'edge-core-js'
 import { errorNames } from 'edge-core-js'
 import { Alert } from 'react-native'
 import { sprintf } from 'sprintf-js'
@@ -35,13 +35,6 @@ export type SetNativeAmountInfo = {
   toPrimaryInfo?: GuiCurrencyInfo
 }
 
-function setWallet (type: string, data: any) {
-  return {
-    type,
-    data
-  }
-}
-
 type SetCryptoExchangeAmounts = {
   toNativeAmount?: string,
   toDisplayAmount?: string,
@@ -54,24 +47,6 @@ function setCryptoExchangeAmounts (setAmounts: SetCryptoExchangeAmounts) {
   return {
     type: 'setCryptoExchangeAmounts',
     data: setAmounts
-  }
-}
-
-function setShapeTransaction (
-  type: string,
-  data: {
-    edgeTransaction: EdgeTransaction,
-    networkFee: string,
-    fromNativeAmount: string, // This needs to be calculated
-    fromDisplayAmount: string,
-    toNativeAmount: string,
-    toDisplayAmount: string,
-    quoteExpireDate: number
-  }
-) {
-  return {
-    type,
-    data
   }
 }
 
@@ -215,38 +190,38 @@ async function makeShiftTransaction (dispatch: Dispatch, fromWallet: GuiWallet |
 }
 const processMakeSpendError = e => (dispatch: Dispatch, getState: GetState) => {
   console.log(e)
-  dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
+  dispatch({ type: 'doneMakeSpendCrypto' })
   // holderObject.status = 'finished'
   // holderObject.processingAmount = ''
   if (e.name === errorNames.InsufficientFundsError || e.message === Constants.INSUFFICIENT_FUNDS) {
-    dispatch(actions.dispatchAction('receivedInsufficentFundsError'))
+    dispatch({ type: 'receivedInsufficentFundsError' })
     return
   }
-  dispatch(actions.dispatchActionString('genericShapeShiftError', e.message))
+  dispatch({ type: 'genericShapeShiftError', data: e.message })
 }
 
 export const shiftCryptoCurrency = () => async (dispatch: Dispatch, getState: GetState) => {
-  dispatch(actions.dispatchAction('START_SHIFT_TRANSACTION'))
+  dispatch({ type: 'START_SHIFT_TRANSACTION' })
   const state = getState()
   const fromWallet = state.cryptoExchange.fromWallet
   const toWallet = state.cryptoExchange.toWallet
   if (!fromWallet || !toWallet) {
-    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
+    dispatch({ type: 'DONE_SHIFT_TRANSACTION' })
     return
   }
   const srcWallet: EdgeCurrencyWallet = CORE_SELECTORS.getWallet(state, fromWallet.id)
 
   if (!srcWallet) {
-    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
+    dispatch({ type: 'DONE_SHIFT_TRANSACTION' })
     return
   }
   if (!state.cryptoExchange.transaction) {
     getShiftTransaction(fromWallet, toWallet)
-    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
+    dispatch({ type: 'DONE_SHIFT_TRANSACTION' })
     return
   }
   if (holderObject.status !== 'finished') {
-    dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
+    dispatch({ type: 'DONE_SHIFT_TRANSACTION' })
     return
   }
   if (srcWallet) {
@@ -289,17 +264,17 @@ export const shiftCryptoCurrency = () => async (dispatch: Dispatch, getState: Ge
 
       await WALLET_API.setTransactionDetailsRequest(srcWallet, broadcastedTransaction.txid, broadcastedTransaction.currencyCode, edgeMetaData)
 
-      dispatch(actions.dispatchAction('shiftComplete'))
+      dispatch({ type: 'shiftComplete' })
       console.log(broadcastedTransaction)
-      dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
+      dispatch({ type: 'DONE_SHIFT_TRANSACTION' })
       setTimeout(() => {
         Alert.alert(s.strings.exchange_succeeded, s.strings.exchanges_may_take_minutes)
       }, 1)
       global.firebase && global.firebase.analytics().logEvent(`Exchange_Shift_Success`)
     } catch (error) {
       global.firebase && global.firebase.analytics().logEvent(`Exchange_Shift_Failed`)
-      dispatch(actions.dispatchActionString('shiftError', error.message))
-      dispatch(actions.dispatchAction('DONE_SHIFT_TRANSACTION'))
+      dispatch({ type: 'shiftError', data: error.message })
+      dispatch({ type: 'DONE_SHIFT_TRANSACTION' })
       setTimeout(() => {
         Alert.alert(s.strings.exchange_failed, error.message)
       }, 1)
@@ -364,8 +339,8 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     console.log(`getShiftTransaction:above limit`)
     holderObject.processingCounter++
     holderObject.status = 'finished'
-    dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
-    dispatch(actions.dispatchActionString('genericShapeShiftError', errorMessage))
+    dispatch({ type: 'doneMakeSpendCrypto' })
+    dispatch({ type: 'genericShapeShiftError', data: errorMessage })
     return
   }
   if (isBelowLimit) {
@@ -377,8 +352,8 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     holderObject.processingCounter++
     holderObject.status = 'finished'
     console.log(`getShiftTransaction:below limit`)
-    dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
-    dispatch(actions.dispatchActionString('genericShapeShiftError', errorMessage))
+    dispatch({ type: 'doneMakeSpendCrypto' })
+    dispatch({ type: 'genericShapeShiftError', data: errorMessage })
     return
   }
 
@@ -391,7 +366,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
   //   // there is no new typing from when we returned.
   //   return
   // }
-  dispatch(actions.dispatchAction('startMakeSpendCrypto'))
+  dispatch({ type: 'startMakeSpendCrypto' })
 
   let delay = KEYSTROKE_DELAY
 
@@ -441,7 +416,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
   const edgeTransaction = edgeCoinExchangeQuote.edgeTransacton
   holderObject.status = 'finished'
   console.log(`getShiftTransaction:finished counter=${processingCounter} !!`)
-  dispatch(actions.dispatchAction('doneMakeSpendCrypto'))
+  dispatch({ type: 'doneMakeSpendCrypto' })
   const fromPrimaryInfo = state.cryptoExchange.fromWalletPrimaryInfo
   const toPrimaryInfo = state.cryptoExchange.toWalletPrimaryInfo
   const ratio = fromPrimaryInfo.displayDenomination.multiplier.toString()
@@ -460,7 +435,7 @@ const getShiftTransaction = (fromWallet: GuiWallet, toWallet: GuiWallet, whichWa
     toDisplayAmount: toDisplayAmount,
     quoteExpireDate: edgeCoinExchangeQuote.expiration
   }
-  dispatch(setShapeTransaction('updateShiftTransactionFee', returnObject))
+  dispatch({ type: 'updateShiftTransactionFee', data: returnObject })
 }
 
 export const selectToFromWallet = (type: string, wallet: GuiWallet, currencyCode?: string) => async (dispatch: Dispatch, getState: GetState) => {
@@ -488,11 +463,11 @@ export const selectToFromWallet = (type: string, wallet: GuiWallet, currencyCode
   let fromCurrencyCode = state.cryptoExchange.fromCurrencyCode
   let toCurrencyCode = state.cryptoExchange.toCurrencyCode
   if (type === 'selectFromWalletCryptoExchange') {
-    dispatch(setWallet('selectFromWalletCryptoExchange', data))
+    dispatch({ type: 'selectFromWalletCryptoExchange', data })
     hasFrom = wallet
     fromCurrencyCode = cc
   } else {
-    dispatch(setWallet('selectToWalletCryptoExchange', data))
+    dispatch({ type: 'selectToWalletCryptoExchange', data })
     hasTo = wallet
     toCurrencyCode = cc
   }
@@ -504,21 +479,21 @@ export const selectToFromWallet = (type: string, wallet: GuiWallet, currencyCode
   if (hasFrom && hasTo) {
     try {
       await dispatch(getShiftTransaction(hasFrom, hasTo))
-    } catch (e) {
-      console.log(e)
-      dispatch(actions.dispatchAction('invalidateShiftTransaction'))
+    } catch (error) {
+      console.log(error)
+      dispatch({ type: 'invalidateShiftTransaction' })
     }
   }
 }
 
 export const getCryptoExchangeRate = (fromCurrencyCode: string, toCurrencyCode: string) => (dispatch: Dispatch, getState: GetState) => {
   if (fromCurrencyCode === toCurrencyCode) {
-    dispatch(actions.dispatchActionNumber('updateCryptoExchangeRate', 1))
+    dispatch({ type: 'updateCryptoExchangeRate', data: 1 })
     return
   }
 
   if (!fromCurrencyCode || !toCurrencyCode) {
-    dispatch(actions.dispatchActionNumber('updateCryptoExchangeRate', 1))
+    dispatch({ type: 'updateCryptoExchangeRate', data: 1 })
     return
   }
 
@@ -526,20 +501,20 @@ export const getCryptoExchangeRate = (fromCurrencyCode: string, toCurrencyCode: 
   const context = CORE_SELECTORS.getContext(state)
   CONTEXT_API.getExchangeSwapInfo(context, fromCurrencyCode, toCurrencyCode)
     .then(response => {
-      dispatch(actions.dispatchActionObject('updateCryptoExchangeInfo', response))
+      dispatch({ type: 'updateCryptoExchangeInfo', data: response })
       return response
     })
-    .catch(e => {
-      console.log(e)
+    .catch(error => {
+      console.log(error)
     })
 
   CONTEXT_API.getExchangeSwapInfo(context, toCurrencyCode, fromCurrencyCode)
     .then(response => {
-      dispatch(actions.dispatchActionObject('updateCryptoReverseExchangeInfo', response))
+      dispatch({ type: 'updateCryptoReverseExchangeInfo', data: response })
       return response
     })
-    .catch(e => {
-      console.log(e)
+    .catch(error => {
+      console.log(error)
     })
 }
 
@@ -548,9 +523,9 @@ export const getShapeShiftTokens = () => async (dispatch: Dispatch, getState: Ge
   const context = CORE_SELECTORS.getContext(state)
   try {
     const response = await context.getAvailableExchangeTokens() // await fetch('https://shapeshift.io/getcoins',
-    dispatch(actions.dispatchActionArray('onAvailableShapeShiftTokens', response))
-  } catch (e) {
-    dispatch(actions.dispatchActionArray('onAvailableShapeShiftTokens', []))
+    dispatch({ type: 'onAvailableShapeShiftTokens', data: response })
+  } catch (error) {
+    dispatch({ type: 'onAvailableShapeShiftTokens', data: [] })
   }
 }
 

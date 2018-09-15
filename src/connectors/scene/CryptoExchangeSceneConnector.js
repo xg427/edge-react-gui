@@ -92,11 +92,11 @@ export const mapStateToProps = (state: State): CryptoExchangeSceneComponentState
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch): CryptoExchangeSceneComponentDispatchProps => ({
-  swapFromAndToWallets: () => dispatch(actions.dispatchAction('swapFromToCryptoWallets')),
-  openModal: (data: string) => dispatch(actions.dispatchActionString('openWalletSelectorModal', data)),
+  swapFromAndToWallets: () => dispatch({ type: 'swapFromToCryptoWallets' }),
+  openModal: (data: string) => dispatch({ type: 'openWalletSelectorModal', data }),
   shift: () => dispatch(actions.shiftCryptoCurrency()),
-  closeConfirmation: () => dispatch(actions.dispatchAction('closeCryptoExecConfModal')),
-  openConfirmation: () => dispatch(actions.dispatchAction('openCryptoExecConfModal')),
+  closeConfirmation: () => dispatch({ type: 'closeCryptoExecConfModal' }),
+  openConfirmation: () => dispatch({ type: 'openCryptoExecConfModal' }),
   setNativeAmount: (data: SetNativeAmountInfo) => dispatch(actions.setNativeAmount(data)),
   getShapeShiftTokens: () => dispatch(actions.getShapeShiftTokens()),
   onSelectWallet: (walletId: string, currencyCode: string) => {

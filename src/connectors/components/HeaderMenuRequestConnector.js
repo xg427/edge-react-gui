@@ -2,7 +2,6 @@
 
 import { connect } from 'react-redux'
 
-import { dispatchActionOnly } from '../../actions/indexActions'
 import * as Constants from '../../constants/indexConstants'
 import s from '../../locales/strings.js'
 import type { Dispatch, State } from '../../modules/ReduxTypes.js'
@@ -51,12 +50,12 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onSelect: (value: Object) => {
     switch (value.value) {
       case 'useRegularRequestAddress': {
-        dispatch(dispatchActionOnly('useRegularRequestAddress'))
+        dispatch({ type: 'useRegularRequestAddress' })
         break
       }
 
       case 'useLegacyRequestAddress': {
-        dispatch(dispatchActionOnly('useLegacyRequestAddress'))
+        dispatch({ type: 'useLegacyRequestAddress' })
         break
       }
 

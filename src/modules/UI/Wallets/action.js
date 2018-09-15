@@ -4,7 +4,6 @@ import type { EdgeCurrencyWallet, EdgeReceiveAddress } from 'edge-core-js'
 import _ from 'lodash'
 import { Actions } from 'react-native-router-flux'
 
-import * as actions from '../../../actions/indexActions'
 import type { CustomTokenInfo } from '../../../types.js'
 import * as SETTINGS_API from '../../Core/Account/settings.js'
 import * as CORE_SELECTORS from '../../Core/selectors.js'
@@ -132,7 +131,7 @@ export const selectWallet = (walletId: string, currencyCode: string) => (dispatc
     const wallet: EdgeCurrencyWallet = CORE_SELECTORS.getWallet(state, walletId)
     WALLET_API.getReceiveAddress(wallet, currencyCode)
       .then(receiveAddress => {
-        dispatch(actions.dispatchActionObject('newReceiveAddress', { receiveAddress }))
+        dispatch({ type: 'newReceiveAddress', data: { receiveAddress } })
       })
       .catch(e => {
         console.log('error on getting wallet receive address')
