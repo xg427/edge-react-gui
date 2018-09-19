@@ -33,7 +33,7 @@ export default class FormattedText extends Component {
   render () {
     const fontSize = this.props.fontSize ? scale(this.props.fontSize) : scale(14)
     return (
-      <Text {...this.props} style={[this.style, this.props.style, { fontSize }]} ref={'nativeForward'} allowFontScaling={false}>
+      <Text {...this.props} style={[this.style, { fontSize }, this.props.style]} ref={'nativeForward'} allowFontScaling={false}>
         {this.props.children}
       </Text>
     )
