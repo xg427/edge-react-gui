@@ -268,7 +268,7 @@ export type Action =
       type: 'SELECT_TO_WALLET_CRYPTO_EXCHANGE',
       data?: any
     }
-  | {
-      type: 'UI/SCENES/TRANSACTION_LIST/END_TRANSACTIONS_LOADING',
-      data?: any
-    }
+// | {
+//     type: 'UI/SCENES/TRANSACTION_LIST/END_TRANSACTIONS_LOADING',
+//     data?: any
+//   }

@@ -284,6 +284,13 @@ function cryptoExchangerReducer (state = initialState, action: Action) {
       }
     }
 
+    case 'doneMakeSpendCrypto': {
+      return {
+        ...state,
+        gettingTransaction: false
+      }
+    }
+
     case 'START_SHIFT_TRANSACTION': {
       return {
         ...state,
