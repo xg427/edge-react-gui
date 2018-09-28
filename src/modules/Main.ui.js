@@ -20,7 +20,7 @@ import { moneroCurrencyPluginFactory } from 'edge-currency-monero'
 import { rippleCurrencyPluginFactory } from 'edge-currency-ripple'
 import { coinbasePlugin, coincapPlugin, shapeshiftPlugin } from 'edge-exchange-plugins'
 import React, { Component } from 'react'
-import { Image, Keyboard, Linking, StatusBar, TouchableWithoutFeedback, View } from 'react-native'
+import { Button, Image, Keyboard, Linking, StatusBar, TouchableWithoutFeedback, View } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import Locale from 'react-native-locale'
 import { MenuProvider } from 'react-native-popup-menu'
@@ -57,6 +57,7 @@ import { ifLoggedIn } from '../modules/UI/components/LoginStatus/LoginStatus.js'
 import { OnBoardingComponent } from '../modules/UI/scenes/OnBoarding/OnBoardingComponent.js'
 import { makeCoreContext } from '../util/makeContext.js'
 import * as CONTEXT_API from './Core/Context/api'
+import { ModalManager, showModal } from './ModalManager.js'
 import { styles } from './style.js'
 import AutoLogout from './UI/components/AutoLogout/AutoLogoutConnector'
 import { ContactsLoaderConnecter as ContactsLoader } from './UI/components/ContactsLoader/indexContactsLoader.js'
@@ -233,6 +234,13 @@ export default class Main extends Component<Props, State> {
     this.state = {
       context: undefined
     }
+
+    setTimeout(() => {
+      showModal(props => <Button onPress={() => props.onDone(true)} title="hello!!!" />).then(x =>
+        showModal(props => <Button title="world!!!" onPress={() => props.onDone(true)} />)
+      )
+      showModal(props => <Button onPress={() => props.onDone(true)} title="queued!!!" />)
+    }, 15000)
   }
 
   UNSAFE_componentWillMount () {
@@ -648,6 +656,7 @@ export default class Main extends Component<Props, State> {
         <ContactsLoader />
         <PasswordReminderModal />
         <PasswordRecoveryReminderModalConnector />
+        <ModalManager />
       </MenuProvider>
     )
   }
