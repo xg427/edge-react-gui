@@ -2,6 +2,7 @@
 
 import { StyleSheet } from 'react-native'
 
+import { scale } from '../../../../lib/scaling.js'
 import THEME from '../../../../theme/variables/airbitz'
 
 export const rawStyles = {
@@ -14,8 +15,8 @@ export const rawStyles = {
   },
   buttonText: {
     fontFamily: THEME.FONTS.DEFAULT,
-    fontSize: 18,
-    lineHeight: 18,
+    fontSize: scale(18),
+    lineHeight: scale(18),
     position: 'relative',
     top: 1
   },
@@ -43,9 +44,9 @@ export const rawStyles = {
   //  TERTIARY BUTTON
   tertiaryButton: {
     backgroundColor: THEME.COLORS.WHITE,
-    borderWidth: 2,
+    borderWidth: scale(2),
     borderColor: THEME.COLORS.SECONDARY,
-    padding: 12
+    padding: scale(12)
   },
   tertiaryButtonUnderlay: { color: THEME.COLORS.GRAY_3 },
   tertiaryButtonText: {
@@ -62,7 +63,7 @@ export const rawStyles = {
 
   debug: {
     borderColor: 'red',
-    borderWidth: 1
+    borderWidth: scale(1)
   }
 }
 
