@@ -1,6 +1,9 @@
 // @flow
 
-import type { DiskletFolder, EdgeContext } from 'edge-core-js'
+import { type DiskletFolder, type EdgeContext, type EdgeUserInfo } from 'edge-core-js'
+
+import { displayErrorAlert } from '../../UI/components/ErrorAlert/actions.js'
+import { getUsernames } from './api.js'
 
 export type AddContextAction = {
   type: 'CORE/CONTEXT/ADD_CONTEXT',
@@ -34,11 +37,6 @@ export type CoreContextAction =
   | DeleteLocalAccountSuccessAction
   | DeleteLocalAccountErrorAction
 
-export const addContext = (context: EdgeContext, folder: DiskletFolder): AddContextAction => ({
-  type: 'CORE/CONTEXT/ADD_CONTEXT',
-  data: { context, folder }
-})
-
 export const addUsernames = (usernames: Array<string>): AddUsernamesAction => ({
   type: 'CORE/CONTEXT/ADD_USERNAMES',
   data: { usernames }
@@ -58,3 +56,26 @@ export const deleteLocalAccountError = (username: string): DeleteLocalAccountErr
   type: 'CORE/CONTEXT/DELETE_LOCAL_ACCOUNT_ERROR',
   data: { username }
 })
+
+export const addContext = (context: EdgeContext, folder: DiskletFolder) => (dispatch: Dispatch) => {
+  context.on('error', (error: Error) => dispatch(displayErrorAlert(error.message)))
+
+  context.watch('localUsers', (localUsers: Array<EdgeUserInfo>) => {
+    const usernames = getUsernames(context)
+    dispatch({
+      type: 'CORE/CONTEXT/ADD_USERNAMES',
+      data: { usernames }
+    })
+  })
+
+  const usernames = getUsernames(context)
+  dispatch({
+    type: 'CORE/CONTEXT/ADD_USERNAMES',
+    data: { usernames }
+  })
+
+  dispatch({
+    type: 'CORE/CONTEXT/ADD_CONTEXT',
+    data: { context, folder }
+  })
+}

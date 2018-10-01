@@ -55,8 +55,8 @@ import s, { selectLocale } from '../locales/strings.js'
 import { LoadingScene } from '../modules/UI/components/Loading/LoadingScene.ui.js'
 import { ifLoggedIn } from '../modules/UI/components/LoginStatus/LoginStatus.js'
 import { OnBoardingComponent } from '../modules/UI/scenes/OnBoarding/OnBoardingComponent.js'
-import { makeCoreContext } from '../util/makeContext.js'
-import * as CONTEXT_API from './Core/Context/api'
+import { makeContext } from '../util/makeContext.js'
+import { getUsernames } from './Core/Context/api'
 import { styles } from './style.js'
 import AutoLogout from './UI/components/AutoLogout/AutoLogoutConnector'
 import { ContactsLoaderConnecter as ContactsLoader } from './UI/components/ContactsLoader/indexContactsLoader.js'
@@ -189,7 +189,7 @@ type State = {
   context: ?EdgeContext
 }
 
-async function queryUtilServer (context: EdgeContext, folder: DiskletFolder, usernames: Array<string>) {
+async function queryUtilServer (folder: DiskletFolder, usernames: Array<string>) {
   let jsonObj: null | Object = null
   try {
     const json = await folder.file(UTILITY_SERVER_FILE).getText()
@@ -245,38 +245,35 @@ export default class Main extends Component<Props, State> {
     this.keyboardDidHideListener.remove()
   }
 
-  componentDidMount () {
+  async componentDidMount () {
+    const { addContext } = this.props
+
     const id = DeviceInfo.getUniqueID()
     global.firebase && global.firebase.analytics().setUserId(id)
     global.firebase && global.firebase.analytics().logEvent(`Start_App`)
-    makeCoreContext(this.props.contextCallbacks, pluginFactories).then(context => {
-      const folder = makeReactNativeFolder()
 
-      // Put the context into Redux:
-      this.props.addContext(context, folder)
+    setIntlLocale(localeInfo)
+    selectLocale(DeviceInfo.getDeviceLocale())
 
-      CONTEXT_API.listUsernames(context).then(usernames => {
-        this.props.addUsernames(usernames)
-        queryUtilServer(context, folder, usernames)
-      })
-      setIntlLocale(localeInfo)
-      selectLocale(DeviceInfo.getDeviceLocale())
-      SplashScreen.close({
-        animationType: SplashScreen.animationType.fade,
-        duration: 850,
-        delay: 500
-      })
-    })
     Linking.getInitialURL()
-      .then(url => {
-        if (url) {
-          this.doDeepLink(url)
-        }
-        // this.navigate(url);
-      })
-      .catch(e => console.log(e))
+      .then(url => url && this.doDeepLink(url))
+      .catch(error => console.log(error))
     Linking.addEventListener('url', this.handleOpenURL)
+
+    const folder = makeReactNativeFolder()
+    const context = await makeContext(pluginFactories)
+    addContext(context, folder)
+
+    const usernames = getUsernames(context)
+    queryUtilServer(folder, usernames)
+
+    SplashScreen.close({
+      animationType: SplashScreen.animationType.fade,
+      duration: 850,
+      delay: 500
+    })
   }
+
   doDeepLink (url: string) {
     const parsedUri = URI.parse(url)
     const query = parsedUri.query
@@ -289,6 +286,7 @@ export default class Main extends Component<Props, State> {
     const token = finalArray[0]
     this.props.urlReceived(token)
   }
+
   handleOpenURL = (event: Object) => {
     this.doDeepLink(event.url)
   }

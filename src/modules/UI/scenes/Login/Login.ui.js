@@ -8,7 +8,7 @@ import slowlog from 'react-native-slowlog'
 
 import THEME from '../../../../theme/variables/airbitz'
 import makeAccountCallbacks from '../../../Core/Account/callbacks'
-import * as CONTEXT_API from '../../../Core/Context/api'
+import { getUsernames } from '../../../Core/Context/api'
 import type { Dispatch } from '../../../ReduxTypes'
 
 type Props = {
@@ -29,13 +29,10 @@ export default class Login extends Component<Props, State> {
   }
 
   onLogin = (error: ?Error = null, account: ?EdgeAccount, touchIdInfo: ?Object = null) => {
+    const { addUsernames, context, initializeAccount } = this.props
     if (error || !account) return
-    this.props.initializeAccount(account, touchIdInfo)
-
-    CONTEXT_API.listUsernames(this.props.context) // update users list after each login
-      .then(usernames => {
-        this.props.addUsernames(usernames)
-      })
+    addUsernames(getUsernames(context))
+    initializeAccount(account, touchIdInfo)
   }
 
   UNSAFE_componentWillReceiveProps (nextProps: Props) {
@@ -49,7 +46,7 @@ export default class Login extends Component<Props, State> {
 
   render () {
     const callbacks = makeAccountCallbacks(this.props.dispatch)
-    return !this.props.context.listUsernames ? null : (
+    return Object.keys(this.props.context).length > 0 ? null : (
       <View style={{ flex: 1 }} testID={'edge: login-scene'}>
         <LoginScreen
           username={this.props.username}

@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import * as actions from '../actions/indexActions'
 import { requestPermission } from '../reducers/permissions/actions.js'
 import { addContext, addUsernames } from './Core/Context/action.js'
-import makeContextCallbacks from './Core/Context/callbacks'
 import Main from './Main.ui'
 import type { Dispatch } from './ReduxTypes'
 import { setKeyboardHeight } from './UI/dimensions/action'
@@ -47,7 +46,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   urlReceived: backupKey => {
     return dispatch(actions.deepLinkLogout(backupKey))
   },
-  contextCallbacks: makeContextCallbacks(dispatch),
   onSelectWallet: (walletId, currencyCode) => dispatch(selectWallet(walletId, currencyCode))
 })
 export default connect(

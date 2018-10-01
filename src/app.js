@@ -20,7 +20,7 @@ import configureStore from './lib/configureStore'
 import s from './locales/strings.js'
 import Main from './modules/MainConnector'
 import { log, logToServer } from './util/logger'
-import { makeCoreContext } from './util/makeContext.js'
+import { makeContext } from './util/makeContext.js'
 
 global.bugsnag = new Client(ENV.BUGSNAG_API_KEY)
 
@@ -145,7 +145,7 @@ BackgroundFetch.configure(
         return
       }
     }
-    makeCoreContext().then(async context => {
+    makeContext().then(async context => {
       try {
         const result = await context.fetchLoginMessages()
         const date = new Date(Date.now() + 1000)
