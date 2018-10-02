@@ -45,14 +45,17 @@ export default class Login extends Component<Props, State> {
   }
 
   render () {
-    const callbacks = makeAccountCallbacks(this.props.dispatch)
-    return Object.keys(this.props.context).length > 0 ? null : (
+    const { context, dispatch, recoveryLogin, username } = this.props
+    const callbacks = makeAccountCallbacks(dispatch)
+    const loading = Object.keys(context).length <= 0
+
+    return loading ? null : (
       <View style={{ flex: 1 }} testID={'edge: login-scene'}>
         <LoginScreen
-          username={this.props.username}
+          username={username}
           accountOptions={{ callbacks }}
-          context={this.props.context}
-          recoveryLogin={this.props.recoveryLogin}
+          context={context}
+          recoveryLogin={recoveryLogin}
           onLogin={this.onLogin}
           fontDescription={{
             regularFontFamily: THEME.FONTS.DEFAULT

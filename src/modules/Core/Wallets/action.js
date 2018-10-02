@@ -8,6 +8,16 @@ import * as SETTINGS_SELECTORS from '../../UI/Settings/selectors'
 import { getReceiveAddresses } from '../../utils.js'
 import * as CORE_SELECTORS from '../selectors'
 
+export type UpdateWalletsAction = {
+  type: 'CORE/WALLETS/UPDATE_WALLETS',
+  data: {
+    activeWalletIds: Array<string>,
+    archivedWalletIds: Array<string>,
+    currencyWallets: { [id: string]: EdgeCurrencyWallet },
+    receiveAddresses: { [id: string]: EdgeReceiveAddress }
+  }
+}
+
 export const updateWallets = (
   activeWalletIds: Array<string>,
   archivedWalletIds: Array<string>,
@@ -26,11 +36,7 @@ export const updateWallets = (
 export const updateWalletsRequest = () => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const loginStatus = SETTINGS_SELECTORS.getLoginStatus(state)
-  if (!loginStatus) {
-    return {
-      type: 'LOGGED_OUT'
-    }
-  }
+  if (!loginStatus) return
 
   const account = CORE_SELECTORS.getAccount(state)
   const { activeWalletIds, archivedWalletIds, currencyWallets } = account
@@ -54,6 +60,14 @@ export const updateWalletsRequest = () => (dispatch: Dispatch, getState: GetStat
       }
     }
 
-    return dispatch(updateWallets(activeWalletIds, archivedWalletIds, currencyWallets, receiveAddresses))
+    dispatch({
+      type: 'CORE/WALLETS/UPDATE_WALLETS',
+      data: {
+        activeWalletIds,
+        archivedWalletIds,
+        currencyWallets,
+        receiveAddresses
+      }
+    })
   })
 }

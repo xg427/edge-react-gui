@@ -7,21 +7,9 @@ import { checkPasswordRecovery } from '../../UI/components/PasswordRecoveryRemin
 import { newTransactionsRequest, refreshTransactionsRequest } from '../../UI/scenes/TransactionList/action.js'
 import { refreshReceiveAddressRequest, refreshWallet, updateWalletLoadingProgress } from '../../UI/Wallets/action.js'
 import { isReceivedTransaction } from '../../utils.js'
-import { updateWalletsRequest } from '../Wallets/action.js'
 
 const makeAccountCallbacks = (dispatch: Dispatch): EdgeAccountCallbacks => {
   const callbacks = {
-    onDataChanged: () => console.log('onDataChanged'),
-    onLoggedOut: () => console.log('onLoggedOut'),
-    onOTPRequired: () => console.log('onOTPRequired'),
-    onOTPSkew: () => console.log('onOTPSkew'),
-    onRemotePasswordChanged: () => console.log('onRemotePasswordChanged'),
-
-    onKeyListChanged: () => {
-      // $FlowFixMe
-      dispatch(updateWalletsRequest())
-    },
-
     onAddressesChecked (walletId: string, transactionCount: number) {
       console.log(`${walletId} - onAddressesChecked with progress ratio: ${transactionCount}`)
       if (transactionCount > 0) {

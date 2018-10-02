@@ -1,6 +1,8 @@
 // @flow
 
+import { type AccountAction } from './Core/Account/actions.js'
 import { type CoreContextAction } from './Core/Context/action.js'
+import { type UpdateWalletsAction } from './Core/Wallets/action.js'
 import { type SendLogsAction } from './Logs/action.js'
 import { type DeleteWalletModalAction } from './UI/scenes/WalletList/components/DeleteModal/actions.js'
 import { type GetSeedModalAction } from './UI/scenes/WalletList/components/GetSeedModal/actions.js'
@@ -62,7 +64,6 @@ type ActionType =
   | 'ACCOUNT_INIT_COMPLETE'
   | 'DISABLE_OTP_RESET'
   | 'SET_CONFIRM_PASSWORD_ERROR'
-  | 'ACCOUNT/LOGGED_IN'
   | 'LOGOUT'
   // | 'CORE/CONTEXT/ADD_CONTEXT'
   // | 'CORE/CONTEXT/ADD_USERNAMES'
@@ -254,7 +255,6 @@ type ActionType =
   | 'CREATE_WALLET_START'
   | 'CREATE_WALLET_SUCCESS'
   | 'UPDATE_SHOW_PASSWORD_RECOVERY_REMINDER_MODAL'
-  | 'LOGGED_OUT'
   | 'DEEP_LINK_RECEIVED'
   | 'UPDATE_METADATA'
   | 'DUMMY_ACTION_PLEASE_IGNORE'
@@ -282,6 +282,8 @@ export type Action =
   | XPubModalAction
   | CoreContextAction
   | SendLogsAction
+  | AccountAction
+  | UpdateWalletsAction
   | {
       type: 'SELECT_TO_WALLET_CRYPTO_EXCHANGE',
       data?: any
