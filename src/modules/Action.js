@@ -1,5 +1,6 @@
 // @flow
 
+import { type GuiCurrencyInfo, type GuiWallet } from '../types.js'
 import { type CoreContextAction } from './Core/Context/action.js'
 import { type SendLogsAction } from './Logs/action.js'
 import { type DeleteWalletModalAction } from './UI/scenes/WalletList/components/DeleteModal/actions.js'
@@ -24,8 +25,9 @@ type ActionType =
   // | 'OPEN_VIEWXPUB_WALLET_MODAL'
   // | 'CLOSE_VIEWXPUB_WALLET_MODAL'
   // | 'UNLOCK_WALLET_SEED'
-  | 'SELECT_FROM_WALLET_CRYPTO_EXCHANGE'
-  | 'SWAP_FROM_TO_CRYPTO_WALLETS'
+  // | 'SELECT_FROM_WALLET_CRYPTO_EXCHANGE'
+  // | 'SELECT_TO_WALLET_CRYPTO_EXCHANGE'
+  // | 'SWAP_FROM_TO_CRYPTO_WALLETS'
   | 'OPEN_WALLET_SELECTOR_MODAL'
   | 'UPDATE_CRYPTO_EXCHANGE_RATE'
   | 'UPDATE_CRYPTO_REVERSE_EXCHANGE_RATE'
@@ -260,7 +262,6 @@ type ActionType =
   | 'UI/SCENES/TRANSACTION_LIST/DISABLE_UPDATING_BALANCE'
   | 'UI/SCENES/TRANSACTION_LIST/TOGGLE_UPDATING_BALANCE'
   | 'SET_TOKEN_SETTINGS'
-// | 'SELECT_TO_WALLET_CRYPTO_EXCHANGE'
 
 type LegacyAction = {
   type: ActionType,
@@ -278,9 +279,14 @@ export type Action =
   | CoreContextAction
   | SendLogsAction
   | {
-      type: 'SELECT_TO_WALLET_CRYPTO_EXCHANGE',
-      data?: any
+      type: 'SELECT_FROM_WALLET_CRYPTO_EXCHANGE' | 'SELECT_TO_WALLET_CRYPTO_EXCHANGE',
+      data: {
+        wallet: GuiWallet,
+        currencyCode: string,
+        primaryInfo: GuiCurrencyInfo
+      }
     }
+  | { type: 'SWAP_FROM_TO_CRYPTO_WALLETS' }
   | { type: 'UI/WALLETS/CREATE_WALLET_START' }
   | { type: 'UI/WALLETS/CREATE_WALLET_SUCCESS' }
   | { type: 'UI/WALLETS/CREATE_WALLET_FAILURE' }
