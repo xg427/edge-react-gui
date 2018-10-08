@@ -13,7 +13,7 @@ export type ContextState = {
 }
 
 const initialState = {
-  context: {},
+  context: null,
   folder: {},
   nextUsername: '',
   usernames: []
@@ -23,13 +23,15 @@ export const context: Reducer<ContextState, Action> = (state = initialState, act
   switch (action.type) {
     case 'CORE/CONTEXT/ADD_CONTEXT': {
       if (!action.data) throw new Error('Invalid action')
+      if (!action.data.context) throw new Error('Invalid action')
       const context: EdgeContext = action.data.context
       const folder: DiskletFolder = action.data.folder
-      return {
+      const out = {
         ...state,
         context,
         folder
       }
+      return out
     }
 
     case 'CORE/CONTEXT/ADD_USERNAMES': {

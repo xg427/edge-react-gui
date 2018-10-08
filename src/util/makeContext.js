@@ -15,7 +15,7 @@ function makeContext (pluginFactories: Array<EdgeCorePluginFactory> = []): Promi
   }
 
   if (ENV.USE_FAKE_CORE) {
-    const [context] = makeFakeContexts({ ...opts, localFakeUser: true, tempNoBridge$: true })
+    const [context] = makeFakeContexts({ ...opts, localFakeUser: true, tempNoBridge$: false })
     return Promise.resolve(context)
   }
 

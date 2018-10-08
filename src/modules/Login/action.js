@@ -15,7 +15,7 @@ import { loggedIn } from '../Core/Account/reducer.js'
 import * as SETTINGS_API from '../Core/Account/settings.js'
 // Login/action.js
 import * as CORE_SELECTORS from '../Core/selectors'
-import { updateWalletsRequest } from '../Core/Wallets/action.js'
+import { updateWalletsRequest, subscribeToWallet } from '../Core/Wallets/action.js'
 import type { Dispatch, GetState } from '../ReduxTypes'
 import { insertWalletIdsForProgress } from '../UI/Wallets/action.js'
 import { getReceiveAddresses } from '../utils.js'
@@ -185,6 +185,11 @@ export const initializeAccount = (account: EdgeAccount, touchIdInfo: Object) => 
     accountInitObject.otpMode = coreFinal.otpMode
 
     const receiveAddresses = await getReceiveAddresses(currencyWallets)
+
+    Object.values(currencyWallets).forEach(wallet => {
+      // $FlowExpectedError
+      subscribeToWallet(dispatch, wallet)
+    })
 
     dispatch({
       type: 'ACCOUNT_INIT_COMPLETE',

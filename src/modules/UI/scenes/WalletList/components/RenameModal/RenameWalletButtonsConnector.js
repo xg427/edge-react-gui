@@ -18,7 +18,7 @@ const renameWallet = (walletId: string, walletName: string) => (dispatch: Dispat
   WALLET_API.renameWalletRequest(wallet, walletName)
     .then(() => {
       dispatch({ type: 'CLOSE_RENAME_WALLET_SUCCESS', data: { walletId } })
-      dispatch(UI_ACTIONS.refreshWallet(walletId))
+      // dispatch(UI_ACTIONS.refreshWallet(walletId))
     })
     .catch(error => console.log(error))
 }

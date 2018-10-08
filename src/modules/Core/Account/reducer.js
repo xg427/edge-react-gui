@@ -5,9 +5,9 @@ import { type Reducer } from 'redux'
 
 import type { Action } from '../../ReduxTypes.js'
 
-export type AccountState = EdgeAccount | Object
+export type AccountState = EdgeAccount | null
 
-export const initialState: AccountState = {}
+export const initialState: AccountState = null
 
 export const loggedIn = (account: EdgeAccount) => ({
   type: 'ACCOUNT/LOGGED_IN',

@@ -270,14 +270,25 @@ export const getCoreSettings = (account: EdgeAccount): Promise<{ otpMode: boolea
 }
 
 export const getSyncedSettingsFile = (account: EdgeAccount) => {
+  return {
+    getText () {
+      return Promise.resolve('{}')
+    }
+  }
   // $FlowFixMe folder not found on EdgeAccount type
-  const folder = account.folder
-  return folder.file(SYNCHED_SETTINGS_FILENAME)
+  // const folder = account.folder
+  // return folder.file(SYNCHED_SETTINGS_FILENAME)
 }
 
-export const getLocalSettingsFile = (account: EdgeAccount) =>
+export const getLocalSettingsFile = (account: EdgeAccount) => {
+  return {
+    getText () {
+      return Promise.resolve('{}')
+    }
+  }
   // $FlowFixMe localFolder not found on EdgeAccount type
-  account.localFolder.file(LOCAL_SETTINGS_FILENAME)
+  // return account.localFolder.file(LOCAL_SETTINGS_FILENAME)
+}
 
 export const updateCurrencySettings = (currentSettings: Object, currencyCode: string, newSettings: Object) => {
   const currencySettings = currentSettings[currencyCode]
