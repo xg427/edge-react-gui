@@ -155,14 +155,18 @@ export class TransactionRowComponent extends Component<Props, State> {
         >
           <View style={[styles.transactionInfoWrap]}>
             <View style={styles.transactionLeft}>
-              {thumbnailPath ? (
-                <Image style={[styles.transactionLogo]} source={{ uri: thumbnailPath }} />
-              ) : (
-                <Image style={styles.transactionLogo} source={txImage} />
-              )}
+              <View style={[styles.transactionLeftLogoWrap]}>
+                {thumbnailPath ? (
+                  <Image style={[styles.transactionLogo]} source={{ uri: thumbnailPath }} />
+                ) : (
+                  <Image style={styles.transactionLogo} source={txImage} />
+                )}
+              </View>
 
               <View style={[styles.transactionLeftTextWrap]}>
-                <T style={[styles.transactionPartner]}>{transactionPartner}</T>
+                <T style={[styles.transactionPartner]} adjustsFontSizeToFit={true} minimumFontScale={0.6}>
+                  {transactionPartner}
+                </T>
                 <T style={[styles.transactionTimePendingArea, pendingTimeStyle]}>{pendingTimeSyntax}</T>
               </View>
             </View>
